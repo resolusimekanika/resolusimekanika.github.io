@@ -96,25 +96,31 @@ a { color: inherit; }
   transition: color 150ms ease, font-style 150ms ease;
 }
 
-.wordmark span {
-  display: none;
+.wordmark-normal,
+.wordmark-hover {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  transition: opacity 120ms ease;
 }
 
-.wordmark::before {
-  content: "Resolusi\A Mekanika";
-  white-space: pre;
-}
-
-.wordmark:hover::before,
-.wordmark:focus-visible::before {
-  content: "Mechanical\A Resolution";
-}
-
-.wordmark:hover,
-.wordmark:focus-visible {
+.wordmark-hover {
+  position: absolute;
+  inset: 0 auto auto 0;
+  opacity: 0;
   color: var(--black);
   font-style: oblique 12deg;
   font-weight: 700;
+}
+
+.wordmark:hover .wordmark-normal,
+.wordmark:focus-visible .wordmark-normal {
+  opacity: 0;
+}
+
+.wordmark:hover .wordmark-hover,
+.wordmark:focus-visible .wordmark-hover {
+  opacity: 1;
 }
 
 .language-switch {
