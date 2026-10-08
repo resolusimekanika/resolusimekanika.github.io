@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap');
+
 :root {
   --red: #e00000;
   --white: #fff;
@@ -6,6 +8,10 @@
   --top: clamp(24px, 3.5vw, 48px);
   --tile: clamp(210px, 23vw, 290px);
   --grid-gap: clamp(8px, 1.1vw, 14px);
+}
+
+.home {
+  --tile: clamp(252px, 27.6vw, 348px);
 }
 
 * { box-sizing: border-box; }
@@ -73,11 +79,14 @@ a { color: inherit; }
   width: max-content;
   color: var(--white);
   text-decoration: none;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
   font-size: clamp(36px, 4.8vw, 64px);
-  font-weight: 700;
+  font-style: normal;
+  font-weight: 500;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 8, "wght" 500;
   line-height: .92;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.028em;
   transition: color 150ms ease, font-style 150ms ease;
 }
 
@@ -85,6 +94,8 @@ a { color: inherit; }
 .wordmark:focus-visible {
   color: var(--black);
   font-style: italic;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 8, "wght" 500;
 }
 
 .language-switch {
@@ -188,7 +199,12 @@ a { color: inherit; }
 
 .project-card:hover .project-image,
 .project-card:focus-visible .project-image {
-  filter: grayscale(1) contrast(1.05);
+  filter: grayscale(1) contrast(1.45) brightness(.94);
+}
+
+.home .project-card:hover .project-image,
+.home .project-card:focus-visible .project-image {
+  filter: grayscale(1) contrast(1.9) brightness(.82);
 }
 
 .project-card:hover .project-meta,
@@ -298,6 +314,10 @@ a { color: inherit; }
     --side: 20px;
     --top: 22px;
     --tile: min(62vw, 270px);
+  }
+
+  .home {
+    --tile: min(74vw, 324px);
   }
 
   .site-header,
