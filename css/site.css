@@ -195,7 +195,7 @@ a { color: inherit; }
   height: 100%;
   object-fit: cover;
   filter: grayscale(1) contrast(2.05) brightness(.80);
-  transition: filter 180ms ease;
+  transition: none;
 }
 
 .project-image-wrap::after {
@@ -209,7 +209,7 @@ a { color: inherit; }
   mix-blend-mode: soft-light;
   opacity: .23;
   transform: translateZ(0);
-  transition: opacity 180ms ease, mix-blend-mode 180ms ease;
+  transition: none;
 }
 
 .project-fallback {
@@ -239,12 +239,12 @@ a { color: inherit; }
 
 .project-card:hover .project-image,
 .project-card:focus-visible .project-image {
-  filter: grayscale(0) contrast(1.30) brightness(.86) saturate(1.25) sepia(.06);
+  filter: grayscale(0) contrast(1.40) brightness(.84) saturate(1.35) sepia(.07);
 }
 
 .project-card:hover .project-image-wrap::after,
 .project-card:focus-visible .project-image-wrap::after {
-  opacity: .18;
+  opacity: .20;
   mix-blend-mode: overlay;
 }
 
