@@ -239,12 +239,12 @@ a { color: inherit; }
 
 .project-card:hover .project-image,
 .project-card:focus-visible .project-image {
-  filter: grayscale(0) contrast(1.18) brightness(.90) saturate(1.14) sepia(.045);
+  filter: grayscale(0) contrast(1.30) brightness(.86) saturate(1.25) sepia(.06);
 }
 
 .project-card:hover .project-image-wrap::after,
 .project-card:focus-visible .project-image-wrap::after {
-  opacity: .16;
+  opacity: .18;
   mix-blend-mode: overlay;
 }
 
