@@ -96,6 +96,20 @@ a { color: inherit; }
   transition: color 150ms ease, font-style 150ms ease;
 }
 
+.wordmark span {
+  display: none;
+}
+
+.wordmark::before {
+  content: "Resolusi\A Mekanika";
+  white-space: pre;
+}
+
+.wordmark:hover::before,
+.wordmark:focus-visible::before {
+  content: "Mechanical\A Resolution";
+}
+
 .wordmark:hover,
 .wordmark:focus-visible {
   color: var(--black);
