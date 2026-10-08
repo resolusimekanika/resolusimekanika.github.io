@@ -196,23 +196,34 @@ a { color: inherit; }
   object-fit: cover;
 }
 
+.home .project-image--noir,
+.home .project-image--color {
+  transition: opacity 110ms ease-out;
+}
+
 .home .project-image--noir {
+  position: relative;
+  z-index: 2;
+  opacity: 1;
   filter: grayscale(1) contrast(2.05) brightness(.80);
 }
 
 .home .project-image--color {
-  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
   filter: grayscale(0) contrast(1.40) brightness(.84) saturate(1.35) sepia(.07);
 }
 
 .home .project-card:hover .project-image--noir,
 .home .project-card:focus-visible .project-image--noir {
-  display: none;
+  opacity: 0;
 }
 
 .home .project-card:hover .project-image--color,
 .home .project-card:focus-visible .project-image--color {
-  display: block;
+  opacity: 1;
 }
 
 .project-image-wrap::after {
@@ -226,7 +237,7 @@ a { color: inherit; }
   mix-blend-mode: soft-light;
   opacity: .23;
   transform: translateZ(0);
-  transition: none;
+  transition: opacity 110ms ease-out, mix-blend-mode 110ms ease-out;
 }
 
 .project-fallback {
@@ -415,13 +426,4 @@ a { color: inherit; }
   .project-heading {
     font-size: clamp(33px, 10vw, 48px);
   }
-}
-
-
-/* Hard-cut homepage thumbnail rollover: no interpolation. */
-.home .project-image--noir,
-.home .project-image--color,
-.home .project-image-wrap::after {
-  transition: none !important;
-  animation: none !important;
 }
