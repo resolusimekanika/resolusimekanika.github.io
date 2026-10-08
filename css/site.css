@@ -459,3 +459,22 @@ a { color: inherit; }
     font-size: clamp(33px, 10vw, 48px);
   }
 }
+
+
+.project-card--pending {
+  cursor: default;
+}
+
+.project-card--pending:hover .project-meta,
+.project-card--pending:focus-within .project-meta {
+  color: var(--white);
+}
+
+.project-card--pending:hover .text-thumbnail {
+  background: #f4f0e8;
+}
+
+.project-card--pending:hover .text-thumbnail-copy {
+  color: #000;
+  transform: none;
+}
