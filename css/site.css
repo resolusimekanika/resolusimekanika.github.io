@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap');
 
 :root {
   --red: #e00000;
@@ -73,20 +73,19 @@ a { color: inherit; }
   left: 50%;
   top: var(--top);
   z-index: 2;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scaleX(.88);
+  transform-origin: center top;
   display: inline-flex;
   flex-direction: column;
   width: max-content;
   color: var(--white);
   text-decoration: none;
-  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
-  font-size: clamp(36px, 4.8vw, 64px);
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: clamp(38px, 5vw, 66px);
   font-style: normal;
-  font-weight: 500;
-  font-optical-sizing: none;
-  font-variation-settings: "opsz" 8, "wght" 500;
-  line-height: .92;
-  letter-spacing: -0.028em;
+  font-weight: 600;
+  line-height: .88;
+  letter-spacing: -0.02em;
   transition: color 150ms ease, font-style 150ms ease;
 }
 
@@ -94,8 +93,7 @@ a { color: inherit; }
 .wordmark:focus-visible {
   color: var(--black);
   font-style: italic;
-  font-optical-sizing: none;
-  font-variation-settings: "opsz" 8, "wght" 500;
+  font-weight: 600;
 }
 
 .language-switch {
@@ -337,8 +335,9 @@ a { color: inherit; }
   .wordmark {
     left: var(--side);
     right: auto;
-    transform: none;
-    font-size: clamp(31px, 9vw, 45px);
+    transform: scaleX(.88);
+    transform-origin: left top;
+    font-size: clamp(32px, 9.2vw, 47px);
   }
 
   .language-switch {
