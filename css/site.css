@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap');
+@font-face {
+  font-family: "PP NeueBit";
+  src: url("/assets/fonts/PPNeueBit-Bold-logo.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
 
 :root {
   --red: #e00000;
@@ -73,27 +79,28 @@ a { color: inherit; }
   left: 50%;
   top: var(--top);
   z-index: 2;
-  transform: translateX(-50%) scaleX(.88);
+  transform: translateX(-50%) scaleX(.94);
   transform-origin: center top;
   display: inline-flex;
   flex-direction: column;
   width: max-content;
   color: var(--white);
   text-decoration: none;
-  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  font-size: clamp(38px, 5vw, 66px);
+  font-family: "PP NeueBit", Arial, Helvetica, sans-serif;
+  font-size: clamp(46px, 5.8vw, 76px);
   font-style: normal;
-  font-weight: 600;
-  line-height: .88;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  font-synthesis: style;
+  line-height: .78;
+  letter-spacing: -0.012em;
   transition: color 150ms ease, font-style 150ms ease;
 }
 
 .wordmark:hover,
 .wordmark:focus-visible {
   color: var(--black);
-  font-style: italic;
-  font-weight: 600;
+  font-style: oblique 12deg;
+  font-weight: 700;
 }
 
 .language-switch {
@@ -335,9 +342,9 @@ a { color: inherit; }
   .wordmark {
     left: var(--side);
     right: auto;
-    transform: scaleX(.88);
+    transform: scaleX(.94);
     transform-origin: left top;
-    font-size: clamp(32px, 9.2vw, 47px);
+    font-size: clamp(40px, 11vw, 58px);
   }
 
   .language-switch {
