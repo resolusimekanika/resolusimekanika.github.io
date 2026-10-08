@@ -1,24 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Resolusi Mekanika</title>
-  <meta name="description" content="Resolusi Mekanika — works, sound, moving image, installation, research, and performance.">
+  <meta name="description" content="Resolusi Mekanika — karya, suara, gambar bergerak, instalasi, riset, dan pertunjukan.">
   <link rel="stylesheet" href="/css/site.css">
 </head>
 
 <body class="home">
   <header class="site-header">
+
     <nav class="primary-nav" aria-label="Primary navigation">
-      <a href="#work">KARYA</a>
-      <a href="https://linktr.ee/disfordinda" target="_blank" rel="noopener noreferrer">KONTAK</a>
+      <a href="/" data-i18n="navWork" aria-current="page">KARYA</a>
+      <a href="/live-suara/" data-i18n="navLive">LIVE / SUARA</a>
+      <a href="/sastra-riset/" data-i18n="navWriting">SASTRA / RISET</a>
+      <a href="/lokakarya-demo/" data-i18n="navWorkshops">LOKAKARYA / DEMO</a>
+      <a href="/arsip-kolaborasi/" data-i18n="navArchive">ARSIP / KOLABORASI</a>
+      <a href="/tentang/" data-i18n="navAbout">TENTANG RESOLUSI MEKANIKA / CV / KONTAK</a>
     </nav>
 
     <a class="wordmark" href="/" aria-label="Resolusi Mekanika home">
       <span>RESOLUSI</span>
       <span>MEKANIKA</span>
     </a>
+
+    <div class="language-switch" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="false">ENG</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" data-lang="id" aria-pressed="true">BAHASA</button>
+    </div>
   </header>
 
   <main id="work" class="work-index">
@@ -40,6 +51,7 @@
     </div>
   </main>
 
+  <script src="/js/language.js"></script>
   <script src="/js/arena.js"></script>
 </body>
 </html>
