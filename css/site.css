@@ -198,7 +198,7 @@ a { color: inherit; }
 
 .home .project-image--noir,
 .home .project-image--color {
-  transition: opacity 110ms ease-out;
+  transition: opacity 150ms ease-in-out;
 }
 
 .home .project-image--noir {
@@ -237,7 +237,7 @@ a { color: inherit; }
   mix-blend-mode: soft-light;
   opacity: .23;
   transform: translateZ(0);
-  transition: opacity 110ms ease-out, mix-blend-mode 110ms ease-out;
+  transition: opacity 150ms ease-in-out, mix-blend-mode 150ms ease-in-out;
 }
 
 .project-fallback {
