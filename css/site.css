@@ -489,7 +489,7 @@ a { color: inherit; }
 /* Subvert artwork needs a gentler monochrome conversion:
    black stays black while the red texture remains visible as grey. */
 .project-image.project-image--subvert {
-  filter: grayscale(1) brightness(2.05) contrast(.95);
+  filter: grayscale(1) brightness(2.18) contrast(.78);
 }
 
 .project-card:hover .project-image.project-image--subvert,
