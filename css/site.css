@@ -58,7 +58,7 @@ a { color: inherit; }
 .primary-nav a {
   color: var(--white);
   text-decoration: none;
-  font-size: clamp(34px, 4vw, 54px);
+  font-size: clamp(12.635px, 1.308625vw, 18.9525px);
   font-weight: 400;
   letter-spacing: -0.035em;
 }
@@ -248,7 +248,7 @@ a { color: inherit; }
   z-index: 2;
   color: var(--red);
   font-family: "PP NeueBit", Arial, Helvetica, sans-serif;
-  font-size: clamp(12.635px, 1.308625vw, 18.9525px);
+  font-size: clamp(34px, 4vw, 54px);
   font-style: normal;
   font-weight: 700;
   line-height: .78;
@@ -296,7 +296,7 @@ a { color: inherit; }
   margin: 0;
   color: var(--white);
   font-family: "PP NeueBit", Arial, Helvetica, sans-serif;
-  font-size: clamp(34px, 5vw, 58px);
+  font-size: clamp(34px, 4vw, 54px);
   font-style: normal;
   font-weight: 700;
   font-synthesis: style;
@@ -354,7 +354,7 @@ a { color: inherit; }
   margin: 0;
   color: var(--white);
   font-family: "PP NeueBit", Arial, Helvetica, sans-serif;
-  font-size: clamp(34px, 5vw, 58px);
+  font-size: clamp(34px, 4vw, 54px);
   font-style: normal;
   font-weight: 700;
   font-synthesis: style;
