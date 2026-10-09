@@ -200,7 +200,7 @@ a { color: inherit; }
 
 .project-card:hover .project-image,
 .project-card:focus-visible .project-image {
-  filter: grayscale(1) contrast(1.85) brightness(.80);
+  filter: none;
 }
 
 .project-image-wrap::after {
@@ -508,18 +508,24 @@ a { color: inherit; }
 
 
 
-/* Subvert artwork keeps its gentler noir conversion on rollover too. */
-.project-image.project-image--subvert,
-.project-card:hover .project-image.project-image--subvert,
-.project-card:focus-visible .project-image.project-image--subvert {
+/* Subvert artwork keeps its gentler noir conversion in the normal state. */
+.project-image.project-image--subvert {
   filter: grayscale(1) brightness(2.18) contrast(.70);
 }
 
-/* Dunia Dalam Suara keeps its stronger original noir treatment on rollover too. */
-.project-image[data-arena-block="51152991"],
+.project-card:hover .project-image.project-image--subvert,
+.project-card:focus-visible .project-image.project-image--subvert {
+  filter: none;
+}
+
+/* Dunia Dalam Suara keeps its stronger noir treatment in the normal state. */
+.project-image[data-arena-block="51152991"] {
+  filter: grayscale(1) contrast(2.05) brightness(.80);
+}
+
 .project-card:hover .project-image[data-arena-block="51152991"],
 .project-card:focus-visible .project-image[data-arena-block="51152991"] {
-  filter: grayscale(1) contrast(2.05) brightness(.80);
+  filter: none;
 }
 
 .archive-category {
