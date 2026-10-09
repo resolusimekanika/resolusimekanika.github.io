@@ -484,3 +484,34 @@ a { color: inherit; }
 .gallery-text a:focus-visible {
   color: var(--black);
 }
+
+
+/* Subvert artwork needs a gentler monochrome conversion:
+   black stays black while the red texture remains visible as grey. */
+.project-image.project-image--subvert {
+  filter: grayscale(1) brightness(1.70) contrast(1.15);
+}
+
+.project-card:hover .project-image.project-image--subvert,
+.project-card:focus-visible .project-image.project-image--subvert {
+  filter: none;
+}
+
+.project-sibling-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding: 4px 0 28px;
+  font-size: 15px;
+}
+
+.project-sibling-links a {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.project-sibling-links a:hover,
+.project-sibling-links a:focus-visible {
+  color: var(--black);
+}
