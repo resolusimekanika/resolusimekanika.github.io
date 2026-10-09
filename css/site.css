@@ -508,9 +508,9 @@ a { color: inherit; }
 
 
 
-/* Subvert artwork keeps its gentler noir conversion in the normal state. */
+/* Subvert / Bevins: original noir character with a slight exposure lift to preserve texture. */
 .project-image.project-image--subvert {
-  filter: grayscale(1) brightness(2.18) contrast(.70);
+  filter: grayscale(1) contrast(1.85) brightness(1.18);
 }
 
 .project-card:hover .project-image.project-image--subvert,
