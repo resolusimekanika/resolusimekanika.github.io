@@ -478,3 +478,14 @@ a { color: inherit; }
   color: #000;
   transform: none;
 }
+
+
+.gallery-text a {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.gallery-text a:hover,
+.gallery-text a:focus-visible {
+  color: var(--black);
+}

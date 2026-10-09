@@ -6,11 +6,15 @@ const SITE_DEFAULT_LANG = 'id';
 const SITE_COPY = {
   id: {
     navWork: 'KARYA',
+    navSpatial: 'PATUNG / ELEKTRONIKA / INSTALASI / PROYEKSI',
     navLive: 'LIVE / SUARA',
     navWriting: 'SASTRA / RISET',
     navWorkshops: 'LOKAKARYA / DEMO',
     navArchive: 'ARSIP / KOLABORASI',
     navAbout: 'TENTANG RESOLUSI MEKANIKA / CV / KONTAK',
+
+    spatialTitle: 'PATUNG / ELEKTRONIKA / INSTALASI / PROYEKSI',
+    spatialIntro: 'Patung, elektronika, instalasi, proyeksi, dan karya ruang.',
 
     liveTitle: 'LIVE / SUARA',
     liveIntro: 'Pertunjukan, bunyi, Resolusi Mekanika, radio, dan set langsung.',
@@ -32,11 +36,15 @@ const SITE_COPY = {
 
   en: {
     navWork: 'WORK',
+    navSpatial: 'SCULPTURE / ELECTRONICS / INSTALLATION / PROJECTION',
     navLive: 'LIVE / SOUND',
     navWriting: 'WRITING / RESEARCH',
     navWorkshops: 'WORKSHOPS / EDITIONS',
     navArchive: 'ARCHIVE / COLLABORATIONS',
     navAbout: 'ABOUT RESOLUSI MEKANIKA / CV / CONTACT',
+
+    spatialTitle: 'SCULPTURE / ELECTRONICS / INSTALLATION / PROJECTION',
+    spatialIntro: 'Sculpture, electronics, installation, projection, and spatial works.',
 
     liveTitle: 'LIVE / SOUND',
     liveIntro: 'Performances, sound, Resolusi Mekanika, radio, and live sets.',
