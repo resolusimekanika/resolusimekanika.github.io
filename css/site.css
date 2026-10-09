@@ -58,7 +58,7 @@ a { color: inherit; }
 .primary-nav a {
   color: var(--white);
   text-decoration: none;
-  font-size: clamp(13.3px, 1.3775vw, 19.95px);
+  font-size: clamp(34px, 4vw, 54px);
   font-weight: 400;
   letter-spacing: -0.035em;
 }
@@ -525,9 +525,9 @@ a { color: inherit; }
 
 
 
-/* Subvert / Bevins: original noir character with a slight exposure lift to preserve texture. */
+/* Subvert / Bevins: lighter gray monochrome treatment. */
 .project-image.project-image--subvert {
-  filter: grayscale(1) contrast(1.85) brightness(1.18);
+  filter: grayscale(1) brightness(2.18) contrast(.70);
 }
 
 .project-card:hover .project-image.project-image--subvert,
