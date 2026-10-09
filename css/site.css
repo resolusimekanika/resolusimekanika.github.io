@@ -234,36 +234,40 @@ a { color: inherit; }
 .text-thumbnail {
   display: grid;
   place-items: center;
-  background: #f4f0e8;
+  background: var(--black);
+  transition: background-color 150ms ease;
 }
 
 .text-thumbnail::after {
-  opacity: .15;
-  mix-blend-mode: multiply;
+  opacity: .10;
+  mix-blend-mode: soft-light;
 }
 
 .text-thumbnail-copy {
   position: relative;
   z-index: 2;
-  color: #000;
+  color: var(--white);
   font-family: "PP NeueBit", Arial, Helvetica, sans-serif;
   font-size: clamp(34px, 4vw, 54px);
+  font-style: normal;
   font-weight: 700;
   line-height: .78;
   text-align: center;
   letter-spacing: -.02em;
-  transition: color 150ms ease, transform 150ms ease;
+  transition: color 150ms ease;
 }
 
 .project-card:hover .text-thumbnail,
-.project-card:focus-visible .text-thumbnail {
-  background: #000;
+.project-card:focus-visible .text-thumbnail,
+.project-card:focus-within .text-thumbnail {
+  background: var(--red);
 }
 
 .project-card:hover .text-thumbnail-copy,
-.project-card:focus-visible .text-thumbnail-copy {
-  color: var(--red);
-  transform: skewX(-8deg);
+.project-card:focus-visible .text-thumbnail-copy,
+.project-card:focus-within .text-thumbnail-copy {
+  color: var(--black);
+  font-style: oblique 12deg;
 }
 
 .project-meta {
@@ -467,16 +471,7 @@ a { color: inherit; }
 
 .project-card--pending:hover .project-meta,
 .project-card--pending:focus-within .project-meta {
-  color: var(--white);
-}
-
-.project-card--pending:hover .text-thumbnail {
-  background: #f4f0e8;
-}
-
-.project-card--pending:hover .text-thumbnail-copy {
-  color: #000;
-  transform: none;
+  color: var(--black);
 }
 
 
