@@ -194,7 +194,7 @@ a { color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(1) contrast(2.05) brightness(.80);
+  filter: grayscale(1) contrast(1.85) brightness(.80);
   transition: filter 150ms ease;
 }
 
@@ -489,7 +489,7 @@ a { color: inherit; }
 /* Subvert artwork needs a gentler monochrome conversion:
    black stays black while the red texture remains visible as grey. */
 .project-image.project-image--subvert {
-  filter: grayscale(1) brightness(2.18) contrast(.78);
+  filter: grayscale(1) brightness(2.18) contrast(.70);
 }
 
 .project-card:hover .project-image.project-image--subvert,
@@ -514,4 +514,15 @@ a { color: inherit; }
 .project-sibling-links a:hover,
 .project-sibling-links a:focus-visible {
   color: var(--black);
+}
+
+
+/* Keep Dunia Dalam Suara at the stronger original noir treatment. */
+.project-image[data-arena-block="51152991"] {
+  filter: grayscale(1) contrast(2.05) brightness(.80);
+}
+
+.project-card:hover .project-image[data-arena-block="51152991"],
+.project-card:focus-visible .project-image[data-arena-block="51152991"] {
+  filter: grayscale(0) contrast(1.40) brightness(.84) saturate(1.35) sepia(.07);
 }
