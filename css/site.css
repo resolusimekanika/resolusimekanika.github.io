@@ -535,3 +535,7 @@ a { color: inherit; }
   font-weight: 400;
   letter-spacing: -0.025em;
 }
+
+
+/* Final thumbnail behavior deployment marker:
+   noir at rest; raw color on hover; Dunia keeps graded-color hover. */
