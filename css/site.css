@@ -526,3 +526,8 @@ a { color: inherit; }
 .project-card:focus-visible .project-image[data-arena-block="51152991"] {
   filter: grayscale(0) contrast(1.40) brightness(.84) saturate(1.35) sepia(.07);
 }
+
+/* Keep the artist-talk image fully painted without GPU filter compositing artifacts. */
+.project-image.artist-talk-thumb { filter: none; transform: none; }
+.project-card:hover .project-image.artist-talk-thumb { filter: none; }
+.project-image-wrap:has(.artist-talk-thumb)::after { display: none; }
