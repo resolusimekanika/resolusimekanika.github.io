@@ -569,3 +569,20 @@ a { color: inherit; }
 .project-card:focus-visible .project-image.project-image--filmgrade {
   filter: grayscale(0) contrast(1.40) brightness(.84) saturate(1.35) sepia(.07);
 }
+
+
+/* Desktop custom cursors — native CSS rendering, inline to avoid cache/resource timing issues. */
+@media (min-width: 821px) {
+  html,
+  body,
+  body * {
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAdCAYAAADLnm6HAAAA1ElEQVR4nM1W0RLDIAhLdv3/X85eZo96uApjVR6VQpoYlAAEAJKIgiCp0Z7X41XR9JcgPgwAeRb6v/bqjHJOAJJAMgTEo/vbt17+cgkuACQ1JoYH6a8ALBCSegLIXhLYeEqOiwuGSUF3DGq4NlwuwRQDZzIZZuFuVoQANBB9kdnmW94FYQDV7kgzUDWslksQPoRukYQ7WhzRRsH8/V0wZMD4/bKe8X+/fjuIrKYk1e9lgewvQcWtZ2OKJUy8io12dq0E6HoJqujOBiMT0J7qKuDLJXgDFQmjExjSuXkAAAAASUVORK5CYII=") 0 0, auto !important;
+  }
+
+  a[href],
+  a[href] *,
+  [role="link"],
+  [role="link"] * {
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAyCAYAAAA9ZNlkAAABwUlEQVR4nN2YMYrCQBSG/7exsRC0EctUtsKItbmAsM1Y227hCbbJERZPkNJybzDJAXKDLXIDrVZYWN4Wy8gIkQlJJmP8YApNND////LeMJBSpgAYADMzul4v8MxjCSAiJiJeLpcnLwJ8MDA/KKUAAMfjcUxEDADMTJ0JiKIIAJCmqctn3uA9glIBcRxf31PXhfmYDpgopaCUwmq1GrtwY2C7wXVheo/A6oBmt9td3WizT1QWEIYhwjAE0G4c3iOoJaDNPtFPB0ya9onKRXiPpn2i/xFozMLcbDbXODoTUJfGNVCG2TW1C0KIc57nk04EmF3TxnNGYGLb6DoXYOsT3iPoTMC9AfY8DsRxDCKqtDSXyyXw6sBwOPztTwSmxfrVuocQ4szMZFt5nk+8O2BtRLpoFovF936/fweAoijeiGgOAMz/E7futr1yJwyC4OdwOHwAwHa7fQUwN6/X3bY/ZgRJkiBJEgCAlDIDgNFo9NWZgKIokGUZAICZIxcP1niPAOZJqV5CiFPVk079m/V6zWXY/tO7A4PZbPYppbz50lXBldL0sBl9j6CxAD1YptNpVjb7zcHjREBTWtsVlxVzFf4Ait/Wr97s6OgAAAAASUVORK5CYII=") 0 0, pointer !important;
+  }
+}
