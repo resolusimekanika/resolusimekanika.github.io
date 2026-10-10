@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-black.png?v=favicon-v4">
 <title>Resolusi Mekanika</title>
   <meta name="description" content="Resolusi Mekanika — karya, suara, gambar bergerak, instalasi, riset, dan pertunjukan.">
-  <link rel="stylesheet" href="/css/site.css?v=karya-order-v12">
+  <link rel="stylesheet" href="/css/site.css?v=timeline-footer-v13">
   <!-- Chrome-only cursor fallback: inline + data URI so there is no cache or load race -->
   <style id="chrome-custom-cursor-style">
     #chrome-custom-cursor {
@@ -124,7 +124,7 @@
   </script>
 </head>
 
-<body class="home">
+<body id="top" class="home">
   <header class="site-header">
 
     <nav class="primary-nav" aria-label="Primary navigation">
@@ -159,7 +159,7 @@
   <main id="work" class="work-index">
 
     <div class="project-grid" aria-label="Projects">
-      <a class="project-card" href="/projects/dunia-dalam-suara/">
+      <a id="year-2025" class="project-card" href="/projects/dunia-dalam-suara/">
         <div class="project-image-wrap">
           <img class="project-image" data-arena-block="51152991" alt="Post-Acoustic Instrumentology: Dunia Dalam Suara [2025]">
           <div class="project-fallback" aria-hidden="true">DUNIA DALAM SUARA</div>
@@ -170,7 +170,7 @@
         </div>
       </a>
 
-      <article class="project-card project-card--pending" aria-label="Arsip Terbagi">
+      <article id="year-2026" class="project-card project-card--pending" aria-label="Arsip Terbagi">
         <div class="project-image-wrap">
           <img class="project-image project-image--arsip-terbagi" src="https://d2w9rnfcy7mm78.cloudfront.net/45126568/original_2fb5fe0ac16e96184d03e304a10172f6.jpg?1775677395?bc=0" alt="Arsip Terbagi">
           <div class="project-fallback" aria-hidden="true">ARSIP TERBAGI</div>
@@ -200,7 +200,7 @@
         </div>
       </a>
 
-<a class="project-card" href="https://youtu.be/mseXESX5NwA?si=tUrt6J3If_7T75--" target="_blank" rel="noopener noreferrer">
+<a id="year-2023" class="project-card" href="https://youtu.be/mseXESX5NwA?si=tUrt6J3If_7T75--" target="_blank" rel="noopener noreferrer">
         <div class="project-image-wrap">
           <img class="project-image" src="https://i.ytimg.com/vi/mseXESX5NwA/maxresdefault.jpg" alt="Surat Cinta Untuk Jakarta — Nota-nota Kolektif dari 2023–2026">
           <div class="project-fallback" aria-hidden="true">SURAT CINTA UNTUK JAKARTA</div>
@@ -255,7 +255,7 @@
         </div>
       </a>
 
-      <a class="project-card" href="https://youtu.be/d8t7f-yuUxk?si=kJt3M8hFJDHFRdHC" target="_blank" rel="noopener noreferrer">
+      <a id="year-2024" class="project-card" href="https://youtu.be/d8t7f-yuUxk?si=kJt3M8hFJDHFRdHC" target="_blank" rel="noopener noreferrer">
         <div class="project-image-wrap">
           <img class="project-image project-image--dangdut-asian-improv" src="https://i.ytimg.com/vi/d8t7f-yuUxk/maxresdefault.jpg" alt="Dangdut Stereo at Asian Improv aRTs Midwest 2024">
           <div class="project-fallback" aria-hidden="true">DANGDUT STEREO</div>
@@ -288,7 +288,7 @@
         </div>
       </a>
 
-      <a class="project-card" href="https://youtu.be/lH63O29siuQ?si=vYoK1BpHiikqvXmA&t=2860" target="_blank" rel="noopener noreferrer">
+      <a id="year-2020" class="project-card" href="https://youtu.be/lH63O29siuQ?si=vYoK1BpHiikqvXmA&t=2860" target="_blank" rel="noopener noreferrer">
         <div class="project-image-wrap">
           <img class="project-image" src="https://i.ytimg.com/vi/lH63O29siuQ/maxresdefault.jpg" alt="VR vj:play extended.asia 01052020 8PM GMT+7">
           <div class="project-fallback" aria-hidden="true">VJ:PLAY EXTENDED.ASIA</div>
@@ -455,7 +455,30 @@
       </a>
     
     </div>
+
+    <!-- Timeline navigation references the compact year-index logic of https://www.ryojiikeda.com/project/exp/ -->
+    <nav class="year-timeline" aria-label="Project timeline by year">
+      <span class="year-timeline-label">TAHUN / YEAR</span>
+      <div class="year-timeline-links">
+        <a href="#year-2026">2026&gt;&gt;</a>
+        <span aria-hidden="true">|</span>
+        <a href="#year-2025">2025&gt;&gt;</a>
+        <span aria-hidden="true">|</span>
+        <a href="#year-2024">2024&gt;&gt;</a>
+        <span aria-hidden="true">|</span>
+        <a href="#year-2023">2023&gt;&gt;</a>
+        <span aria-hidden="true">|</span>
+        <a href="#year-2020">2020&gt;&gt;</a>
+        <span aria-hidden="true">|</span>
+        <a href="#top">^ TOP</a>
+      </div>
+    </nav>
+
   </main>
+
+    <footer class="site-footer">
+    <a href="mailto:mechanicalresolution@gmail.com">mechanicalresolution@gmail.com</a>
+  </footer>
 
   <script src="/js/language.js?v=projects-v9"></script>
   <script src="/js/arena.js"></script>
