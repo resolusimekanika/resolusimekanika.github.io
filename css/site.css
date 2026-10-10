@@ -560,6 +560,17 @@ a { color: inherit; }
    noir at rest; raw color on hover; Dunia keeps graded-color hover. */
 
 
+/* Arsip Terbagi: brighter noir treatment while keeping raw-color rollover. */
+.project-image.project-image--arsip-terbagi {
+  filter: grayscale(1) contrast(1.65) brightness(1.08);
+}
+
+.project-card:hover .project-image.project-image--arsip-terbagi,
+.project-card:focus-visible .project-image.project-image--arsip-terbagi {
+  filter: none;
+}
+
+
 /* Selected film-grade rollover: Proyeksi Gerilya. */
 .project-image.project-image--filmgrade {
   filter: grayscale(1) contrast(1.85) brightness(.80);
