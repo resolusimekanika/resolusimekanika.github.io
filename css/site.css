@@ -58,7 +58,7 @@ a { color: inherit; }
 .primary-nav a {
   color: var(--white);
   text-decoration: none;
-  font-size: clamp(12.635px, 1.308625vw, 18.9525px);
+  font-size: clamp(11.35px, 1.18vw, 17.05px);
   font-weight: 400;
   letter-spacing: -0.035em;
 }
@@ -448,7 +448,7 @@ a { color: inherit; }
   }
 
   .primary-nav a {
-    font-size: 14.44px;
+    font-size: 13px;
   }
 
   .wordmark {
@@ -681,7 +681,7 @@ a { color: inherit; }
 }
 
 .site-footer {
-  padding: clamp(54px, 7vw, 92px) 20px 24px;
+  padding: clamp(24px, 3vw, 38px) 20px 24px;
   text-align: center;
   color: var(--black);
   font-size: clamp(11px, .9vw, 13px);
@@ -712,14 +712,14 @@ a { color: inherit; }
   }
 
   .site-footer {
-    padding-top: 56px;
+    padding-top: 28px;
   }
 }
 
 
 /* Year navigation: compact work pinpoints above linked year numbers. */
 .year-timeline {
-  margin: clamp(104px, 13vw, 176px) 0 0;
+  margin: clamp(116px, 14vw, 192px) 0 0;
   padding-top: 12px;
   border-top: 1px solid var(--black);
   display: grid;
