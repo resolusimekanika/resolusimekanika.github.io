@@ -863,11 +863,17 @@ a { color: inherit; }
 }
 
 
-/* Sub-menu titles use the same serif italic face as text thumbnails. */
+/* Sub-menu titles use the same serif face as text thumbnails, smaller and regular at rest. */
 .section-index:not(.year-index) .section-heading {
   font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
+  font-size: clamp(26px, 3vw, 40px);
+  font-style: normal;
   font-weight: 400;
   letter-spacing: -.018em;
   line-height: 1.02;
+}
+
+.section-index:not(.year-index) .section-heading:hover,
+.section-index:not(.year-index) .section-heading:focus-visible {
+  font-style: italic;
 }
