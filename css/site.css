@@ -572,10 +572,10 @@ a { color: inherit; }
 
 
 /* custom desktop cursor */
-@media (min-width: 821px) and (hover: hover) and (pointer: fine) {
+@media (min-width: 821px) and (hover: hover) {
   html,
   body,
   body * {
-    cursor: url("/assets/cursor.png?v=cursor-v1") 0 0, auto !important;
+    cursor: url("/assets/cursor.png?v=cursor-v2") 0 0, default !important;
   }
 }
