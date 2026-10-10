@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.ico?v=favicon-v4" sizes="any">
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-black.png?v=favicon-v4">
+<title>2026 — Resolusi Mekanika</title>
+  <meta name="description" content="Resolusi Mekanika — works from 2026.">
+  <link rel="stylesheet" href="/css/site.css?v=year-pages-v14">
+  <!-- Chrome-only cursor fallback: inline + data URI so there is no cache or load race -->
+  <style id="chrome-custom-cursor-style">
+    #chrome-custom-cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 2147483647;
+      display: none;
+      width: 32px;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      image-rendering: pixelated;
+      transform: translate3d(-100px,-100px,0);
+      will-change: transform;
+    }
+
+    #chrome-custom-cursor.is-link {
+      width: 21px;
+    }
+
+    @media (min-width: 821px) {
+      html.chrome-custom-cursor-active,
+      html.chrome-custom-cursor-active body,
+      html.chrome-custom-cursor-active body *,
+      html.chrome-custom-cursor-active body *::before,
+      html.chrome-custom-cursor-active body *::after {
+        cursor: none !important;
+      }
+
+      html.chrome-custom-cursor-active #chrome-custom-cursor {
+        display: block !important;
+      }
+    }
+  </style>
+  <script id="chrome-custom-cursor-script">
+    (() => {
+      const ua = navigator.userAgent || '';
+      const isDesktopChrome = /Chrome\/\d+/.test(ua) && !/Edg\/|OPR\//.test(ua);
+      if (!isDesktopChrome) return;
+
+      const MOBILE_MAX = 820;
+      const DEFAULT_CURSOR = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAdCAYAAADLnm6HAAAA1ElEQVR4nM1W0RLDIAhLdv3/X85eZo96uApjVR6VQpoYlAAEAJKIgiCp0Z7X41XR9JcgPgwAeRb6v/bqjHJOAJJAMgTEo/vbt17+cgkuACQ1JoYH6a8ALBCSegLIXhLYeEqOiwuGSUF3DGq4NlwuwRQDZzIZZuFuVoQANBB9kdnmW94FYQDV7kgzUDWslksQPoRukYQ7WhzRRsH8/V0wZMD4/bKe8X+/fjuIrKYk1e9lgewvQcWtZ2OKJUy8io12dq0E6HoJqujOBiMT0J7qKuDLJXgDFQmjExjSuXkAAAAASUVORK5CYII=';
+      const LINK_CURSOR = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAgCAYAAAD9oDOIAAABZElEQVR4nM1Vu22FQBCctV9C8CScEdIBEoj8mricBqjAAXTgFghJkNzBQQF04IAOniMTWesAeH7g4w+SR7oAOEa7szu7kFLmAJiZcdR5wgm4kxIRe553O5RUKQXf900i4sNIhRCwLGsvX4OHQt0BgF3XvR1aqEcptsihJd0rxWXsQxAEEEIAaDoDAJiZdpHatg3btldF2GFR83cFWKrvKkcppdAVb8ooq0g7jedwrveXotM3yzIzz3OtFKPVn8NUd/yP9IfQTjfdQNkKtIPolPRXF4po2v51XT8fHqlhGN+jpHEcg4hGI3Nd95OZaXjKsnzRpk9EcBznKwzD1/b5DWgaXykFAEjT1CQi1o7DJesEAA/vRFHUvfuzTnqRJkmCJEkgpSyu1+vHnH5j6JFWVYWiKMDMYishgN/0sWCDQmMS3X8Xy7LepZQAgD0p9zAV2dZIqb28GMM9pWup1TaVUhZzd34AJwLhalgTBpwAAAAASUVORK5CYII=';
+      const root = document.documentElement;
+
+      const cursor = document.createElement('img');
+      cursor.id = 'chrome-custom-cursor';
+      cursor.src = DEFAULT_CURSOR;
+      cursor.alt = '';
+      cursor.draggable = false;
+      cursor.setAttribute('aria-hidden', 'true');
+      root.appendChild(cursor);
+
+      let linkMode = false;
+
+      function isDesktop() {
+        return window.innerWidth > MOBILE_MAX;
+      }
+
+      function targetIsLink(target) {
+        return target instanceof Element && !!target.closest('a[href], [role="link"]');
+      }
+
+      function setMode(nextLinkMode) {
+        if (nextLinkMode === linkMode) return;
+        linkMode = nextLinkMode;
+        cursor.src = linkMode ? LINK_CURSOR : DEFAULT_CURSOR;
+        cursor.classList.toggle('is-link', linkMode);
+      }
+
+      function update(x, y, target) {
+        if (!isDesktop()) {
+          root.classList.remove('chrome-custom-cursor-active');
+          return;
+        }
+
+        root.classList.add('chrome-custom-cursor-active');
+        setMode(targetIsLink(target));
+        cursor.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+      }
+
+      if (isDesktop()) {
+        root.classList.add('chrome-custom-cursor-active');
+      }
+
+      document.addEventListener('mousemove', event => {
+        update(event.clientX, event.clientY, event.target);
+      }, { capture: true, passive: true });
+
+      document.addEventListener('pointermove', event => {
+        if (event.pointerType && event.pointerType !== 'mouse') return;
+        update(event.clientX, event.clientY, event.target);
+      }, { capture: true, passive: true });
+
+      document.addEventListener('mouseover', event => {
+        if (!isDesktop()) return;
+        setMode(targetIsLink(event.target));
+      }, { capture: true, passive: true });
+
+      window.addEventListener('resize', () => {
+        root.classList.toggle('chrome-custom-cursor-active', isDesktop());
+      }, { passive: true });
+
+      window.addEventListener('blur', () => {
+        cursor.style.transform = 'translate3d(-100px,-100px,0)';
+      });
+
+      document.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate3d(-100px,-100px,0)';
+      }, true);
+    })();
+  </script>
+</head>
+
+<body class="index-page year-page">
+<header class="site-header">
+
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a href="/" data-i18n="navWork" aria-current="page">KARYA</a>
+      <a href="/patung-elektronika-instalasi-proyeksi/" data-i18n="navSpatial">PATUNG / ELEKTRONIKA / INSTALASI / PROYEKSI</a>
+            <a href="/kanvas-gestur/" data-i18n="navCanvas">KANVAS / GESTUR</a>
+<a href="/live-suara/" data-i18n="navLive">SUARA / PERFORMANS</a>
+      <a href="/sastra-riset/" data-i18n="navWriting">SASTRA / RISET</a>
+      <a href="/lokakarya-demo/" data-i18n="navWorkshops">LOKAKARYA / DEMO</a>
+      <a href="/arsip-kolaborasi/" data-i18n="navArchive">ARSIP / KOLABORASI</a>
+      <a href="/tentang/" data-i18n="navAbout">TENTANG RESOLUSI MEKANIKA / CV / KONTAK</a>
+    </nav>
+
+    <a class="wordmark" href="/" aria-label="Resolusi Mekanika home">
+      <span class="wordmark-normal">
+        <span>Resolusi</span>
+        <span>Mekanika</span>
+      </span>
+      <span class="wordmark-hover" aria-hidden="true">
+        <span>Mechanical</span>
+        <span>Resolution</span>
+      </span>
+    </a>
+
+    <div class="language-switch" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="false">ENG</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" data-lang="id" aria-pressed="true">BAHASA</button>
+    </div>
+  </header>
+
+  <main class="section-index year-index">
+    <h1 class="section-heading">2026</h1>
+
+    <div class="section-grid" aria-label="Works from 2026">
+      <article class="project-card project-card--pending" aria-label="Arsip Terbagi">
+        <div class="project-image-wrap">
+          <img class="project-image project-image--arsip-terbagi" src="https://d2w9rnfcy7mm78.cloudfront.net/45126568/original_2fb5fe0ac16e96184d03e304a10172f6.jpg?1775677395?bc=0" alt="Arsip Terbagi">
+          <div class="project-fallback" aria-hidden="true">ARSIP TERBAGI</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title" data-i18n="titleArsipTerbagi">Arsip Terbagi</span>
+          <span class="project-year">2026</span>
+        </div>
+      </article>
+
+      <article class="project-card project-card--pending" aria-label="Proyeksi Gerilya">
+        <div class="project-image-wrap">
+          <img class="project-image project-image--filmgrade" src="https://d2w9rnfcy7mm78.cloudfront.net/39533652/original_b289267e30d67217ad92da0c1270b670.jpg?1757820369?bc=0" alt="Proyeksi Gerilya">
+          <div class="project-fallback" aria-hidden="true">PROYEKSI GERILYA</div>
+        </div>
+        <div class="project-meta"><span class="project-title" data-i18n="titleProyeksiGerilya">Proyeksi Gerilya</span><span class="project-year">2025</span></div>
+      </article>
+
+      <a class="project-card" href="https://youtu.be/SXJ5YQDqtk8?si=2L4IeUAHVPMjYC_O&t=164" target="_blank" rel="noopener noreferrer">
+        <div class="project-image-wrap">
+          <img class="project-image" src="https://i.ytimg.com/vi/SXJ5YQDqtk8/maxresdefault.jpg" alt="Jamu Keliling">
+          <div class="project-fallback" aria-hidden="true">JAMU KELILING</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title">Jamu Keliling</span>
+          <span class="project-year">2024</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://youtu.be/mseXESX5NwA?si=tUrt6J3If_7T75--" target="_blank" rel="noopener noreferrer">
+        <div class="project-image-wrap">
+          <img class="project-image" src="https://i.ytimg.com/vi/mseXESX5NwA/maxresdefault.jpg" alt="Surat Cinta Untuk Jakarta — Nota-nota Kolektif dari 2023–2026">
+          <div class="project-fallback" aria-hidden="true">SURAT CINTA UNTUK JAKARTA</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title" data-i18n="titleSuratJakarta">Surat Cinta Untuk Jakarta (Nota-nota Kolektif dari 2023-2026)</span>
+          <span class="project-year">2023–26</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://youtu.be/h4XHL6BGVQc?si=YTsonlKg_VtZd9Ll" target="_blank" rel="noopener noreferrer">
+        <div class="project-image-wrap">
+          <img class="project-image" src="https://i.ytimg.com/vi/h4XHL6BGVQc/maxresdefault.jpg" alt="Dangdut Stereo — Petikan Sumatra 2026">
+          <div class="project-fallback" aria-hidden="true">DANGDUT STEREO — PETIKAN SUMATRA</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title">Dangdut Stereo — Petikan Sumatra</span>
+          <span class="project-year">2026</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://youtu.be/9WFVM6a21kk?si=8D1RuexVR91Zem-V" target="_blank" rel="noopener noreferrer">
+        <div class="project-image-wrap">
+          <img class="project-image" src="https://d2w9rnfcy7mm78.cloudfront.net/51195407/original_c52afb9cce1e021006e688f20020c135.png?1791507808?bc=0" class="artist-talk-thumb" alt="In the States of Wandering (Artist Talk) 2026">
+          <div class="project-fallback" aria-hidden="true">IN THE STATES OF WANDERING</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title">In the States of Wandering (Artist Talk)</span>
+          <span class="project-year">2026</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://www.youtube.com/watch?v=C-twwWV79GM" target="_blank" rel="noopener noreferrer">
+        <div class="project-image-wrap">
+          <img class="project-image" src="https://d2w9rnfcy7mm78.cloudfront.net/40963666/original_01931a210b20e2f2c0fba320b6557da7.jpg?1762641306?bc=0" alt="Erat">
+          <div class="project-fallback" aria-hidden="true">ERAT</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title">Erat</span>
+          <span class="project-year">2023–</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="/projects/uchicago-quadraphonics/">
+        <div class="project-image-wrap">
+          <img class="project-image project-image--bright-noir" src="https://d2w9rnfcy7mm78.cloudfront.net/46981352/original_69982ee3845164b8a0f18456e34226dd.jpeg?1781273762?bc=0" alt="University of Chicago - Quadraphonics show at the Bond Chapel x Jack Herscowitz">
+          <div class="project-fallback" aria-hidden="true">QUADRAPHONICS — BOND CHAPEL</div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title">University of Chicago - Quadraphonics show at the Bond Chapel x Jack Herscowitz</span>
+          <span class="project-year">2026</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="year-timeline" aria-label="Project timeline by year">
+      <div class="year-timeline-item">
+        <div class="year-timeline-pinpoints">
+          <span data-i18n="titleArsipTerbagi">Arsip Terbagi</span>
+          <span>Dangdut Stereo — Petikan Sumatra</span>
+        </div>
+        <a class="year-timeline-year" href="/year/2026/" aria-current="page">2026</a>
+      </div>
+      <div class="year-timeline-item">
+        <div class="year-timeline-pinpoints">
+          <span>Post-Acoustic Instrumentology: Dunia Dalam Suara</span>
+          <span data-i18n="titleProyeksiGerilya">Proyeksi Gerilya</span>
+        </div>
+        <a class="year-timeline-year" href="/year/2025/">2025</a>
+      </div>
+      <div class="year-timeline-item">
+        <div class="year-timeline-pinpoints">
+          <span>Jamu Keliling</span>
+          <span>Dangdut Stereo — Asian Improv aRTs Midwest</span>
+        </div>
+        <a class="year-timeline-year" href="/year/2024/">2024</a>
+      </div>
+      <div class="year-timeline-item">
+        <div class="year-timeline-pinpoints">
+          <span data-i18n="titleSuratJakarta">Surat Cinta Untuk Jakarta (Nota-nota Kolektif dari 2023-2026)</span>
+          <span>Erat</span>
+        </div>
+        <a class="year-timeline-year" href="/year/2023/">2023</a>
+      </div>
+      <div class="year-timeline-item">
+        <div class="year-timeline-pinpoints">
+          <span>Rendang of Death</span>
+          <span>(VR) vj:play extended.asia</span>
+        </div>
+        <a class="year-timeline-year" href="/year/2020/">2020</a>
+      </div>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <a href="mailto:mechanicalresolution@gmail.com">mechanicalresolution@gmail.com</a>
+  </footer>
+
+  <script src="/js/language.js?v=projects-v9"></script>
+  <script src="/js/arena.js"></script>
+  <script src="/js/thumb-cycle.js"></script>
+  <script src="/js/favicon-cycle.js?v=4"></script>
+</body>
+</html>

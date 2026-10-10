@@ -714,3 +714,81 @@ a { color: inherit; }
     padding-top: 56px;
   }
 }
+
+
+/* Year navigation: compact work pinpoints above linked year numbers. */
+.year-timeline {
+  margin: clamp(72px, 9vw, 128px) 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--black);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(14px, 2.2vw, 38px);
+  color: var(--black);
+}
+
+.year-timeline-item {
+  min-width: 0;
+}
+
+.year-timeline-pinpoints {
+  min-height: 2.6em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  font-size: clamp(9px, .72vw, 11px);
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.year-timeline-pinpoints span {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.year-timeline-year {
+  display: inline-block;
+  margin-top: 10px;
+  color: inherit;
+  font-family: "PP NeueBit", Arial, Helvetica, sans-serif;
+  font-size: clamp(28px, 3vw, 46px);
+  line-height: .8;
+  text-decoration: none;
+}
+
+.year-timeline-year:hover,
+.year-timeline-year:focus-visible,
+.year-timeline-year[aria-current="page"] {
+  font-style: oblique 12deg;
+}
+
+.year-index .section-heading {
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+@media (max-width: 820px) {
+  .year-timeline {
+    grid-template-columns: repeat(5, minmax(112px, 1fr));
+    gap: 18px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+
+  .year-timeline::-webkit-scrollbar {
+    display: none;
+  }
+
+  .year-timeline-pinpoints {
+    min-height: 3.5em;
+    font-size: 9px;
+  }
+
+  .year-timeline-year {
+    font-size: 34px;
+  }
+}
