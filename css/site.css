@@ -571,11 +571,32 @@ a { color: inherit; }
 }
 
 
-/* custom desktop cursor */
-@media (min-width: 821px) and (hover: hover) {
-  html,
-  body,
-  body * {
-    cursor: url("/assets/cursor.png?v=cursor-v2") 0 0, default !important;
+
+
+/* Custom desktop cursor: JS-driven for reliable browser support. */
+#site-custom-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2147483647;
+  display: none;
+  width: 40px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  image-rendering: pixelated;
+  transform: translate3d(-100px, -100px, 0);
+  will-change: transform;
+}
+
+@media (min-width: 821px) {
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active body * {
+    cursor: none !important;
+  }
+
+  html.custom-cursor-active #site-custom-cursor {
+    display: block;
   }
 }
