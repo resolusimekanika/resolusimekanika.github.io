@@ -623,8 +623,14 @@ a { color: inherit; }
 
 /* Elastic Arts thumbnail supplied sideways: display 90° counter-clockwise. */
 .project-image.project-image--rotate-ccw {
-  object-fit: contain;
-  transform: rotate(-90deg) scale(1.15);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 58.15%;
+  height: 172%;
+  object-fit: cover;
+  object-position: right center;
+  transform: translate(-50%, -50%) rotate(-90deg);
   transform-origin: center center;
 }
 
