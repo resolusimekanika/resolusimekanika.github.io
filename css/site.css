@@ -562,7 +562,7 @@ a { color: inherit; }
 
 /* Arsip Terbagi: brighter noir treatment while keeping raw-color rollover. */
 .project-image.project-image--arsip-terbagi {
-  filter: grayscale(1) contrast(1.65) brightness(1.08);
+  filter: grayscale(1) contrast(.99) brightness(1.30);
 }
 
 .project-card:hover .project-image.project-image--arsip-terbagi,
