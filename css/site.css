@@ -691,6 +691,7 @@ a { color: inherit; }
 .site-footer a {
   color: inherit;
   text-decoration: none;
+  font-style: italic;
 }
 
 .site-footer a:hover,
@@ -718,7 +719,7 @@ a { color: inherit; }
 
 /* Year navigation: compact work pinpoints above linked year numbers. */
 .year-timeline {
-  margin: clamp(72px, 9vw, 128px) 0 0;
+  margin: clamp(104px, 13vw, 176px) 0 0;
   padding-top: 12px;
   border-top: 1px solid var(--black);
   display: grid;
