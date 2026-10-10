@@ -14,6 +14,7 @@ const SITE_COPY = {
     navArchive: 'ARSIP / KOLABORASI',
     categoryAnimation: 'ANIMASI',
     categoryArchive: 'ARSIP',
+    categoryPublication: 'PUBLIKASI',
     navAbout: 'TENTANG RESOLUSI MEKANIKA / CV / KONTAK',
 
     spatialTitle: 'PATUNG / ELEKTRONIKA / INSTALASI / PROYEKSI',
@@ -50,6 +51,7 @@ const SITE_COPY = {
     navArchive: 'ARCHIVE / COLLABORATIONS',
     categoryAnimation: 'ANIMATION',
     categoryArchive: 'ARCHIVE',
+    categoryPublication: 'ZINE',
     navAbout: 'ABOUT RESOLUSI MEKANIKA / CV / CONTACT',
 
     spatialTitle: 'SCULPTURE / ELECTRONICS / INSTALLATION / PROJECTION',
