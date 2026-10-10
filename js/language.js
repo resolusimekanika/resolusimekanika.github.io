@@ -13,6 +13,7 @@ const SITE_COPY = {
     navWorkshops: 'LOKAKARYA / DEMO',
     navArchive: 'ARSIP / KOLABORASI',
     categoryAnimation: 'ANIMASI',
+    categoryArchive: 'ARSIP',
     navAbout: 'TENTANG RESOLUSI MEKANIKA / CV / KONTAK',
 
     spatialTitle: 'PATUNG / ELEKTRONIKA / INSTALASI / PROYEKSI',
@@ -48,6 +49,7 @@ const SITE_COPY = {
     navWorkshops: 'WORKSHOPS / EDITIONS',
     navArchive: 'ARCHIVE / COLLABORATIONS',
     categoryAnimation: 'ANIMATION',
+    categoryArchive: 'ARCHIVE',
     navAbout: 'ABOUT RESOLUSI MEKANIKA / CV / CONTACT',
 
     spatialTitle: 'SCULPTURE / ELECTRONICS / INSTALLATION / PROJECTION',
