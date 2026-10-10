@@ -1,30 +1,35 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
+(() => {
   const frames = [
-    '/assets/favicon-white.jpg?v=favicon-flicker-v2',
-    '/assets/favicon-black.jpg?v=favicon-flicker-v2'
+    '/assets/favicon-white.png?v=favicon-v3&frame=0',
+    '/assets/favicon-black.png?v=favicon-v3&frame=1'
   ];
 
-  let index = 0;
-  let link = document.querySelector('link[rel="icon"]');
+  let frame = 0;
 
-  if (!link) {
-    link = document.createElement('link');
+  function setAnimatedFavicon(src) {
+    const old = document.getElementById('animated-favicon');
+    if (old) old.remove();
+
+    const link = document.createElement('link');
+    link.id = 'animated-favicon';
     link.rel = 'icon';
+    link.type = 'image/png';
+    link.sizes = '64x64';
+    link.href = src;
     document.head.appendChild(link);
   }
 
-  link.type = 'image/jpeg';
-  link.href = frames[0];
-
   frames.forEach(src => {
-    const preload = new Image();
-    preload.src = src;
+    const img = new Image();
+    img.src = src;
   });
 
+  setAnimatedFavicon(frames[0]);
+
   window.setInterval(() => {
-    index = (index + 1) % frames.length;
-    link.href = frames[index];
+    frame = (frame + 1) % frames.length;
+    setAnimatedFavicon(frames[frame]);
   }, 250);
-});
+})();
