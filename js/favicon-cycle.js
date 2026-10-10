@@ -2,8 +2,8 @@
 
 (() => {
   const frames = [
-    '/assets/favicon-white.png?v=favicon-v3&frame=0',
-    '/assets/favicon-black.png?v=favicon-v3&frame=1'
+    '/assets/favicon-black.png?v=favicon-v4&frame=0',
+    '/assets/favicon-white.png?v=favicon-v4&frame=1'
   ];
 
   let frame = 0;
