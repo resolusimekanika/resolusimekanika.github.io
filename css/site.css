@@ -569,34 +569,3 @@ a { color: inherit; }
 .project-card:focus-visible .project-image.project-image--filmgrade {
   filter: grayscale(0) contrast(1.40) brightness(.84) saturate(1.35) sepia(.07);
 }
-
-
-
-
-/* Custom desktop cursor: JS-driven for reliable browser support. */
-#site-custom-cursor {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 2147483647;
-  display: none;
-  width: 40px;
-  height: auto;
-  pointer-events: none;
-  user-select: none;
-  image-rendering: pixelated;
-  transform: translate3d(-100px, -100px, 0);
-  will-change: transform;
-}
-
-@media (min-width: 821px) {
-  html.custom-cursor-active,
-  html.custom-cursor-active body,
-  html.custom-cursor-active body * {
-    cursor: none !important;
-  }
-
-  html.custom-cursor-active #site-custom-cursor {
-    display: block;
-  }
-}
