@@ -6,7 +6,121 @@
   <link rel="icon" href="/favicon.ico?v=favicon-v4" sizes="any">
   <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-black.png?v=favicon-v4">
 <title>SASTRA / RISET — Resolusi Mekanika</title>
-  <link rel="stylesheet" href="/css/site.css?v=cursor-link-80-v1">
+  <link rel="stylesheet" href="/css/site.css?v=cursor-chrome-v6">
+  <!-- Chrome-only cursor fallback: inline + data URI so there is no cache or load race -->
+  <style id="chrome-custom-cursor-style">
+    #chrome-custom-cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 2147483647;
+      display: none;
+      width: 32px;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      image-rendering: pixelated;
+      transform: translate3d(-100px,-100px,0);
+      will-change: transform;
+    }
+
+    #chrome-custom-cursor.is-link {
+      width: 21px;
+    }
+
+    @media (min-width: 821px) {
+      html.chrome-custom-cursor-active,
+      html.chrome-custom-cursor-active body,
+      html.chrome-custom-cursor-active body *,
+      html.chrome-custom-cursor-active body *::before,
+      html.chrome-custom-cursor-active body *::after {
+        cursor: none !important;
+      }
+
+      html.chrome-custom-cursor-active #chrome-custom-cursor {
+        display: block !important;
+      }
+    }
+  </style>
+  <script id="chrome-custom-cursor-script">
+    (() => {
+      const ua = navigator.userAgent || '';
+      const isDesktopChrome = /Chrome\/\d+/.test(ua) && !/Edg\/|OPR\//.test(ua);
+      if (!isDesktopChrome) return;
+
+      const MOBILE_MAX = 820;
+      const DEFAULT_CURSOR = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAdCAYAAADLnm6HAAAA1ElEQVR4nM1W0RLDIAhLdv3/X85eZo96uApjVR6VQpoYlAAEAJKIgiCp0Z7X41XR9JcgPgwAeRb6v/bqjHJOAJJAMgTEo/vbt17+cgkuACQ1JoYH6a8ALBCSegLIXhLYeEqOiwuGSUF3DGq4NlwuwRQDZzIZZuFuVoQANBB9kdnmW94FYQDV7kgzUDWslksQPoRukYQ7WhzRRsH8/V0wZMD4/bKe8X+/fjuIrKYk1e9lgewvQcWtZ2OKJUy8io12dq0E6HoJqujOBiMT0J7qKuDLJXgDFQmjExjSuXkAAAAASUVORK5CYII=';
+      const LINK_CURSOR = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAgCAYAAAD9oDOIAAABZElEQVR4nM1Vu22FQBCctV9C8CScEdIBEoj8mricBqjAAXTgFghJkNzBQQF04IAOniMTWesAeH7g4w+SR7oAOEa7szu7kFLmAJiZcdR5wgm4kxIRe553O5RUKQXf900i4sNIhRCwLGsvX4OHQt0BgF3XvR1aqEcptsihJd0rxWXsQxAEEEIAaDoDAJiZdpHatg3btldF2GFR83cFWKrvKkcppdAVb8ooq0g7jedwrveXotM3yzIzz3OtFKPVn8NUd/yP9IfQTjfdQNkKtIPolPRXF4po2v51XT8fHqlhGN+jpHEcg4hGI3Nd95OZaXjKsnzRpk9EcBznKwzD1/b5DWgaXykFAEjT1CQi1o7DJesEAA/vRFHUvfuzTnqRJkmCJEkgpSyu1+vHnH5j6JFWVYWiKMDMYishgN/0sWCDQmMS3X8Xy7LepZQAgD0p9zAV2dZIqb28GMM9pWup1TaVUhZzd34AJwLhalgTBpwAAAAASUVORK5CYII=';
+      const root = document.documentElement;
+
+      const cursor = document.createElement('img');
+      cursor.id = 'chrome-custom-cursor';
+      cursor.src = DEFAULT_CURSOR;
+      cursor.alt = '';
+      cursor.draggable = false;
+      cursor.setAttribute('aria-hidden', 'true');
+      root.appendChild(cursor);
+
+      let linkMode = false;
+
+      function isDesktop() {
+        return window.innerWidth > MOBILE_MAX;
+      }
+
+      function targetIsLink(target) {
+        return target instanceof Element && !!target.closest('a[href], [role="link"]');
+      }
+
+      function setMode(nextLinkMode) {
+        if (nextLinkMode === linkMode) return;
+        linkMode = nextLinkMode;
+        cursor.src = linkMode ? LINK_CURSOR : DEFAULT_CURSOR;
+        cursor.classList.toggle('is-link', linkMode);
+      }
+
+      function update(x, y, target) {
+        if (!isDesktop()) {
+          root.classList.remove('chrome-custom-cursor-active');
+          return;
+        }
+
+        root.classList.add('chrome-custom-cursor-active');
+        setMode(targetIsLink(target));
+        cursor.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+      }
+
+      if (isDesktop()) {
+        root.classList.add('chrome-custom-cursor-active');
+      }
+
+      document.addEventListener('mousemove', event => {
+        update(event.clientX, event.clientY, event.target);
+      }, { capture: true, passive: true });
+
+      document.addEventListener('pointermove', event => {
+        if (event.pointerType && event.pointerType !== 'mouse') return;
+        update(event.clientX, event.clientY, event.target);
+      }, { capture: true, passive: true });
+
+      document.addEventListener('mouseover', event => {
+        if (!isDesktop()) return;
+        setMode(targetIsLink(event.target));
+      }, { capture: true, passive: true });
+
+      window.addEventListener('resize', () => {
+        root.classList.toggle('chrome-custom-cursor-active', isDesktop());
+      }, { passive: true });
+
+      window.addEventListener('blur', () => {
+        cursor.style.transform = 'translate3d(-100px,-100px,0)';
+      });
+
+      document.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate3d(-100px,-100px,0)';
+      }, true);
+    })();
+  </script>
 </head>
 
 <body class="index-page">
