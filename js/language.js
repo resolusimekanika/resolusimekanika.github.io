@@ -7,7 +7,8 @@ const SITE_COPY = {
   id: {
     navWork: 'KARYA',
     navSpatial: 'PATUNG / ELEKTRONIKA / INSTALASI / PROYEKSI',
-    navLive: 'LIVE / SUARA',
+    navCanvas: 'KANVAS / GESTUR',
+    navLive: 'SUARA / PERFORMANS',
     navWriting: 'SASTRA / RISET',
     navWorkshops: 'LOKAKARYA / DEMO',
     navArchive: 'ARSIP / KOLABORASI',
@@ -17,7 +18,10 @@ const SITE_COPY = {
     spatialTitle: 'PATUNG / ELEKTRONIKA / INSTALASI / PROYEKSI',
     spatialIntro: 'Patung, elektronika, instalasi, proyeksi, dan karya ruang.',
 
-    liveTitle: 'LIVE / SUARA',
+    canvasTitle: 'KANVAS / GESTUR',
+    canvasIntro: 'Kanvas, lukisan, gambar, gestur, dan karya berbasis permukaan.',
+
+    liveTitle: 'SUARA / PERFORMANS',
     liveIntro: 'Pertunjukan, bunyi, Resolusi Mekanika, radio, dan set langsung.',
 
     writingTitle: 'SASTRA / RISET',
@@ -38,7 +42,8 @@ const SITE_COPY = {
   en: {
     navWork: 'WORK',
     navSpatial: 'SCULPTURE / ELECTRONICS / INSTALLATION / PROJECTION',
-    navLive: 'LIVE / SOUND',
+    navCanvas: 'CANVAS / GESTURES',
+    navLive: 'SOUND / PERFORMANCE',
     navWriting: 'WRITING / RESEARCH',
     navWorkshops: 'WORKSHOPS / EDITIONS',
     navArchive: 'ARCHIVE / COLLABORATIONS',
@@ -48,7 +53,10 @@ const SITE_COPY = {
     spatialTitle: 'SCULPTURE / ELECTRONICS / INSTALLATION / PROJECTION',
     spatialIntro: 'Sculpture, electronics, installation, projection, and spatial works.',
 
-    liveTitle: 'LIVE / SOUND',
+    canvasTitle: 'CANVAS / GESTURES',
+    canvasIntro: 'Canvas, painting, drawing, gesture, and surface-based works.',
+
+    liveTitle: 'SOUND / PERFORMANCE',
     liveIntro: 'Performances, sound, Resolusi Mekanika, radio, and live sets.',
 
     writingTitle: 'WRITING / RESEARCH',
