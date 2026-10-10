@@ -582,6 +582,17 @@ a { color: inherit; }
 }
 
 
+/* Selected darker thumbnails: same brighter noir treatment as Arsip Terbagi. */
+.project-image.project-image--bright-noir {
+  filter: grayscale(1) contrast(.99) brightness(1.30);
+}
+
+.project-card:hover .project-image.project-image--bright-noir,
+.project-card:focus-visible .project-image.project-image--bright-noir {
+  filter: none;
+}
+
+
 /* Selected film-grade rollover: Proyeksi Gerilya. */
 .project-image.project-image--filmgrade {
   filter: grayscale(1) contrast(1.85) brightness(.80);
@@ -612,7 +623,8 @@ a { color: inherit; }
 
 /* Elastic Arts thumbnail supplied sideways: display 90° counter-clockwise. */
 .project-image.project-image--rotate-ccw {
-  transform: rotate(-90deg) scale(1.72);
+  object-fit: contain;
+  transform: rotate(-90deg) scale(1.15);
   transform-origin: center center;
 }
 
