@@ -608,3 +608,14 @@ a { color: inherit; }
     cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAgCAYAAAD9oDOIAAABZElEQVR4nM1Vu22FQBCctV9C8CScEdIBEoj8mricBqjAAXTgFghJkNzBQQF04IAOniMTWesAeH7g4w+SR7oAOEa7szu7kFLmAJiZcdR5wgm4kxIRe553O5RUKQXf900i4sNIhRCwLGsvX4OHQt0BgF3XvR1aqEcptsihJd0rxWXsQxAEEEIAaDoDAJiZdpHatg3btldF2GFR83cFWKrvKkcppdAVb8ooq0g7jedwrveXotM3yzIzz3OtFKPVn8NUd/yP9IfQTjfdQNkKtIPolPRXF4po2v51XT8fHqlhGN+jpHEcg4hGI3Nd95OZaXjKsnzRpk9EcBznKwzD1/b5DWgaXykFAEjT1CQi1o7DJesEAA/vRFHUvfuzTnqRJkmCJEkgpSyu1+vHnH5j6JFWVYWiKMDMYishgN/0sWCDQmMS3X8Xy7LepZQAgD0p9zAV2dZIqb28GMM9pWup1TaVUhZzd34AJwLhalgTBpwAAAAASUVORK5CYII=") 0 0, pointer !important;
   }
 }
+
+
+/* Elastic Arts thumbnail supplied sideways: display 90° counter-clockwise. */
+.project-image.project-image--rotate-ccw {
+  transform: rotate(-90deg) scale(1.72);
+  transform-origin: center center;
+}
+
+.section-grid + .archive-category {
+  margin-top: clamp(48px, 6vw, 76px);
+}
