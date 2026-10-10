@@ -7,6 +7,8 @@
 }
 
 :root {
+  --menu-font-size: clamp(11.35px, 1.18vw, 17.05px);
+  --menu-font-size-mobile: 13px;
   --red: #e00000;
   --white: #fff;
   --black: #000;
@@ -58,7 +60,7 @@ a { color: inherit; }
 .primary-nav a {
   color: var(--white);
   text-decoration: none;
-  font-size: clamp(11.35px, 1.18vw, 17.05px);
+  font-size: var(--menu-font-size);
   font-weight: 400;
   letter-spacing: -0.035em;
 }
@@ -448,7 +450,7 @@ a { color: inherit; }
   }
 
   .primary-nav a {
-    font-size: 13px;
+    font-size: var(--menu-font-size-mobile);
   }
 
   .wordmark {
@@ -815,5 +817,46 @@ a { color: inherit; }
 
   .site-footer-group .site-footer {
     padding-top: 24px;
+  }
+}
+
+
+/* Project pages keep the site's open right-side negative space. */
+.project-page {
+  --project-right-gutter: clamp(96px, 14vw, 220px);
+  --project-content-width: min(875px, calc(100vw - var(--side) - var(--project-right-gutter)));
+}
+
+.project-page .project-intro,
+.project-page .gallery,
+.project-page .gallery-status {
+  width: var(--project-content-width);
+  max-width: var(--project-content-width);
+  margin-left: var(--side);
+  margin-right: auto;
+}
+
+.project-page .gallery-item,
+.project-page .gallery-link,
+.project-page .gallery-image,
+.project-page video,
+.project-page iframe,
+.project-page embed,
+.project-page object {
+  max-width: 100%;
+}
+
+.project-page video,
+.project-page iframe,
+.project-page embed,
+.project-page object {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 820px) {
+  .project-page {
+    --project-right-gutter: var(--side);
+    --project-content-width: calc(100vw - (var(--side) * 2));
   }
 }
