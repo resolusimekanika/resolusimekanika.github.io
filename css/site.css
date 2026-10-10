@@ -558,3 +558,14 @@ a { color: inherit; }
 
 /* Final thumbnail behavior deployment marker:
    noir at rest; raw color on hover; Dunia keeps graded-color hover. */
+
+
+/* Selected film-grade rollover: Proyeksi Gerilya. */
+.project-image.project-image--filmgrade {
+  filter: grayscale(1) contrast(1.85) brightness(.80);
+}
+
+.project-card:hover .project-image.project-image--filmgrade,
+.project-card:focus-visible .project-image.project-image--filmgrade {
+  filter: grayscale(0) contrast(1.40) brightness(.84) saturate(1.35) sepia(.07);
+}
