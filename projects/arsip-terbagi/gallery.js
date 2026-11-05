@@ -1,7 +1,8 @@
 'use strict';
 
-const API = 'https://api.are.na/v3';
-const CHANNEL_SLUG = 'arsip-terbagi';
+const API_V3 = 'https://api.are.na/v3';
+const API_V2 = 'https://api.are.na/v2';
+const CHANNEL_ID = 5021576;
 
 const gallery = document.getElementById('gallery');
 const statusEl = document.getElementById('status');
@@ -10,13 +11,15 @@ function setStatus(message) {
   statusEl.textContent = message || '';
 }
 
-async function api(path) {
-  const response = await fetch(`${API}${path}`, {
+async function fetchJson(url) {
+  const response = await fetch(url, {
     headers: { Accept: 'application/json' }
   });
 
   if (!response.ok) {
-    throw new Error(`Are.na HTTP ${response.status}`);
+    const error = new Error(`Are.na HTTP ${response.status}`);
+    error.status = response.status;
+    throw error;
   }
 
   return response.json();
@@ -35,18 +38,27 @@ function imageInfo(block) {
     block?.embed?.image ||
     null;
 
-  if (!image?.src) return null;
+  if (!image) return null;
+
+  const original =
+    image.src ||
+    variantSrc(image.original) ||
+    null;
+
+  if (!original) return null;
 
   return {
-    original: image.src,
+    original,
     display:
       variantSrc(image.large) ||
+      variantSrc(image.display) ||
       variantSrc(image.medium) ||
       variantSrc(image.small) ||
-      image.src,
+      variantSrc(image.thumb) ||
+      original,
     width: Number(image.width) || null,
     height: Number(image.height) || null,
-    alt: block?.alt_text || block?.title || image?.filename || ''
+    alt: block?.alt_text || block?.title || block?.generated_title || image?.filename || ''
   };
 }
 
@@ -87,34 +99,27 @@ function makeItem(block, index) {
   return figure;
 }
 
-async function getAllContents() {
-  const items = [];
-  let page = 1;
-
-  while (true) {
-    const response = await api(
-      `/channels/${encodeURIComponent(CHANNEL_SLUG)}/contents?per=100&page=${page}&sort=position`
+async function getContents() {
+  try {
+    const response = await fetchJson(
+      `${API_V3}/channels/${CHANNEL_ID}/contents?per=100&page=1&sort=position_asc`
     );
+    return Array.isArray(response?.data) ? response.data : [];
+  } catch (v3Error) {
+    console.warn('Are.na v3 gallery request failed; trying v2 fallback.', v3Error);
 
-    const batch = Array.isArray(response?.data) ? response.data : [];
-    items.push(...batch);
-
-    const hasMore =
-      response?.meta?.has_more_pages === true ||
-      response?.meta?.next_page != null;
-
-    if (!hasMore) break;
-    page = Number(response?.meta?.next_page) || page + 1;
+    const response = await fetchJson(
+      `${API_V2}/channels/${CHANNEL_ID}`
+    );
+    return Array.isArray(response?.contents) ? response.contents : [];
   }
-
-  return items;
 }
 
 async function render() {
   setStatus('');
 
   try {
-    const contents = await getAllContents();
+    const contents = await getContents();
     const imageBlocks = contents.filter(block => imageInfo(block));
 
     imageBlocks.forEach((block, index) => {
@@ -127,7 +132,7 @@ async function render() {
     }
   } catch (error) {
     console.error(error);
-    setStatus('Could not connect to the Arsip Terbagi Are.na channel from this browser.');
+    setStatus('Could not load the Arsip Terbagi image archive.');
   }
 }
 
