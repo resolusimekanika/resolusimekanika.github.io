@@ -1,7 +1,6 @@
 'use strict';
 
-const API_V3 = 'https://api.are.na/v3';
-const API_V2 = 'https://api.are.na/v2';
+const API = 'https://api.are.na/v2';
 const CHANNEL_ID = 5021576;
 
 const gallery = document.getElementById('gallery');
@@ -17,48 +16,33 @@ async function fetchJson(url) {
   });
 
   if (!response.ok) {
-    const error = new Error(`Are.na HTTP ${response.status}`);
-    error.status = response.status;
-    throw error;
+    throw new Error(`Are.na HTTP ${response.status}`);
   }
 
   return response.json();
 }
 
-function variantSrc(variant) {
-  if (!variant) return null;
-  if (typeof variant === 'string') return variant;
-  return variant.src || variant.src_2x || variant.src_1x || variant.url || null;
-}
-
 function imageInfo(block) {
-  const image =
-    block?.image ||
-    block?.attachment?.image ||
-    block?.embed?.image ||
-    null;
-
-  if (!image) return null;
-
-  const original =
-    image.src ||
-    variantSrc(image.original) ||
-    null;
+  const image = block?.image;
+  const original = image?.original?.url || null;
 
   if (!original) return null;
 
   return {
     original,
     display:
-      variantSrc(image.large) ||
-      variantSrc(image.display) ||
-      variantSrc(image.medium) ||
-      variantSrc(image.small) ||
-      variantSrc(image.thumb) ||
+      image?.large?.url ||
+      image?.display?.url ||
+      image?.thumb?.url ||
       original,
-    width: Number(image.width) || null,
-    height: Number(image.height) || null,
-    alt: block?.alt_text || block?.title || block?.generated_title || image?.filename || ''
+    width: Number(image?.original?.width || image?.width) || null,
+    height: Number(image?.original?.height || image?.height) || null,
+    alt:
+      block?.title ||
+      block?.generated_title ||
+      block?.content ||
+      image?.filename ||
+      ''
   };
 }
 
@@ -99,27 +83,20 @@ function makeItem(block, index) {
   return figure;
 }
 
-async function getContents() {
-  try {
-    const response = await fetchJson(
-      `${API_V3}/channels/${CHANNEL_ID}/contents?per=100&page=1&sort=position_desc`
-    );
-    return Array.isArray(response?.data) ? response.data : [];
-  } catch (v3Error) {
-    console.warn('Are.na v3 gallery request failed; trying v2 fallback.', v3Error);
-
-    const response = await fetchJson(
-      `${API_V2}/channels/${CHANNEL_ID}`
-    );
-    return Array.isArray(response?.contents)\n      ? [...response.contents].sort((a, b) => Number(b?.position || 0) - Number(a?.position || 0))\n      : [];
-  }
-}
-
 async function render() {
   setStatus('');
 
   try {
-    const contents = await getContents();
+    const response = await fetchJson(
+      `${API}/channels/${CHANNEL_ID}?per=100`
+    );
+
+    const contents = Array.isArray(response?.contents)
+      ? [...response.contents].sort(
+          (a, b) => Number(b?.position || 0) - Number(a?.position || 0)
+        )
+      : [];
+
     const imageBlocks = contents.filter(block => imageInfo(block));
 
     imageBlocks.forEach((block, index) => {
