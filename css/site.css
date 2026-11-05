@@ -877,3 +877,18 @@ a { color: inherit; }
 .section-index:not(.year-index) .section-heading:focus-visible {
   font-style: italic;
 }
+
+
+/* Arsip Terbagi project title: submenu serif, bold at rest, italic on rollover. */
+.project-heading--arsip {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: .98;
+}
+
+.project-heading--arsip:hover,
+.project-heading--arsip:focus-visible {
+  font-style: italic;
+}
