@@ -102,7 +102,7 @@ function makeItem(block, index) {
 async function getContents() {
   try {
     const response = await fetchJson(
-      `${API_V3}/channels/${CHANNEL_ID}/contents?per=100&page=1&sort=position_asc`
+      `${API_V3}/channels/${CHANNEL_ID}/contents?per=100&page=1&sort=position_desc`
     );
     return Array.isArray(response?.data) ? response.data : [];
   } catch (v3Error) {
@@ -111,7 +111,7 @@ async function getContents() {
     const response = await fetchJson(
       `${API_V2}/channels/${CHANNEL_ID}`
     );
-    return Array.isArray(response?.contents) ? response.contents : [];
+    return Array.isArray(response?.contents)\n      ? [...response.contents].sort((a, b) => Number(b?.position || 0) - Number(a?.position || 0))\n      : [];
   }
 }
 

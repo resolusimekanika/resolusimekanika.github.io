@@ -879,16 +879,41 @@ a { color: inherit; }
 }
 
 
-/* Arsip Terbagi project title: submenu serif, bold at rest, italic on rollover. */
-.project-heading--arsip {
-  font-family: Georgia, "Times New Roman", serif;
+/* Arsip Terbagi: black project environment + language-switch sans serif title. */
+html.arsip-terbagi-root,
+body.arsip-terbagi-page {
+  background: var(--black);
+}
+
+.arsip-terbagi-page .project-heading--arsip {
+  color: var(--white);
+  font-family: Arial, Helvetica, sans-serif;
   font-style: normal;
   font-weight: 700;
-  letter-spacing: -.025em;
+  letter-spacing: -.035em;
   line-height: .98;
 }
 
-.project-heading--arsip:hover,
-.project-heading--arsip:focus-visible {
+.arsip-terbagi-page .project-heading--arsip:hover,
+.arsip-terbagi-page .project-heading--arsip:focus-visible {
+  color: var(--white);
   font-style: italic;
+}
+
+.arsip-terbagi-page .primary-nav a:hover,
+.arsip-terbagi-page .primary-nav a:focus-visible,
+.arsip-terbagi-page .wordmark-hover,
+.arsip-terbagi-page .language-switch button:hover,
+.arsip-terbagi-page .language-switch button:focus-visible,
+.arsip-terbagi-page .language-switch button.is-active {
+  color: var(--red);
+}
+
+.arsip-terbagi-page .year-timeline {
+  color: var(--white);
+  border-top-color: var(--white);
+}
+
+.arsip-terbagi-page .site-footer {
+  color: var(--white);
 }
