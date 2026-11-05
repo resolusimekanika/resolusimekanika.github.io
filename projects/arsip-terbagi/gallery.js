@@ -6,6 +6,13 @@ const CHANNEL_ID = 5021576;
 const gallery = document.getElementById('gallery');
 const statusEl = document.getElementById('status');
 
+let viewerImages = [];
+let viewerIndex = 0;
+let viewer = null;
+let viewerImage = null;
+let viewerCounter = null;
+let viewerPreviousFocus = null;
+
 function setStatus(message) {
   statusEl.textContent = message || '';
 }
@@ -46,6 +53,74 @@ function imageInfo(block) {
   };
 }
 
+function createViewer() {
+  if (viewer) return;
+
+  viewer = document.createElement('div');
+  viewer.className = 'arsip-viewer';
+  viewer.hidden = true;
+  viewer.setAttribute('role', 'dialog');
+  viewer.setAttribute('aria-modal', 'true');
+  viewer.setAttribute('aria-label', 'Arsip Terbagi image carousel');
+
+  viewer.innerHTML = `
+    <button class="arsip-viewer-close" type="button" aria-label="Close image carousel">×</button>
+    <button class="arsip-viewer-nav arsip-viewer-prev" type="button" aria-label="Previous image">‹</button>
+    <div class="arsip-viewer-stage">
+      <img class="arsip-viewer-image" alt="">
+      <div class="arsip-viewer-counter" aria-live="polite"></div>
+    </div>
+    <button class="arsip-viewer-nav arsip-viewer-next" type="button" aria-label="Next image">›</button>
+  `;
+
+  document.body.appendChild(viewer);
+
+  viewerImage = viewer.querySelector('.arsip-viewer-image');
+  viewerCounter = viewer.querySelector('.arsip-viewer-counter');
+
+  viewer.querySelector('.arsip-viewer-prev').addEventListener('click', () => showViewerImage(viewerIndex - 1));
+  viewer.querySelector('.arsip-viewer-next').addEventListener('click', () => showViewerImage(viewerIndex + 1));
+  viewer.querySelector('.arsip-viewer-close').addEventListener('click', closeViewer);
+
+  viewer.addEventListener('click', event => {
+    if (event.target === viewer || event.target.classList.contains('arsip-viewer-stage')) {
+      closeViewer();
+    }
+  });
+}
+
+function showViewerImage(index) {
+  if (!viewerImages.length) return;
+
+  viewerIndex = (index + viewerImages.length) % viewerImages.length;
+  const info = viewerImages[viewerIndex];
+
+  viewerImage.src = info.original || info.display;
+  viewerImage.alt = info.alt || `Arsip Terbagi image ${viewerIndex + 1}`;
+  viewerCounter.textContent = `${String(viewerIndex + 1).padStart(2, '0')} / ${String(viewerImages.length).padStart(2, '0')}`;
+}
+
+function openViewer(index, trigger) {
+  createViewer();
+  viewerPreviousFocus = trigger || document.activeElement;
+  showViewerImage(index);
+  viewer.hidden = false;
+  document.body.classList.add('arsip-viewer-open');
+  viewer.querySelector('.arsip-viewer-close').focus();
+}
+
+function closeViewer() {
+  if (!viewer || viewer.hidden) return;
+
+  viewer.hidden = true;
+  viewerImage.removeAttribute('src');
+  document.body.classList.remove('arsip-viewer-open');
+
+  if (viewerPreviousFocus && typeof viewerPreviousFocus.focus === 'function') {
+    viewerPreviousFocus.focus();
+  }
+}
+
 function makeItem(block, index) {
   const info = imageInfo(block);
   if (!info) return null;
@@ -56,13 +131,16 @@ function makeItem(block, index) {
   const link = document.createElement('a');
   link.className = 'gallery-link';
   link.href = info.original;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.title = 'Open original image';
+  link.title = 'Open image carousel';
   link.setAttribute(
     'aria-label',
-    `Open Arsip Terbagi image ${String(index + 1).padStart(2, '0')} at original resolution`
+    `Open Arsip Terbagi image ${String(index + 1).padStart(2, '0')} in carousel`
   );
+
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    openViewer(index, link);
+  });
 
   const img = document.createElement('img');
   img.className = 'gallery-image';
@@ -83,6 +161,21 @@ function makeItem(block, index) {
   return figure;
 }
 
+document.addEventListener('keydown', event => {
+  if (!viewer || viewer.hidden) return;
+
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault();
+    showViewerImage(viewerIndex - 1);
+  } else if (event.key === 'ArrowRight') {
+    event.preventDefault();
+    showViewerImage(viewerIndex + 1);
+  } else if (event.key === 'Escape') {
+    event.preventDefault();
+    closeViewer();
+  }
+});
+
 async function render() {
   setStatus('');
 
@@ -98,6 +191,7 @@ async function render() {
       : [];
 
     const imageBlocks = contents.filter(block => imageInfo(block));
+    viewerImages = imageBlocks.map(block => imageInfo(block));
 
     imageBlocks.forEach((block, index) => {
       const item = makeItem(block, index);
