@@ -1,0 +1,21 @@
+name: Are.na diagnostic
+on:
+  push:
+    paths:
+      - ".github/workflows/arena-diagnostic.yml"
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Are.na channel
+        shell: bash
+        run: |
+          set +e
+          echo "=== V3 CHANNEL ==="
+          curl -sS -i -H 'Accept: application/json' 'https://api.are.na/v3/channels/arsip-terbagi' | head -c 8000
+          echo
+          echo "=== V3 CONTENTS ==="
+          curl -sS -i -H 'Accept: application/json' 'https://api.are.na/v3/channels/arsip-terbagi/contents?per=24&page=1&sort=position' | head -c 12000
+          echo
+          echo "=== V2 CHANNEL ==="
+          curl -sS -i -H 'Accept: application/json' 'https://api.are.na/v2/channels/arsip-terbagi' | head -c 8000
