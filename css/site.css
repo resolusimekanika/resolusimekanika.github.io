@@ -866,7 +866,7 @@ a { color: inherit; }
 /* Sub-menu titles keep their serif face at a compact 9px size. */
 .section-index:not(.year-index) .section-heading {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 9px;
+  font-size: 9px !important;
   font-style: normal;
   font-weight: 400;
   letter-spacing: .03em;
@@ -1031,14 +1031,3 @@ body.arsip-viewer-open {
 }
 
 
-/* Category/submenu pages: compact upper-left navigation. */
-body.submenu-page .primary-nav a {
-  font-size: 9px;
-  line-height: 1.08;
-}
-
-@media (max-width: 820px) {
-  body.submenu-page .primary-nav a {
-    font-size: 9px;
-  }
-}
