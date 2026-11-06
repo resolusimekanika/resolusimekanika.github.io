@@ -1260,6 +1260,8 @@ body.proyeksi-gerilya-page {
 .proyeksi-gerilya-page .proyeksi-face-mask-dot {
   position: absolute;
   display: block;
+  width: clamp(22px, 2.6vw, 34px);
+  height: clamp(22px, 2.6vw, 34px);
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: #000;
