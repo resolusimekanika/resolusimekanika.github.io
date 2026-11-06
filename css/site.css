@@ -1104,3 +1104,25 @@ body.proyeksi-gerilya-page {
 .arsip-terbagi-page .project-tags {
   color: var(--white);
 }
+
+
+/* Small project category/year marker at the bottom of each project page. */
+.project-page .project-bottom-meta {
+  width: var(--project-content-width);
+  margin: 0 0 12px var(--side);
+  color: var(--black);
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: .03em;
+}
+
+.arsip-terbagi-page .project-bottom-meta,
+.proyeksi-gerilya-page .project-bottom-meta {
+  color: var(--white);
+}
+
+@media (max-width: 820px) {
+  .project-page .project-bottom-meta {
+    font-size: 9px;
+  }
+}
