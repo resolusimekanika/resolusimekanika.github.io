@@ -16,7 +16,7 @@ jobs:
           python - <<'PY'
           import json, urllib.parse, urllib.request
           url='https://api.are.na/v3/channels/4179389/contents?'+urllib.parse.urlencode({
-            'page':1,'per':100,'sort':'position'
+            'page':1,'per':100
           })
           req=urllib.request.Request(url, headers={
             'User-Agent':'ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)',
@@ -28,7 +28,7 @@ jobs:
           rows=[]
           for item in data.get('data') or []:
               t=item.get('type')
-              if t!='Image':
+              if t not in ('Image','ImageBlock'):
                   continue
               image=item.get('image') or {}
               connection=item.get('connection') or {}
