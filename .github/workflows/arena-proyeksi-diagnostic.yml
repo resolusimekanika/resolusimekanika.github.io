@@ -10,35 +10,44 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract image URLs from public Are.na page
+      - name: Fetch Are.na v3 channel contents
         shell: bash
         run: |
           python - <<'PY'
-          import re, urllib.request, html as htmlmod
-          url='https://www.are.na/d-wibowo/proyeksi-gerilya'
+          import json, urllib.parse, urllib.request
+          url='https://api.are.na/v3/channels/4179389/contents?'+urllib.parse.urlencode({
+            'page':1,'per':100,'sort':'position'
+          })
           req=urllib.request.Request(url, headers={
             'User-Agent':'ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)',
-            'Accept':'text/html'
+            'Accept':'application/json'
           })
-          html=urllib.request.urlopen(req, timeout=30).read().decode('utf-8','replace')
-          patterns=[
-            r'https://d2w9rnfcy7mm78\.cloudfront\.net/(\d+)/original_[^"\\&<]+',
-            r'https://images\.are\.na/[^"\\<]+'
-          ]
-          found=[]
-          seen=set()
-          for pat in patterns:
-              for m in re.finditer(pat, html):
-                  u=htmlmod.unescape(m.group(0)).replace('\\u0026','&')
-                  if u in seen: continue
-                  seen.add(u)
-                  block=m.group(1) if m.lastindex else None
-                  start=max(0,m.start()-350)
-                  end=min(len(html),m.end()+350)
-                  context=re.sub(r'\s+',' ',html[start:end])
-                  found.append((block,u,context))
-          print("FOUND",len(found))
-          for block,u,context in found:
-              print("IMAGE", block or "-", u)
-              print("CONTEXT", context[:900])
+          with urllib.request.urlopen(req, timeout=30) as r:
+              data=json.load(r)
+          print('META', json.dumps(data.get('meta'), ensure_ascii=False))
+          rows=[]
+          for item in data.get('data') or []:
+              t=item.get('type')
+              if t!='Image':
+                  continue
+              image=item.get('image') or {}
+              connection=item.get('connection') or {}
+              rows.append({
+                'id':item.get('id'),
+                'position':connection.get('position'),
+                'title':item.get('title'),
+                'description':(item.get('description') or {}).get('plain') if isinstance(item.get('description'),dict) else item.get('description'),
+                'alt_text':item.get('alt_text'),
+                'filename':image.get('filename'),
+                'content_type':image.get('content_type'),
+                'width':image.get('width'),
+                'height':image.get('height'),
+                'original_url':image.get('original_url'),
+                'large_url':image.get('large_url'),
+                'display_url':image.get('display_url'),
+                'thumb_url':image.get('thumb_url')
+              })
+          print('IMAGE_COUNT', len(rows))
+          for row in rows:
+              print('BLOCK', json.dumps(row, ensure_ascii=False))
           PY
