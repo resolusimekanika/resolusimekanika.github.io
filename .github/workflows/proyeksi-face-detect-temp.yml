@@ -7,68 +7,37 @@ on:
       - ".github/workflows/proyeksi-face-detect-temp.yml"
 
 jobs:
-  detect:
+  crop:
     runs-on: ubuntu-latest
     steps:
-      - name: Install OpenCV
-        run: pip install -q opencv-python-headless==4.10.0.84 numpy
-      - name: Match screenshot crops to source frames
+      - name: Install Pillow
+        run: pip install -q pillow
+      - name: Export candidate face crops
         shell: bash
         run: |
           python - <<'PY'
-          import base64, io, urllib.request, cv2, numpy as np, json
+          import urllib.request, io, base64
+          from PIL import Image
 
-          UA='ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)'
-          shots = {
-            1: "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",
-            2: "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCAAzADIDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAcFBggDBAL/xAAsEAABAwMDAwMEAgMAAAAAAAABAAIDBAURBiExBxJBExRhMkJRgSKxJHGh/8QAGAEAAwEBAAAAAAAAAAAAAAAAAwQFBgH/xAAmEQACAgEDAwMFAAAAAAAAAAABAgADEQQFIRIxMhMzcRUiQYGh/9oADAMBAAIRAxEAPwDClPaZJHZee0KwWuw25zganL/jK8kscbJXxvnwAfHlfDKhsbsxOcd+cqXY9lg4OJdr09dR5EuUOm7U4gw0rCfyd8qwWlthtr/8uKCMj6stByqHRaxo7ZI33IlqCPsjx/0ldLh1AtdZJ3Q2SSA4+oyB5/oKW2j1LnDZI+YVr6EOMjMaZuOkK94pmWmGsB2IZTggfvCjbp0z05fYXvoaSa2VOMtDRhp/Sq+gL/XXTUvs4X00MeC/vk428f7TtsdwnucZjqqB0L2bZcMZ+UrcbdI3Bx+5xAlwOeZmmfp5e4aqWERhwY8tz+cHCFpOWzRume70xu4lCON6tgfp6RBao0fXaeuLorg1zZCc58YVPrSaaAlhILjgbpodQ9Rz6g1BLPO4nBw34CWN7afRicBsHJ/a7bbK0N/ke8obvUtfWa5DIQhXJlJNaVvkun9U0twY7EYeGyjwWHn9jla8s876uBvaz+RG5A5WLIYZKipjghaXSSODGtHkk4AW1tOw+xoYmEjLWAEnzhZrf0UFG/JzLG1kkMJJmnnzwhegzsJzhCzmJVxMtalppae9zxyggtceQq3PTtqYHROwAfP4TZ6qWdkV+9zEB2v3yPKVUk4ikcCCStJt9xsqVl7w2qQZIPIlZqaGppXkSRuLfDwNiuUEE9TO2CmhkmlccNZG0ucT8AKzsnmlqGljHtcDtjhNHSNVdG07BRQtB4cCBuqV2vNK5Yf2RTtas32tgSM6d9Kbnb66l1JqSn9sWO76ajk+sEcPePtx4HOecY3e8IIgAAyceEvbpX6nt8LK2phjdBnDmsduArpZKz17HFI4kHtCy2v1D3N6j9o/RQtKdKyR7t9yheR1Se88c/lCn9YhordT1E1Xom0z1MhkkdA3LjyUqZQPVcMeUIV7a/BvkxjUeK/E6RbB2NsJhdPpJHTYc8kfKEI+r9sxdIzrmxk1sayVoc3HBXW2NEdpAYMABCFCHtzp7yr1FXUirlAmdgPP9oQhMgDEVyZ//9k=",
-            3: "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCAAbABwDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAABAYHBQj/xAAsEAACAQMCAwYHAQAAAAAAAAABAgMEBREABhITIgcUITFhcRUyUWKBocHR/8QAGQEAAQUAAAAAAAAAAAAAAAAABQECAwQG/8QAHhEAAgIDAAMBAAAAAAAAAAAAAQMAAgQREiExcYH/2gAMAwEAAhEDEQA/AOJobUvIV3ALYzjRtFwRTZkhblr8zKM41pVFMj0KGDCv5Y0VaKS9WdJbkREsHLIJkXiB/GgVn9g7M0zEhY0JQdk3O2pQhoJiXj8T6e+n2LfFiljyKWunK9JeGLiXPvqQdmltlvPxylgcJXSUjPD9Ac+enXaGzt1wbbWOpu3KkEjdBiBI/egD8Za2WJt+R3VhUeNyPJNzIVwc+mtK47haXaq2qONyc9RA0rUDuQAWONHiR4p1aNuE5Hjo7dQFvkSze6iUfsYoLsd1SV8NLIkPd2j5j9IySP8ANUbc291sl87gUQusas/uc6RtiXSvSmbgqWXobyAHr/dTq5Xe51lylnqq6aWQswLM33HVNaBkvta/oSDKySuoAE//2Q=="
+          UA='ResolusiMekanikaPortfolio/1.0'
+          sources={
+            'rough':('https://d2w9rnfcy7mm78.cloudfront.net/39533690/original_fcbdd8ff36c0e597a9ed333de392456d.jpg',
+                     [(0.17786,0.20602,'rough_A'),(0.3487,0.31111,'rough_B')]),
+            'edit':('https://d2w9rnfcy7mm78.cloudfront.net/39533637/original_a7bdc084c5bc314b1445044c4e1db684.jpg',
+                    [(0.3448,0.57685,'edit_A'),(0.90824,0.44722,'edit_B'),(0.72366,0.41898,'edit_C')])
           }
 
-          sources = {
-            39533690: 'fcbdd8ff36c0e597a9ed333de392456d.jpg',
-            39533637: 'a7bdc084c5bc314b1445044c4e1db684.jpg'
-          }
-
-          templates={}
-          for idx,b64 in shots.items():
-              arr=np.frombuffer(base64.b64decode(b64),np.uint8)
-              templates[idx]=cv2.imdecode(arr,cv2.IMREAD_COLOR)
-
-          masks={}
-          for idx,t in templates.items():
-              h,w=t.shape[:2]
-              mask=np.full((h,w),255,np.uint8)
-              if idx==1:
-                  cv2.circle(mask,(96,90),17,0,-1)
-              elif idx==2:
-                  cv2.circle(mask,(26,27),17,0,-1)
-              masks[idx]=mask
-
-          for bid,fn in sources.items():
-              url=f'https://d2w9rnfcy7mm78.cloudfront.net/{bid}/original_{fn}'
-              raw=urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':UA}),timeout=30).read()
-              src=cv2.imdecode(np.frombuffer(raw,np.uint8),cv2.IMREAD_COLOR)
-              H,W=src.shape[:2]
-              for idx,tpl in templates.items():
-                  th,tw=tpl.shape[:2]
-                  best=None
-                  for scale in np.linspace(0.32,0.62,121):
-                      rw=max(1,int(round(W*scale))); rh=max(1,int(round(H*scale)))
-                      if rw<tw or rh<th: continue
-                      rs=cv2.resize(src,(rw,rh),interpolation=cv2.INTER_AREA)
-                      try:
-                          res=cv2.matchTemplate(rs,tpl,cv2.TM_CCORR_NORMED,mask=masks[idx])
-                      except Exception:
-                          res=cv2.matchTemplate(rs,tpl,cv2.TM_CCOEFF_NORMED)
-                      _,score,_,loc=cv2.minMaxLoc(res)
-                      if best is None or score>best['score']:
-                          x,y=loc
-                          best={'score':float(score),'scale':float(scale),'x':int(x),'y':int(y),'rw':rw,'rh':rh}
-                  if best:
-                      best['source_id']=bid
-                      best['shot']=idx
-                      best['crop_center_x_norm']=(best['x']+tw/2)/best['rw']
-                      best['crop_center_y_norm']=(best['y']+th/2)/best['rh']
-                      print('MATCH',json.dumps(best))
+          for _,(url,cands) in sources.items():
+            req=urllib.request.Request(url,headers={'User-Agent':UA})
+            im=Image.open(io.BytesIO(urllib.request.urlopen(req,timeout=30).read())).convert('RGB')
+            w,h=im.size
+            for nx,ny,label in cands:
+              cx,cy=nx*w,ny*h
+              half=max(80,int(min(w,h)*0.10))
+              box=(max(0,int(cx-half)),max(0,int(cy-half)),min(w,int(cx+half)),min(h,int(cy+half)))
+              crop=im.crop(box)
+              crop.thumbnail((180,180))
+              b=io.BytesIO()
+              crop.save(b,'JPEG',quality=82,optimize=True)
+              print('CROP',label,base64.b64encode(b.getvalue()).decode('ascii'))
           PY
