@@ -7,8 +7,8 @@
 }
 
 :root {
-  --menu-font-size: clamp(11.35px, 1.18vw, 17.05px);
-  --menu-font-size-mobile: 13px;
+  --menu-font-size: 9px;
+  --menu-font-size-mobile: 9px;
   --red: #e00000;
   --white: #fff;
   --black: #000;
@@ -863,14 +863,14 @@ a { color: inherit; }
 }
 
 
-/* Sub-menu titles keep their serif face at a compact 9px size. */
+/* Category page titles retain their dedicated serif scale. */
 .section-index:not(.year-index) .section-heading {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 9px !important;
+  font-size: clamp(26px, 3vw, 40px);
   font-style: normal;
   font-weight: 400;
-  letter-spacing: .03em;
-  line-height: 1;
+  letter-spacing: -.018em;
+  line-height: 1.02;
 }
 
 .section-index:not(.year-index) .section-heading:hover,
