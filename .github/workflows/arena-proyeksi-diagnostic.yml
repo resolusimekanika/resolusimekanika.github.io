@@ -10,44 +10,52 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch Are.na v3 channel contents
+      - name: Install image analysis dependency
+        run: pip install -q opencv-python-headless numpy
+      - name: Analyze Proyeksi Gerilya image batches
         shell: bash
         run: |
           python - <<'PY'
-          import json, urllib.parse, urllib.request
-          url='https://api.are.na/v3/channels/4179389/contents?'+urllib.parse.urlencode({
-            'page':1,'per':100
-          })
-          req=urllib.request.Request(url, headers={
-            'User-Agent':'ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)',
-            'Accept':'application/json'
-          })
-          with urllib.request.urlopen(req, timeout=30) as r:
-              data=json.load(r)
-          print('META', json.dumps(data.get('meta'), ensure_ascii=False))
-          rows=[]
+          import json, urllib.request, numpy as np, cv2
+          API='https://api.are.na/v3/channels/4179389/contents?page=1&per=100'
+          UA='ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)'
+          req=urllib.request.Request(API, headers={'User-Agent':UA,'Accept':'application/json'})
+          data=json.load(urllib.request.urlopen(req, timeout=30))
+          hog=cv2.HOGDescriptor()
+          hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
           for item in data.get('data') or []:
-              t=item.get('type')
-              if t not in ('Image','ImageBlock'):
-                  continue
+              if item.get('type') not in ('Image','ImageBlock'): continue
               image=item.get('image') or {}
-              connection=item.get('connection') or {}
-              rows.append({
-                'id':item.get('id'),
-                'position':connection.get('position'),
-                'title':item.get('title'),
-                'description':(item.get('description') or {}).get('plain') if isinstance(item.get('description'),dict) else item.get('description'),
-                'alt_text':item.get('alt_text'),
-                'filename':image.get('filename'),
-                'content_type':image.get('content_type'),
-                'width':image.get('width'),
-                'height':image.get('height'),
-                'original_url':image.get('original_url'),
-                'large_url':image.get('large_url'),
-                'display_url':image.get('display_url'),
-                'thumb_url':image.get('thumb_url')
-              })
-          print('IMAGE_COUNT', len(rows))
-          for row in rows:
-              print('BLOCK', json.dumps(row, ensure_ascii=False))
+              bid=item.get('id')
+              pos=(item.get('connection') or {}).get('position')
+              title=item.get('title') or ''
+              fn=image.get('filename') or ''
+              if not fn: continue
+              url=f'https://d2w9rnfcy7mm78.cloudfront.net/{bid}/original_{fn}'
+              try:
+                  r=urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':UA}),timeout=30)
+                  arr=np.frombuffer(r.read(),np.uint8)
+                  im=cv2.imdecode(arr,cv2.IMREAD_COLOR)
+                  if im is None: raise ValueError('decode')
+                  h,w=im.shape[:2]
+                  scale=min(1.0,640/max(h,w))
+                  sm=cv2.resize(im,(max(1,int(w*scale)),max(1,int(h*scale))))
+                  hsv=cv2.cvtColor(sm,cv2.COLOR_BGR2HSV)
+                  sat=float(hsv[:,:,1].mean())
+                  val=float(hsv[:,:,2].mean())
+                  gray=cv2.cvtColor(sm,cv2.COLOR_BGR2GRAY)
+                  lap=float(cv2.Laplacian(gray,cv2.CV_64F).var())
+                  # colorful score using Hasler-Susstrunk metric
+                  B,G,R=[x.astype(np.float32) for x in cv2.split(sm)]
+                  rg=np.abs(R-G); yb=np.abs(.5*(R+G)-B)
+                  colorfulness=float(np.sqrt(rg.mean()**2+yb.mean()**2)+.3*np.sqrt(rg.std()**2+yb.std()**2))
+                  rects,weights=hog.detectMultiScale(sm,winStride=(8,8),padding=(8,8),scale=1.05)
+                  people=int(len(rects))
+                  print('STAT',json.dumps({
+                    'position':pos,'id':bid,'title':title,'filename':fn,
+                    'sat':round(sat,1),'val':round(val,1),'lap':round(lap,1),
+                    'color':round(colorfulness,1),'people':people
+                  },ensure_ascii=False))
+              except Exception as e:
+                  print('ERR',pos,bid,title,repr(e))
           PY
