@@ -10,50 +10,49 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     steps:
-      - name: Install OpenCV
-        run: pip install -q opencv-python-headless==4.10.0.84 numpy
-      - name: Detect clear faces with DNN
+      - name: Install detectors
+        run: pip install -q ultralytics opencv-python-headless==4.10.0.84 numpy
+      - name: Inspect only the two requested censor frames
         shell: bash
         run: |
           python - <<'PY'
-          import urllib.request, cv2, numpy as np, json, os
+          import urllib.request, cv2, numpy as np, json
+          from ultralytics import YOLO
           UA='ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)'
-          base='https://raw.githubusercontent.com/opencv/opencv/master/samples/dnn/face_detector/'
-          urllib.request.urlretrieve(base+'deploy.prototxt','/tmp/deploy.prototxt')
-          urllib.request.urlretrieve('https://raw.githubusercontent.com/opencv/opencv_3rdparty/dnn_samples_face_detector_20170830/res10_300x300_ssd_iter_140000.caffemodel','/tmp/face.caffemodel')
-          net=cv2.dnn.readNetFromCaffe('/tmp/deploy.prototxt','/tmp/face.caffemodel')
           items=[
-            (39533691,'f47a4f1452e4bffee979c8a021c7c844.jpg'),
             (39533690,'fcbdd8ff36c0e597a9ed333de392456d.jpg'),
-            (39533689,'f3a887789c99c494856dee8695a51a90.jpg'),
-            (39533688,'fc495fbb29cb0d5172dec1a5aa47a360.jpg'),
-            (39533668,'fa0d69d1718ba012a95b53dede3ecb08.jpg'),
-            (39533669,'75dbab0ad5a1cfc8e9ddeeca070ab30c.jpg'),
-            (39533666,'c30b162a8d3510741d305ad41f5435fb.jpg'),
-            (39533665,'5a70ad3d5ffb2ec21fb818124a2fd94d.jpg'),
-            (39533644,'a3325b76d5b811b9e536195e35fa5f16.jpg'),
-            (39533646,'bc52f5339d09f53e0bd7d1fc6e6d5482.jpg'),
-            (39533645,'402f763febc9ee43119abd0d8da85b7a.jpg'),
-            (39533639,'deac764c6aae9a016d3bd4df89cc4799.jpg'),
             (39533637,'a7bdc084c5bc314b1445044c4e1db684.jpg')
           ]
+          model=YOLO('yolo11n.pt')
+          frontal=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
+          profile=cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_profileface.xml')
           for bid,fn in items:
               url=f'https://d2w9rnfcy7mm78.cloudfront.net/{bid}/original_{fn}'
               raw=urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':UA}),timeout=30).read()
               img=cv2.imdecode(np.frombuffer(raw,np.uint8),cv2.IMREAD_COLOR)
               h,w=img.shape[:2]
-              blob=cv2.dnn.blobFromImage(cv2.resize(img,(300,300)),1.0,(300,300),(104,177,123))
-              net.setInput(blob); det=net.forward()
-              circles=[]
-              for i in range(det.shape[2]):
-                  conf=float(det[0,0,i,2])
-                  if conf < 0.55: continue
-                  x1,y1,x2,y2=(det[0,0,i,3:7]*np.array([w,h,w,h])).astype(int)
-                  x1=max(0,x1); y1=max(0,y1); x2=min(w,x2); y2=min(h,y2)
-                  bw=max(0,x2-x1); bh=max(0,y2-y1)
-                  if bw < max(18,w*0.012) or bh < max(18,h*0.018): continue
-                  cx=(x1+x2)/2/w; cy=(y1+y2)/2/h
-                  rx=(bw*0.70)/w; ry=(bh*0.70)/h
-                  circles.append([round(cx,5),round(cy,5),round(rx,5),round(ry,5),round(conf,3)])
-              print('DNNFACE',json.dumps({'id':bid,'circles':circles}))
+              result=model.predict(source=img,classes=[0],conf=0.20,verbose=False)[0]
+              people=[]
+              for box in result.boxes:
+                  x1,y1,x2,y2=box.xyxy[0].tolist()
+                  people.append({
+                    'conf':round(float(box.conf[0]),3),
+                    'cx':round(((x1+x2)/2)/w,5),
+                    'cy':round(((y1+y2)/2)/h,5),
+                    'w':round((x2-x1)/w,5),
+                    'h':round((y2-y1)/h,5),
+                    'head_guess_y':round((y1+(y2-y1)*0.12)/h,5)
+                  })
+              gray=cv2.equalizeHist(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY))
+              faces=[]
+              for kind,cascade in [('front',frontal),('profile',profile)]:
+                  for x,y,bw,bh in cascade.detectMultiScale(gray,1.08,5,minSize=(18,18)):
+                      faces.append({
+                        'kind':kind,
+                        'cx':round((x+bw/2)/w,5),
+                        'cy':round((y+bh/2)/h,5),
+                        'w':round(bw/w,5),
+                        'h':round(bh/h,5)
+                      })
+              print('FRAME',json.dumps({'id':bid,'people':people,'faces':faces}))
           PY
