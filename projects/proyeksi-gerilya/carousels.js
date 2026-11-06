@@ -90,11 +90,11 @@ const PROYEKSI_ALT = {
 
 const PROYEKSI_FACE_MASKS = Object.freeze({
   39533690: [
-    [0.34714, 0.30509],
-    [0.48906, 0.42222]
+    [0.34714, 0.30509, 34],
+    [0.48906, 0.42222, 28]
   ],
   39533637: [
-    [0.72366, 0.41898]
+    [0.72366, 0.41898, 34]
   ]
 });
 
@@ -206,13 +206,13 @@ function renderProyeksiViewerMasks() {
   const item = proyeksiViewerGroup.items[proyeksiViewerIndex];
   const masks = PROYEKSI_FACE_MASKS[item[0]] || [];
 
-  masks.forEach(([cx, cy]) => {
+  masks.forEach(([cx, cy, size = 28]) => {
     const dot = document.createElement('span');
     dot.className = 'proyeksi-face-mask-dot';
     dot.style.left = `${cx * 100}%`;
     dot.style.top = `${cy * 100}%`;
-    dot.style.width = '28px';
-    dot.style.height = '28px';
+    dot.style.width = `${size}px`;
+    dot.style.height = `${size}px`;
     proyeksiViewerMaskLayer.appendChild(dot);
   });
 }
@@ -371,13 +371,13 @@ function createProyeksiCarousel(group) {
     if (group.key !== 'walk') return;
 
     const masks = PROYEKSI_FACE_MASKS[currentItem[0]] || [];
-    masks.forEach(([cx, cy]) => {
+    masks.forEach(([cx, cy, size = 28]) => {
       const dot = document.createElement('span');
       dot.className = 'proyeksi-face-mask-dot';
       dot.style.left = `${cx * 100}%`;
       dot.style.top = `${cy * 100}%`;
-      dot.style.width = '28px';
-      dot.style.height = '28px';
+      dot.style.width = `${size}px`;
+      dot.style.height = `${size}px`;
       maskLayer.appendChild(dot);
     });
   }
