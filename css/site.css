@@ -1031,3 +1031,41 @@ body.arsip-viewer-open {
 }
 
 
+
+
+/* Proyeksi Gerilya: black project environment to integrate with the video frame. */
+html.proyeksi-gerilya-root,
+body.proyeksi-gerilya-page {
+  background: var(--black);
+}
+
+.proyeksi-gerilya-page .project-heading {
+  color: var(--white);
+}
+
+.proyeksi-gerilya-page .project-heading:hover,
+.proyeksi-gerilya-page .project-heading:focus-visible {
+  color: var(--white);
+}
+
+.proyeksi-gerilya-page .primary-nav a:hover,
+.proyeksi-gerilya-page .primary-nav a:focus-visible,
+.proyeksi-gerilya-page .wordmark-hover,
+.proyeksi-gerilya-page .language-switch button:hover,
+.proyeksi-gerilya-page .language-switch button:focus-visible,
+.proyeksi-gerilya-page .language-switch button.is-active {
+  color: var(--red);
+}
+
+.proyeksi-gerilya-page .project-tags {
+  color: var(--white);
+}
+
+.proyeksi-gerilya-page .year-timeline {
+  color: var(--white);
+  border-top-color: var(--white);
+}
+
+.proyeksi-gerilya-page .site-footer {
+  color: var(--white);
+}
