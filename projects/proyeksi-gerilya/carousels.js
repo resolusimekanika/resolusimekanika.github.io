@@ -98,6 +98,194 @@ const PROYEKSI_FACE_MASKS = Object.freeze({
   ]
 });
 
+
+let proyeksiViewer = null;
+let proyeksiViewerImage = null;
+let proyeksiViewerMaskLayer = null;
+let proyeksiViewerCounter = null;
+let proyeksiViewerGroup = null;
+let proyeksiViewerIndex = 0;
+let proyeksiViewerPreviousFocus = null;
+
+function proyeksiCopy(key, fallback) {
+  const lang = proyeksiLanguage();
+  const copy = {
+    id: {
+      close: 'Tutup tampilan layar penuh',
+      previous: 'Gambar sebelumnya',
+      next: 'Gambar berikutnya',
+      dialog: 'Karusel gambar layar penuh'
+    },
+    en: {
+      close: 'Close fullscreen image',
+      previous: 'Previous image',
+      next: 'Next image',
+      dialog: 'Fullscreen image carousel'
+    }
+  };
+  return copy[lang]?.[key] || fallback;
+}
+
+function createProyeksiViewer() {
+  if (proyeksiViewer) return;
+
+  proyeksiViewer = document.createElement('div');
+  proyeksiViewer.className = 'arsip-viewer proyeksi-fullscreen-viewer';
+  proyeksiViewer.hidden = true;
+  proyeksiViewer.setAttribute('role', 'dialog');
+  proyeksiViewer.setAttribute('aria-modal', 'true');
+
+  proyeksiViewer.innerHTML = `
+    <button class="arsip-viewer-close" type="button">×</button>
+    <button class="arsip-viewer-nav arsip-viewer-prev" type="button">‹</button>
+    <div class="arsip-viewer-stage">
+      <img class="arsip-viewer-image" alt="">
+      <div class="proyeksi-face-mask-layer proyeksi-viewer-mask-layer" aria-hidden="true"></div>
+      <div class="arsip-viewer-counter" aria-live="polite"></div>
+    </div>
+    <button class="arsip-viewer-nav arsip-viewer-next" type="button">›</button>
+  `;
+
+  document.body.appendChild(proyeksiViewer);
+
+  proyeksiViewerImage = proyeksiViewer.querySelector('.arsip-viewer-image');
+  proyeksiViewerImage.addEventListener('load', () => requestAnimationFrame(refreshProyeksiViewerMasks));
+  proyeksiViewerMaskLayer = proyeksiViewer.querySelector('.proyeksi-viewer-mask-layer');
+  proyeksiViewerCounter = proyeksiViewer.querySelector('.arsip-viewer-counter');
+
+  proyeksiViewer.querySelector('.arsip-viewer-prev').addEventListener('click', () => {
+    showProyeksiViewerImage(proyeksiViewerIndex - 1);
+  });
+
+  proyeksiViewer.querySelector('.arsip-viewer-next').addEventListener('click', () => {
+    showProyeksiViewerImage(proyeksiViewerIndex + 1);
+  });
+
+  proyeksiViewer.querySelector('.arsip-viewer-close').addEventListener('click', closeProyeksiViewer);
+
+  proyeksiViewer.addEventListener('click', event => {
+    if (event.target === proyeksiViewer || event.target.classList.contains('arsip-viewer-stage')) {
+      closeProyeksiViewer();
+    }
+  });
+
+  updateProyeksiViewerLanguage();
+}
+
+function updateProyeksiViewerLanguage() {
+  if (!proyeksiViewer) return;
+  proyeksiViewer.setAttribute('aria-label', proyeksiCopy('dialog', 'Fullscreen image carousel'));
+  proyeksiViewer.querySelector('.arsip-viewer-close')
+    .setAttribute('aria-label', proyeksiCopy('close', 'Close fullscreen image'));
+  proyeksiViewer.querySelector('.arsip-viewer-prev')
+    .setAttribute('aria-label', proyeksiCopy('previous', 'Previous image'));
+  proyeksiViewer.querySelector('.arsip-viewer-next')
+    .setAttribute('aria-label', proyeksiCopy('next', 'Next image'));
+}
+
+function positionProyeksiViewerMasks() {
+  if (!proyeksiViewer || proyeksiViewer.hidden || !proyeksiViewerImage?.complete) return;
+
+  const stage = proyeksiViewer.querySelector('.arsip-viewer-stage');
+  const imageRect = proyeksiViewerImage.getBoundingClientRect();
+  const stageRect = stage.getBoundingClientRect();
+  if (!imageRect.width || !imageRect.height) return;
+
+  proyeksiViewerMaskLayer.style.left = `${imageRect.left - stageRect.left}px`;
+  proyeksiViewerMaskLayer.style.top = `${imageRect.top - stageRect.top}px`;
+  proyeksiViewerMaskLayer.style.width = `${imageRect.width}px`;
+  proyeksiViewerMaskLayer.style.height = `${imageRect.height}px`;
+}
+
+function renderProyeksiViewerMasks() {
+  if (!proyeksiViewerMaskLayer) return;
+  proyeksiViewerMaskLayer.replaceChildren();
+
+  if (proyeksiViewerGroup?.key !== 'walk') return;
+
+  const item = proyeksiViewerGroup.items[proyeksiViewerIndex];
+  const masks = PROYEKSI_FACE_MASKS[item[0]] || [];
+
+  masks.forEach(([cx, cy]) => {
+    const dot = document.createElement('span');
+    dot.className = 'proyeksi-face-mask-dot';
+    dot.style.left = `${cx * 100}%`;
+    dot.style.top = `${cy * 100}%`;
+    dot.style.width = '28px';
+    dot.style.height = '28px';
+    proyeksiViewerMaskLayer.appendChild(dot);
+  });
+}
+
+function refreshProyeksiViewerMasks() {
+  positionProyeksiViewerMasks();
+  renderProyeksiViewerMasks();
+}
+
+function showProyeksiViewerImage(nextIndex) {
+  if (!proyeksiViewerGroup?.items?.length) return;
+
+  const items = proyeksiViewerGroup.items;
+  proyeksiViewerIndex = (nextIndex + items.length) % items.length;
+  const item = items[proyeksiViewerIndex];
+  const lang = proyeksiLanguage();
+  const copy = PROYEKSI_ALT[lang];
+  const category = proyeksiViewerGroup.labels[lang];
+
+  proyeksiViewerMaskLayer.replaceChildren();
+  proyeksiViewerImage.src = proyeksiImageUrl(item);
+  proyeksiViewerImage.alt =
+    `${copy.project} — ${category} ${proyeksiViewerIndex + 1} ${copy.of} ${items.length}`;
+  proyeksiViewerCounter.textContent =
+    `${String(proyeksiViewerIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+}
+
+function openProyeksiViewer(group, index, trigger) {
+  createProyeksiViewer();
+  proyeksiViewerGroup = group;
+  proyeksiViewerIndex = index;
+  proyeksiViewerPreviousFocus = trigger || document.activeElement;
+  updateProyeksiViewerLanguage();
+  showProyeksiViewerImage(index);
+  proyeksiViewer.hidden = false;
+  document.body.classList.add('arsip-viewer-open');
+  proyeksiViewer.querySelector('.arsip-viewer-close').focus();
+}
+
+function closeProyeksiViewer() {
+  if (!proyeksiViewer || proyeksiViewer.hidden) return;
+
+  proyeksiViewer.hidden = true;
+  proyeksiViewerImage.removeAttribute('src');
+  proyeksiViewerMaskLayer.replaceChildren();
+  document.body.classList.remove('arsip-viewer-open');
+
+  if (proyeksiViewerPreviousFocus && typeof proyeksiViewerPreviousFocus.focus === 'function') {
+    proyeksiViewerPreviousFocus.focus();
+  }
+}
+
+document.addEventListener('keydown', event => {
+  if (!proyeksiViewer || proyeksiViewer.hidden) return;
+
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault();
+    showProyeksiViewerImage(proyeksiViewerIndex - 1);
+  } else if (event.key === 'ArrowRight') {
+    event.preventDefault();
+    showProyeksiViewerImage(proyeksiViewerIndex + 1);
+  } else if (event.key === 'Escape') {
+    event.preventDefault();
+    closeProyeksiViewer();
+  }
+});
+
+window.addEventListener('resize', () => {
+  if (proyeksiViewer && !proyeksiViewer.hidden && proyeksiViewerImage?.complete) {
+    requestAnimationFrame(refreshProyeksiViewerMasks);
+  }
+}, { passive: true });
+
 function proyeksiImageUrl(item) {
   return `${PROYEKSI_CDN}/${item[0]}/original_${item[1]}`;
 }
@@ -145,6 +333,8 @@ function createProyeksiCarousel(group) {
 
   const stage = document.createElement('div');
   stage.className = 'proyeksi-carousel-stage';
+  stage.tabIndex = 0;
+  stage.setAttribute('role', 'button');
 
   const image = document.createElement('img');
   image.className = 'proyeksi-carousel-image';
@@ -210,6 +400,10 @@ function createProyeksiCarousel(group) {
   image.addEventListener('load', () => {
     image.classList.remove('is-loading');
     requestAnimationFrame(refreshFaceMasks);
+
+    if (proyeksiViewer && !proyeksiViewer.hidden && image === proyeksiViewerImage) {
+      requestAnimationFrame(refreshProyeksiViewerMasks);
+    }
   });
   image.addEventListener('error', () => {
     image.classList.remove('is-loading');
@@ -217,6 +411,14 @@ function createProyeksiCarousel(group) {
   });
   previous.addEventListener('click', () => show(index - 1));
   next.addEventListener('click', () => show(index + 1));
+
+  stage.addEventListener('click', () => openProyeksiViewer(group, index, stage));
+  stage.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openProyeksiViewer(group, index, stage);
+    }
+  });
 
   section.addEventListener('keydown', event => {
     if (event.key === 'ArrowLeft') {
@@ -253,4 +455,9 @@ window.addEventListener('site-language-change', () => {
   proyeksiCarouselSections.forEach(section => {
     if (typeof section.updateAlt === 'function') section.updateAlt();
   });
+  updateProyeksiViewerLanguage();
+
+  if (proyeksiViewer && !proyeksiViewer.hidden) {
+    showProyeksiViewerImage(proyeksiViewerIndex);
+  }
 });

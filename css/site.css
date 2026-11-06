@@ -1266,3 +1266,24 @@ body.proyeksi-gerilya-page {
   border-radius: 50%;
   background: #000;
 }
+
+
+/* Proyeksi carousel fullscreen click affordance. */
+.proyeksi-gerilya-page .proyeksi-carousel-stage {
+  cursor: pointer;
+}
+
+.proyeksi-gerilya-page .proyeksi-carousel-stage:focus-visible {
+  outline: 1px solid var(--red);
+  outline-offset: 4px;
+}
+
+.proyeksi-fullscreen-viewer .arsip-viewer-stage {
+  position: relative;
+}
+
+.proyeksi-fullscreen-viewer .proyeksi-viewer-mask-layer {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
