@@ -1098,3 +1098,9 @@ body.proyeksi-gerilya-page {
     font-size: 12px;
   }
 }
+
+
+/* Arsip Terbagi bilingual secondary title on black. */
+.arsip-terbagi-page .project-tags {
+  color: var(--white);
+}
