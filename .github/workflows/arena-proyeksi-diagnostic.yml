@@ -10,58 +10,35 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Install image analysis dependencies
-        run: pip install -q ultralytics pillow numpy
-      - name: Analyze Proyeksi Gerilya image batches
+      - name: Install object detector
+        run: pip install -q ultralytics pillow
+      - name: Inspect projection/walk candidates
         shell: bash
         run: |
           python - <<'PY'
-          import json, urllib.request, io, numpy as np
-          from PIL import Image, ImageFilter, ImageStat
+          import json, urllib.request, io
+          import numpy as np
+          from PIL import Image
           from ultralytics import YOLO
 
+          candidates={65,64,63,62,61,60,59,58,57,43,42,39,37,36,26,25,24,23,22,20,19,18,17,16,15,14,11,10,9,8}
           API='https://api.are.na/v3/channels/4179389/contents?page=1&per=100'
           UA='ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)'
-          req=urllib.request.Request(API, headers={'User-Agent':UA,'Accept':'application/json'})
-          data=json.load(urllib.request.urlopen(req, timeout=30))
+          data=json.load(urllib.request.urlopen(urllib.request.Request(API,headers={'User-Agent':UA,'Accept':'application/json'}),timeout=30))
           model=YOLO('yolo11n.pt')
-
           for item in data.get('data') or []:
-              if item.get('type') not in ('Image','ImageBlock'): continue
-              image=item.get('image') or {}
-              bid=item.get('id')
               pos=(item.get('connection') or {}).get('position')
-              title=item.get('title') or ''
-              fn=image.get('filename') or ''
-              if not fn: continue
+              if pos not in candidates: continue
+              image=item.get('image') or {}
+              bid=item.get('id'); fn=image.get('filename') or ''; title=item.get('title') or ''
               url=f'https://d2w9rnfcy7mm78.cloudfront.net/{bid}/original_{fn}'
-              try:
-                  r=urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':UA}),timeout=30)
-                  im=Image.open(io.BytesIO(r.read())).convert('RGB')
-                  im.thumbnail((640,640))
-                  arr=np.asarray(im).astype(np.float32)
-
-                  # saturation + colorfulness
-                  mx=arr.max(axis=2); mn=arr.min(axis=2)
-                  sat=np.where(mx==0,0,(mx-mn)/mx)
-                  sat_mean=float(sat.mean()*255)
-                  R,G,B=arr[:,:,0],arr[:,:,1],arr[:,:,2]
-                  rg=np.abs(R-G); yb=np.abs(.5*(R+G)-B)
-                  colorfulness=float(np.sqrt(rg.mean()**2+yb.mean()**2)+.3*np.sqrt(rg.std()**2+yb.std()**2))
-
-                  # edge/noise proxy
-                  gray=im.convert('L')
-                  edges=gray.filter(ImageFilter.FIND_EDGES)
-                  edge_mean=float(ImageStat.Stat(edges).mean[0])
-
-                  result=model.predict(source=np.asarray(im),classes=[0],conf=0.25,verbose=False)[0]
-                  people=int(len(result.boxes))
-
-                  print('STAT',json.dumps({
-                    'position':pos,'id':bid,'title':title,'filename':fn,
-                    'sat':round(sat_mean,1),'color':round(colorfulness,1),
-                    'edge':round(edge_mean,1),'people':people
-                  },ensure_ascii=False))
-              except Exception as e:
-                  print('ERR',pos,bid,title,repr(e))
+              raw=urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':UA}),timeout=30).read()
+              im=Image.open(io.BytesIO(raw)).convert('RGB'); im.thumbnail((640,640))
+              result=model.predict(source=np.asarray(im),conf=0.20,verbose=False)[0]
+              labels=[]
+              for box in result.boxes:
+                  cls=int(box.cls[0]); conf=float(box.conf[0])
+                  labels.append((model.names[cls],round(conf,2)))
+              labels=sorted(labels,key=lambda x:-x[1])[:12]
+              print('OBJ',json.dumps({'position':pos,'id':bid,'title':title,'objects':labels},ensure_ascii=False))
           PY
