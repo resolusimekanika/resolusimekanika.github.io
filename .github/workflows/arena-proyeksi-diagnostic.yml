@@ -1,0 +1,40 @@
+name: arena-proyeksi-diagnostic
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/arena-proyeksi-diagnostic.yml"
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Are.na channel metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+          url='https://api.are.na/v2/channels/proyeksi-gerilya?per=100'
+          with urllib.request.urlopen(url, timeout=30) as r:
+              data=json.load(r)
+          print("CHANNEL_ID", data.get("id"))
+          print("TITLE", data.get("title"))
+          print("COUNT", len(data.get("contents") or []))
+          for b in sorted(data.get("contents") or [], key=lambda x: x.get("position") or 0):
+              img=(b.get("image") or {})
+              original=(img.get("original") or {})
+              print(json.dumps({
+                  "position": b.get("position"),
+                  "id": b.get("id"),
+                  "class": b.get("class"),
+                  "title": b.get("title"),
+                  "generated_title": b.get("generated_title"),
+                  "description": b.get("description"),
+                  "content": b.get("content"),
+                  "filename": original.get("filename") or img.get("filename"),
+                  "url": original.get("url"),
+                  "width": original.get("width") or img.get("width"),
+                  "height": original.get("height") or img.get("height")
+              }, ensure_ascii=False))
+          PY
