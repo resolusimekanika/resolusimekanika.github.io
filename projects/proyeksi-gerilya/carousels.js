@@ -186,6 +186,8 @@ function createProyeksiCarousel(group) {
       dot.className = 'proyeksi-face-mask-dot';
       dot.style.left = `${cx * 100}%`;
       dot.style.top = `${cy * 100}%`;
+      dot.style.width = '28px';
+      dot.style.height = '28px';
       maskLayer.appendChild(dot);
     });
   }
