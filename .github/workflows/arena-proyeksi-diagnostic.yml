@@ -16,7 +16,12 @@ jobs:
           python - <<'PY'
           import json, urllib.request
           url='https://api.are.na/v2/channels/proyeksi-gerilya?per=100'
-          with urllib.request.urlopen(url, timeout=30) as r:
+          req=urllib.request.Request(url, headers={
+              'User-Agent':'Mozilla/5.0',
+              'Accept':'application/json',
+              'Referer':'https://www.are.na/'
+          })
+          with urllib.request.urlopen(req, timeout=30) as r:
               data=json.load(r)
           print("CHANNEL_ID", data.get("id"))
           print("TITLE", data.get("title"))
@@ -34,6 +39,9 @@ jobs:
                   "content": b.get("content"),
                   "filename": original.get("filename") or img.get("filename"),
                   "url": original.get("url"),
+                  "display": (img.get("display") or {}).get("url"),
+                  "large": (img.get("large") or {}).get("url"),
+                  "thumb": (img.get("thumb") or {}).get("url"),
                   "width": original.get("width") or img.get("width"),
                   "height": original.get("height") or img.get("height")
               }, ensure_ascii=False))
