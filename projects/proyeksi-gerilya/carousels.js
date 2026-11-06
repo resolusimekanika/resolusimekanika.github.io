@@ -5,7 +5,6 @@ const PROYEKSI_CDN = 'https://d2w9rnfcy7mm78.cloudfront.net';
 const PROYEKSI_CAROUSELS = [
   {
     key: 'projection',
-    labelKey: 'proyeksiCarouselProjection',
     ariaKey: 'proyeksiCarouselProjectionAria',
     labels: { id: 'Proyeksi', en: 'Projection' },
     items: [
@@ -24,13 +23,11 @@ const PROYEKSI_CAROUSELS = [
       [39533647,'92e51dff76aee349ad8d6c9047d756fc.jpg'],
       [39533643,'4c767935aeed08d963ce4b9a31277879.jpg'],
       [39533642,'05b853748f14163a4193b21301256294.jpg'],
-      [39533638,'3887a9c1640fd788eacb9c4a7484f85f.jpg'],
-      [39533635,'d887ce834a4ccc3f27fd2ff7a79054d8.png']
+      [39533638,'3887a9c1640fd788eacb9c4a7484f85f.jpg']
     ]
   },
   {
     key: 'walk',
-    labelKey: 'proyeksiCarouselWalk',
     ariaKey: 'proyeksiCarouselWalkAria',
     labels: { id: 'Dokumentasi Perjalanan', en: 'Documentation of the Walk' },
     items: [
@@ -51,7 +48,6 @@ const PROYEKSI_CAROUSELS = [
   },
   {
     key: 'circuit',
-    labelKey: 'proyeksiCarouselCircuit',
     ariaKey: 'proyeksiCarouselCircuitAria',
     labels: { id: 'Citra Circuit Bent', en: 'Circuit Bent Images' },
     items: [
@@ -84,27 +80,39 @@ const PROYEKSI_CAROUSELS = [
       [39533640,'4cb653d72804fe5b9c71b710a6acc51d.jpg'],
       [39533641,'4953b55503ceababac0038d97efe5caf.jpg']
     ]
-  },
-  {
-    key: 'extra',
-    labelKey: 'proyeksiCarouselExtra',
-    ariaKey: 'proyeksiCarouselExtraAria',
-    labels: { id: 'Material Tambahan', en: 'Extra Materials' },
-    items: [
-      [39533631,'0902afeed1e2f40d0642751780112843.png'],
-      [39533633,'85c4ad42b182ac3ac04c186403c7a8ce.png'],
-      [39533632,'f953e5a264fdc66df276ddbc412a90b7.png'],
-      [39533630,'73bd116603b2ae0650cb9382bf807f76.png'],
-      [39533629,'0c741415308417d7ad0dc5f947270ef2.png'],
-      [39533628,'9b10e8cce6ad667407a3c592f5c16bd8.png']
-    ]
   }
 ];
 
 const PROYEKSI_ALT = {
-  id: { project: 'Proyeksi Gerilya', of: 'dari' },
-  en: { project: 'Guerilla Projection', of: 'of' }
+  id: { project: 'Saat Adil Binasa, Setia Kekal Derita', of: 'dari' },
+  en: { project: 'When Justice Perishes, Eternal Suffering Replace the Faith', of: 'of' }
 };
+
+const PROYEKSI_FACE_MASKS = Object.freeze({
+  39533691: [
+    [0.41146,0.275,0.05625,0.1],
+    [0.35573,0.23611,0.048,0.08533],
+    [0.29297,0.5625,0.03862,0.06867],
+    [0.38307,0.66343,0.03562,0.06333]
+  ],
+  39533690: [
+    [0.3487,0.31111,0.04849,0.10759],
+    [0.54271,0.48704,0.10725,0.19067]
+  ],
+  39533689: [[0.36927,0.43519,0.072,0.128]],
+  39533688: [
+    [0.18177,0.31111,0.05325,0.09467],
+    [0.95026,0.70231,0.03638,0.06467]
+  ],
+  39533668: [[0.24323,0.07315,0.027,0.048]],
+  39533665: [[0.86615,0.30185,0.02925,0.052]],
+  39533644: [[0.70609,0.13704,0.03716,0.048]],
+  39533646: [[0.57742,0.09398,0.02942,0.038]],
+  39533637: [
+    [0.72366,0.41898,0.18717,0.29102],
+    [0.3448,0.57685,0.06297,0.08133]
+  ]
+});
 
 function proyeksiImageUrl(item) {
   return `${PROYEKSI_CDN}/${item[0]}/original_${item[1]}`;
@@ -116,6 +124,7 @@ function proyeksiLanguage() {
 
 function createProyeksiCarousel(group) {
   let index = 0;
+  let currentItem = group.items[0];
 
   const section = document.createElement('section');
   section.className = 'proyeksi-carousel';
@@ -125,11 +134,6 @@ function createProyeksiCarousel(group) {
 
   const header = document.createElement('div');
   header.className = 'proyeksi-carousel-header';
-
-  const title = document.createElement('h2');
-  title.className = 'proyeksi-carousel-title';
-  title.dataset.i18n = group.labelKey;
-  title.textContent = group.labels.id;
 
   const controls = document.createElement('div');
   controls.className = 'proyeksi-carousel-controls';
@@ -153,7 +157,7 @@ function createProyeksiCarousel(group) {
   next.textContent = '›';
 
   controls.append(previous, counter, next);
-  header.append(title, controls);
+  header.append(controls);
 
   const stage = document.createElement('div');
   stage.className = 'proyeksi-carousel-stage';
@@ -162,8 +166,12 @@ function createProyeksiCarousel(group) {
   image.className = 'proyeksi-carousel-image';
   image.decoding = 'async';
   image.alt = '';
-  stage.appendChild(image);
 
+  const maskLayer = document.createElement('div');
+  maskLayer.className = 'proyeksi-face-mask-layer';
+  maskLayer.setAttribute('aria-hidden', 'true');
+
+  stage.append(image, maskLayer);
   section.append(header, stage);
 
   function updateAlt() {
@@ -173,16 +181,56 @@ function createProyeksiCarousel(group) {
     image.alt = `${copy.project} — ${category} ${index + 1} ${copy.of} ${group.items.length}`;
   }
 
+  function positionFaceMaskLayer() {
+    const imageRect = image.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    if (!imageRect.width || !imageRect.height) return;
+
+    maskLayer.style.left = `${imageRect.left - stageRect.left}px`;
+    maskLayer.style.top = `${imageRect.top - stageRect.top}px`;
+    maskLayer.style.width = `${imageRect.width}px`;
+    maskLayer.style.height = `${imageRect.height}px`;
+  }
+
+  function renderFaceMasks() {
+    maskLayer.replaceChildren();
+    if (group.key !== 'walk') return;
+
+    const masks = PROYEKSI_FACE_MASKS[currentItem[0]] || [];
+    masks.forEach(([cx, cy, rx, ry]) => {
+      const dot = document.createElement('span');
+      dot.className = 'proyeksi-face-mask-dot';
+      dot.style.left = `${cx * 100}%`;
+      dot.style.top = `${cy * 100}%`;
+      dot.style.width = `${rx * 200}%`;
+      dot.style.height = `${ry * 200}%`;
+      maskLayer.appendChild(dot);
+    });
+  }
+
+  function refreshFaceMasks() {
+    positionFaceMaskLayer();
+    renderFaceMasks();
+  }
+
   function show(nextIndex) {
     index = (nextIndex + group.items.length) % group.items.length;
+    currentItem = group.items[index];
+    maskLayer.replaceChildren();
     image.classList.add('is-loading');
-    image.src = proyeksiImageUrl(group.items[index]);
+    image.src = proyeksiImageUrl(currentItem);
     counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(group.items.length).padStart(2, '0')}`;
     updateAlt();
   }
 
-  image.addEventListener('load', () => image.classList.remove('is-loading'));
-  image.addEventListener('error', () => image.classList.remove('is-loading'));
+  image.addEventListener('load', () => {
+    image.classList.remove('is-loading');
+    requestAnimationFrame(refreshFaceMasks);
+  });
+  image.addEventListener('error', () => {
+    image.classList.remove('is-loading');
+    maskLayer.replaceChildren();
+  });
   previous.addEventListener('click', () => show(index - 1));
   next.addEventListener('click', () => show(index + 1));
 
@@ -196,6 +244,10 @@ function createProyeksiCarousel(group) {
       show(index + 1);
     }
   });
+
+  window.addEventListener('resize', () => {
+    if (image.complete) requestAnimationFrame(refreshFaceMasks);
+  }, { passive: true });
 
   section.updateAlt = updateAlt;
   show(0);

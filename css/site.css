@@ -1240,3 +1240,27 @@ body.proyeksi-gerilya-page {
     font-size: 18px;
   }
 }
+
+
+/* Proyeksi walk face censor overlays. */
+.proyeksi-gerilya-page .proyeksi-carousel-header {
+  justify-content: flex-end;
+}
+
+.proyeksi-gerilya-page .proyeksi-carousel-stage {
+  position: relative;
+}
+
+.proyeksi-gerilya-page .proyeksi-face-mask-layer {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.proyeksi-gerilya-page .proyeksi-face-mask-dot {
+  position: absolute;
+  display: block;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #000;
+}
