@@ -38,8 +38,8 @@ function imageInfo(block) {
   return {
     original,
     display:
-      image?.large?.url ||
       image?.display?.url ||
+      image?.large?.url ||
       image?.thumb?.url ||
       original,
     width: Number(image?.original?.width || image?.width) || null,
@@ -89,15 +89,33 @@ function createViewer() {
   });
 }
 
+function preloadViewerImage(index) {
+  if (!viewerImages.length) return;
+
+  const normalized = (index + viewerImages.length) % viewerImages.length;
+  const info = viewerImages[normalized];
+  if (!info?.display) return;
+
+  const preload = new Image();
+  preload.decoding = 'async';
+  preload.src = info.display;
+}
+
 function showViewerImage(index) {
   if (!viewerImages.length) return;
 
   viewerIndex = (index + viewerImages.length) % viewerImages.length;
   const info = viewerImages[viewerIndex];
 
-  viewerImage.src = info.original || info.display;
+  if (viewerImage.src !== info.display) {
+    viewerImage.src = info.display;
+  }
+
   viewerImage.alt = info.alt || `Arsip Terbagi image ${viewerIndex + 1}`;
   viewerCounter.textContent = `${String(viewerIndex + 1).padStart(2, '0')} / ${String(viewerImages.length).padStart(2, '0')}`;
+
+  preloadViewerImage(viewerIndex - 1);
+  preloadViewerImage(viewerIndex + 1);
 }
 
 function openViewer(index, trigger) {

@@ -863,14 +863,14 @@ a { color: inherit; }
 }
 
 
-/* Sub-menu titles use the same serif face as text thumbnails, smaller and regular at rest. */
+/* Sub-menu titles keep their serif face, now at the same size as ENG / BAHASA. */
 .section-index:not(.year-index) .section-heading {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(26px, 3vw, 40px);
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
-  letter-spacing: -.018em;
-  line-height: 1.02;
+  letter-spacing: .03em;
+  line-height: 1;
 }
 
 .section-index:not(.year-index) .section-heading:hover,
