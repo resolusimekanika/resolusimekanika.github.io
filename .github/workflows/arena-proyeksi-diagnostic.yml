@@ -10,19 +10,22 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - name: Install image analysis dependency
-        run: pip install -q opencv-python-headless numpy
+      - name: Install image analysis dependencies
+        run: pip install -q ultralytics pillow numpy
       - name: Analyze Proyeksi Gerilya image batches
         shell: bash
         run: |
           python - <<'PY'
-          import json, urllib.request, numpy as np, cv2
+          import json, urllib.request, io, numpy as np
+          from PIL import Image, ImageFilter, ImageStat
+          from ultralytics import YOLO
+
           API='https://api.are.na/v3/channels/4179389/contents?page=1&per=100'
           UA='ResolusiMekanikaPortfolio/1.0 (+https://resolusimekanika.github.io; mechanicalresolution@gmail.com)'
           req=urllib.request.Request(API, headers={'User-Agent':UA,'Accept':'application/json'})
           data=json.load(urllib.request.urlopen(req, timeout=30))
-          hog=cv2.HOGDescriptor()
-          hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+          model=YOLO('yolo11n.pt')
+
           for item in data.get('data') or []:
               if item.get('type') not in ('Image','ImageBlock'): continue
               image=item.get('image') or {}
@@ -34,27 +37,30 @@ jobs:
               url=f'https://d2w9rnfcy7mm78.cloudfront.net/{bid}/original_{fn}'
               try:
                   r=urllib.request.urlopen(urllib.request.Request(url,headers={'User-Agent':UA}),timeout=30)
-                  arr=np.frombuffer(r.read(),np.uint8)
-                  im=cv2.imdecode(arr,cv2.IMREAD_COLOR)
-                  if im is None: raise ValueError('decode')
-                  h,w=im.shape[:2]
-                  scale=min(1.0,640/max(h,w))
-                  sm=cv2.resize(im,(max(1,int(w*scale)),max(1,int(h*scale))))
-                  hsv=cv2.cvtColor(sm,cv2.COLOR_BGR2HSV)
-                  sat=float(hsv[:,:,1].mean())
-                  val=float(hsv[:,:,2].mean())
-                  gray=cv2.cvtColor(sm,cv2.COLOR_BGR2GRAY)
-                  lap=float(cv2.Laplacian(gray,cv2.CV_64F).var())
-                  # colorful score using Hasler-Susstrunk metric
-                  B,G,R=[x.astype(np.float32) for x in cv2.split(sm)]
+                  im=Image.open(io.BytesIO(r.read())).convert('RGB')
+                  im.thumbnail((640,640))
+                  arr=np.asarray(im).astype(np.float32)
+
+                  # saturation + colorfulness
+                  mx=arr.max(axis=2); mn=arr.min(axis=2)
+                  sat=np.where(mx==0,0,(mx-mn)/mx)
+                  sat_mean=float(sat.mean()*255)
+                  R,G,B=arr[:,:,0],arr[:,:,1],arr[:,:,2]
                   rg=np.abs(R-G); yb=np.abs(.5*(R+G)-B)
                   colorfulness=float(np.sqrt(rg.mean()**2+yb.mean()**2)+.3*np.sqrt(rg.std()**2+yb.std()**2))
-                  rects,weights=hog.detectMultiScale(sm,winStride=(8,8),padding=(8,8),scale=1.05)
-                  people=int(len(rects))
+
+                  # edge/noise proxy
+                  gray=im.convert('L')
+                  edges=gray.filter(ImageFilter.FIND_EDGES)
+                  edge_mean=float(ImageStat.Stat(edges).mean[0])
+
+                  result=model.predict(source=np.asarray(im),classes=[0],conf=0.25,verbose=False)[0]
+                  people=int(len(result.boxes))
+
                   print('STAT',json.dumps({
                     'position':pos,'id':bid,'title':title,'filename':fn,
-                    'sat':round(sat,1),'val':round(val,1),'lap':round(lap,1),
-                    'color':round(colorfulness,1),'people':people
+                    'sat':round(sat_mean,1),'color':round(colorfulness,1),
+                    'edge':round(edge_mean,1),'people':people
                   },ensure_ascii=False))
               except Exception as e:
                   print('ERR',pos,bid,title,repr(e))
