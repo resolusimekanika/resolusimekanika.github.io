@@ -16,6 +16,7 @@ const SITE_COPY = {
     categoryArchive: 'ARSIP',
     categoryPublication: 'PUBLIKASI',
     categoryPerformance: 'PERFORMANS',
+    categoryProjection: 'PROYEKSI',
     categoryCollaboration: 'KOLABORASI',
     titleTakeOffBlindfold: 'Take Off the Blindfold, Adjust Your Eyes, Look in the Mirror, See the Face of Your Mother x Sound Design untuk Jonni Peppers',
     titleMacamPagi: 'Macam Pagi: Perbincangan Dengan Ibu',
@@ -24,6 +25,9 @@ const SITE_COPY = {
     pageTitleArsipTerbagi: 'Arsip Terbagi [2026] — Resolusi Mekanika',
     titleWormZine: 'WORM - zine kolektif',
     titleProyeksiGerilya: 'Proyeksi Gerilya',
+    pageTitleProyeksiGerilya: 'Proyeksi Gerilya [2025] — Resolusi Mekanika',
+    videoTitleProyeksiGerilya: 'Dokumentasi video Proyeksi Gerilya',
+    proyeksiDocumentation: 'Chicago, IL 09-2025\n\nDokumentasi oleh\nD. Wibowo\nJay Wei\nJohn Thomure\nMiles Dharapak',
     titleSuratJakarta: 'Surat Cinta Untuk Jakarta (Nota-nota Kolektif dari 2023-2026)',
     titleWormArchive: 'WORM - Arsip Komunitas',
     titleSaatAdil: 'Saat Adil Binasa, Setia Kekal Derita',
@@ -67,6 +71,7 @@ const SITE_COPY = {
     categoryArchive: 'ARCHIVE',
     categoryPublication: 'ZINE',
     categoryPerformance: 'PERFORMANCE',
+    categoryProjection: 'PROJECTION',
     categoryCollaboration: 'COLLABORATION',
     titleTakeOffBlindfold: 'Take Off the Blindfold, Adjust Your Eyes, Look in the Mirror, See the Face of Your Mother x Sound Design for Jonni Peppers',
     titleMacamPagi: 'Morning Kinds: Conversation with Mother',
@@ -75,6 +80,9 @@ const SITE_COPY = {
     pageTitleArsipTerbagi: 'Divided Archive [2026] — Resolusi Mekanika',
     titleWormZine: 'WORM - Collective Zine',
     titleProyeksiGerilya: 'Guerilla Projection',
+    pageTitleProyeksiGerilya: 'Guerilla Projection [2025] — Resolusi Mekanika',
+    videoTitleProyeksiGerilya: 'Guerilla Projection video documentation',
+    proyeksiDocumentation: 'Chicago, IL 09-2025\n\nDocumentation by\nD. Wibowo\nJay Wei\nJohn Thomure\nMiles Dharapak',
     titleSuratJakarta: 'Love Letter To Jakarta (Collective Notes from 2023-2026)',
     titleWormArchive: 'WORM - Community Archives',
     titleSaatAdil: 'When Justice Perishes, Eternal Suffering Replace the Faith',
@@ -120,6 +128,18 @@ function applySiteLanguage(lang) {
     const key = element.dataset.i18n;
     const value = SITE_COPY[selected]?.[key];
     if (typeof value === 'string') element.textContent = value;
+  });
+
+  document.querySelectorAll('[data-i18n-title]').forEach(element => {
+    const key = element.dataset.i18nTitle;
+    const value = SITE_COPY[selected]?.[key];
+    if (typeof value === 'string') element.setAttribute('title', value);
+  });
+
+  document.querySelectorAll('[data-i18n-aria-label]').forEach(element => {
+    const key = element.dataset.i18nAriaLabel;
+    const value = SITE_COPY[selected]?.[key];
+    if (typeof value === 'string') element.setAttribute('aria-label', value);
   });
 
   document.querySelectorAll('[data-lang]').forEach(button => {
