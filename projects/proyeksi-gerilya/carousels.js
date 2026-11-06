@@ -1,0 +1,220 @@
+'use strict';
+
+const PROYEKSI_CDN = 'https://d2w9rnfcy7mm78.cloudfront.net';
+
+const PROYEKSI_CAROUSELS = [
+  {
+    key: 'projection',
+    labelKey: 'proyeksiCarouselProjection',
+    ariaKey: 'proyeksiCarouselProjectionAria',
+    labels: { id: 'Proyeksi', en: 'Projection' },
+    items: [
+      [39533693,'6af203296868347e8574877176589cc3.jpg'],
+      [39533694,'8e958dfef64e8e3c19e23a12e2cdb047.jpg'],
+      [39533695,'30d4c670c35a0f12dd15c76638880768.jpg'],
+      [39533692,'2dea1afa1767c75660aec41855521b56.jpg'],
+      [39533686,'a44e8d1a788729371cefe5853851e2bc.jpg'],
+      [39533667,'0be942897b6212619ebd7eb53a69f033.jpg'],
+      [39533655,'1d62dc7df0a59d932529a3831d3fe658.jpg'],
+      [39533654,'86ef5cca85b8cdbbdaed7b9e00086845.jpg'],
+      [39533653,'965224ad5afab55ff94c370575559047.jpg'],
+      [39533652,'b289267e30d67217ad92da0c1270b670.jpg'],
+      [39533651,'7b4e279832513101c74c1842616bbd98.jpg'],
+      [39533648,'d8ff6465d20cea56e601e6d3321f36e2.jpg'],
+      [39533647,'92e51dff76aee349ad8d6c9047d756fc.jpg'],
+      [39533643,'4c767935aeed08d963ce4b9a31277879.jpg'],
+      [39533642,'05b853748f14163a4193b21301256294.jpg'],
+      [39533638,'3887a9c1640fd788eacb9c4a7484f85f.jpg'],
+      [39533635,'d887ce834a4ccc3f27fd2ff7a79054d8.png']
+    ]
+  },
+  {
+    key: 'walk',
+    labelKey: 'proyeksiCarouselWalk',
+    ariaKey: 'proyeksiCarouselWalkAria',
+    labels: { id: 'Dokumentasi Perjalanan', en: 'Documentation of the Walk' },
+    items: [
+      [39533691,'f47a4f1452e4bffee979c8a021c7c844.jpg'],
+      [39533690,'fcbdd8ff36c0e597a9ed333de392456d.jpg'],
+      [39533689,'f3a887789c99c494856dee8695a51a90.jpg'],
+      [39533688,'fc495fbb29cb0d5172dec1a5aa47a360.jpg'],
+      [39533668,'fa0d69d1718ba012a95b53dede3ecb08.jpg'],
+      [39533669,'75dbab0ad5a1cfc8e9ddeeca070ab30c.jpg'],
+      [39533666,'c30b162a8d3510741d305ad41f5435fb.jpg'],
+      [39533665,'5a70ad3d5ffb2ec21fb818124a2fd94d.jpg'],
+      [39533644,'a3325b76d5b811b9e536195e35fa5f16.jpg'],
+      [39533646,'bc52f5339d09f53e0bd7d1fc6e6d5482.jpg'],
+      [39533645,'402f763febc9ee43119abd0d8da85b7a.jpg'],
+      [39533639,'deac764c6aae9a016d3bd4df89cc4799.jpg'],
+      [39533637,'a7bdc084c5bc314b1445044c4e1db684.jpg']
+    ]
+  },
+  {
+    key: 'circuit',
+    labelKey: 'proyeksiCarouselCircuit',
+    ariaKey: 'proyeksiCarouselCircuitAria',
+    labels: { id: 'Citra Circuit Bent', en: 'Circuit Bent Images' },
+    items: [
+      [39533683,'7fd05f3c62ad3d5c2e0dcb498787f937.jpg'],
+      [39533684,'70fe6f14bd5815295022cd8cd36f2872.jpg'],
+      [39533685,'502502899f85f8f64fd3d09f5356c872.jpg'],
+      [39533682,'e178922885c18abfe188cbb33cd2e391.jpg'],
+      [39533678,'f8e0faa809b50d7304a27c5334dc6c0e.jpg'],
+      [39533681,'2f8d1f4dbe4b56da331aa0c3d605de60.jpg'],
+      [39533680,'3fd72fb63b53b185b8edfd681dcdeb61.jpg'],
+      [39533679,'9e332779a6f7f504e9732f43651a6f65.jpg'],
+      [39533671,'be598d1d75ce7ea7e6f0f92daf203b5f.jpg'],
+      [39533676,'6662777dde509a45b8fc1b3515470a29.jpg'],
+      [39533675,'5d4305ea767230d55219df318c866c2a.jpg'],
+      [39533677,'847bac3d7110d9da454852f898eae1f2.jpg'],
+      [39533673,'e921a5b586208a07f906cfbfcd18e953.jpg'],
+      [39533672,'f65e1f115de8d58e51d6e88abbd04b44.jpg'],
+      [39533674,'9a705f1827b698fdcb84b950a4c213e5.jpg'],
+      [39533670,'a77d332f1abf1a287577c49f3af8ccd2.jpg'],
+      [39533656,'52d23f324f4a097e1c9d23a53cabd94f.jpg'],
+      [39533661,'da8ce17a664e484feac8c254ad0c1da1.jpg'],
+      [39533663,'1ba27a99ad6dce24a9c77048d72814bc.jpg'],
+      [39533657,'3b5c2f673e460c48e4761b818851181e.jpg'],
+      [39533659,'d3da3dd5626cbe7b479b80f59f2dbbe6.jpg'],
+      [39533662,'2fe53771af6a6994b5ceb9e7a687dfd7.jpg'],
+      [39533664,'1e4483813265c10060cf7e19309c948a.jpg'],
+      [39533658,'6cc7a725c4c85c153bc67892a7112bb7.jpg'],
+      [39533660,'0fc9dc78db3d7d5a2edbba76e9167884.jpg'],
+      [39533650,'5465366219fccfd271b669e071c10ef7.jpg'],
+      [39533640,'4cb653d72804fe5b9c71b710a6acc51d.jpg'],
+      [39533641,'4953b55503ceababac0038d97efe5caf.jpg']
+    ]
+  },
+  {
+    key: 'extra',
+    labelKey: 'proyeksiCarouselExtra',
+    ariaKey: 'proyeksiCarouselExtraAria',
+    labels: { id: 'Material Tambahan', en: 'Extra Materials' },
+    items: [
+      [39533631,'0902afeed1e2f40d0642751780112843.png'],
+      [39533633,'85c4ad42b182ac3ac04c186403c7a8ce.png'],
+      [39533632,'f953e5a264fdc66df276ddbc412a90b7.png'],
+      [39533630,'73bd116603b2ae0650cb9382bf807f76.png'],
+      [39533629,'0c741415308417d7ad0dc5f947270ef2.png'],
+      [39533628,'9b10e8cce6ad667407a3c592f5c16bd8.png']
+    ]
+  }
+];
+
+const PROYEKSI_ALT = {
+  id: { project: 'Proyeksi Gerilya', of: 'dari' },
+  en: { project: 'Guerilla Projection', of: 'of' }
+};
+
+function proyeksiImageUrl(item) {
+  return `${PROYEKSI_CDN}/${item[0]}/original_${item[1]}`;
+}
+
+function proyeksiLanguage() {
+  return document.documentElement.lang === 'en' ? 'en' : 'id';
+}
+
+function createProyeksiCarousel(group) {
+  let index = 0;
+
+  const section = document.createElement('section');
+  section.className = 'proyeksi-carousel';
+  section.tabIndex = 0;
+  section.dataset.carousel = group.key;
+  section.dataset.i18nAriaLabel = group.ariaKey;
+
+  const header = document.createElement('div');
+  header.className = 'proyeksi-carousel-header';
+
+  const title = document.createElement('h2');
+  title.className = 'proyeksi-carousel-title';
+  title.dataset.i18n = group.labelKey;
+  title.textContent = group.labels.id;
+
+  const controls = document.createElement('div');
+  controls.className = 'proyeksi-carousel-controls';
+
+  const previous = document.createElement('button');
+  previous.className = 'proyeksi-carousel-button';
+  previous.type = 'button';
+  previous.dataset.i18nAriaLabel = 'proyeksiCarouselPrevious';
+  previous.setAttribute('aria-label', 'Gambar sebelumnya');
+  previous.textContent = '‹';
+
+  const counter = document.createElement('span');
+  counter.className = 'proyeksi-carousel-counter';
+  counter.setAttribute('aria-live', 'polite');
+
+  const next = document.createElement('button');
+  next.className = 'proyeksi-carousel-button';
+  next.type = 'button';
+  next.dataset.i18nAriaLabel = 'proyeksiCarouselNext';
+  next.setAttribute('aria-label', 'Gambar berikutnya');
+  next.textContent = '›';
+
+  controls.append(previous, counter, next);
+  header.append(title, controls);
+
+  const stage = document.createElement('div');
+  stage.className = 'proyeksi-carousel-stage';
+
+  const image = document.createElement('img');
+  image.className = 'proyeksi-carousel-image';
+  image.decoding = 'async';
+  image.alt = '';
+  stage.appendChild(image);
+
+  section.append(header, stage);
+
+  function updateAlt() {
+    const lang = proyeksiLanguage();
+    const copy = PROYEKSI_ALT[lang];
+    const category = group.labels[lang];
+    image.alt = `${copy.project} — ${category} ${index + 1} ${copy.of} ${group.items.length}`;
+  }
+
+  function show(nextIndex) {
+    index = (nextIndex + group.items.length) % group.items.length;
+    image.classList.add('is-loading');
+    image.src = proyeksiImageUrl(group.items[index]);
+    counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(group.items.length).padStart(2, '0')}`;
+    updateAlt();
+  }
+
+  image.addEventListener('load', () => image.classList.remove('is-loading'));
+  image.addEventListener('error', () => image.classList.remove('is-loading'));
+  previous.addEventListener('click', () => show(index - 1));
+  next.addEventListener('click', () => show(index + 1));
+
+  section.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      show(index - 1);
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      show(index + 1);
+    }
+  });
+
+  section.updateAlt = updateAlt;
+  show(0);
+  return section;
+}
+
+const proyeksiCarouselRoot = document.getElementById('proyeksi-carousels');
+const proyeksiCarouselSections = [];
+
+if (proyeksiCarouselRoot) {
+  PROYEKSI_CAROUSELS.forEach(group => {
+    const section = createProyeksiCarousel(group);
+    proyeksiCarouselSections.push(section);
+    proyeksiCarouselRoot.appendChild(section);
+  });
+}
+
+window.addEventListener('site-language-change', () => {
+  proyeksiCarouselSections.forEach(section => {
+    if (typeof section.updateAlt === 'function') section.updateAlt();
+  });
+});
