@@ -12,30 +12,27 @@ jobs:
     steps:
       - name: Install Pillow
         run: pip install -q pillow
-      - name: Export candidate face crops
+      - name: Export remaining rough-cut face candidates
         shell: bash
         run: |
           python - <<'PY'
           import urllib.request, io, base64
           from PIL import Image
 
-          UA='ResolusiMekanikaPortfolio/1.0'
-          sources={
-            'rough':('https://d2w9rnfcy7mm78.cloudfront.net/39533690/original_fcbdd8ff36c0e597a9ed333de392456d.jpg',
-                     [(0.17786,0.20602,'rough_A'),(0.3487,0.31111,'rough_B')]),
-            'edit':('https://d2w9rnfcy7mm78.cloudfront.net/39533637/original_a7bdc084c5bc314b1445044c4e1db684.jpg',
-                    [(0.3448,0.57685,'edit_A'),(0.90824,0.44722,'edit_B'),(0.72366,0.41898,'edit_C')])
-          }
-
-          for _,(url,cands) in sources.items():
-            req=urllib.request.Request(url,headers={'User-Agent':UA})
-            im=Image.open(io.BytesIO(urllib.request.urlopen(req,timeout=30).read())).convert('RGB')
-            w,h=im.size
-            for nx,ny,label in cands:
+          url='https://d2w9rnfcy7mm78.cloudfront.net/39533690/original_fcbdd8ff36c0e597a9ed333de392456d.jpg'
+          req=urllib.request.Request(url,headers={'User-Agent':'ResolusiMekanikaPortfolio/1.0'})
+          im=Image.open(io.BytesIO(urllib.request.urlopen(req,timeout=30).read())).convert('RGB')
+          w,h=im.size
+          cands=[
+            (0.54271,0.48704,'rough_C'),
+            (0.83490,0.54537,'rough_D'),
+            (0.48906,0.42222,'rough_E'),
+            (0.34714,0.30509,'rough_B2')
+          ]
+          for nx,ny,label in cands:
               cx,cy=nx*w,ny*h
-              half=max(80,int(min(w,h)*0.10))
-              box=(max(0,int(cx-half)),max(0,int(cy-half)),min(w,int(cx+half)),min(h,int(cy+half)))
-              crop=im.crop(box)
+              half=108
+              crop=im.crop((max(0,int(cx-half)),max(0,int(cy-half)),min(w,int(cx+half)),min(h,int(cy+half))))
               crop.thumbnail((180,180))
               b=io.BytesIO()
               crop.save(b,'JPEG',quality=82,optimize=True)
