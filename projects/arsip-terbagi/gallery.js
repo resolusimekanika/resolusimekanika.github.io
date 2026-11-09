@@ -35,7 +35,10 @@ const ARSIP_BODY_COPY = {
 
     <p><em>In the performance architecture,</em> the performer stays behind the projection wall. Unable to witness the materiality of information created through real-time archive screening, remix, and rehistorization.<br>The projector shoots out live generative visuals towards that same center wall on the other side.</p>
 
-    <p class="arsip-body-duration"><em>Duration:</em> 30 minutes</p>
+    <p class="arsip-body-duration"><em>Duration:</em> 30 minutes<br>
+    Documentation by: Jack Wisialowski<br>
+    Curated by: Jessica Hernandez, Unbound Visual Arts Boston<br>
+    27 March, 2026</p>
   `,
   id: `
     <p>Arsip Terbagi — Divided Archive menghadirkan pengalaman diptych yang dipisahkan oleh dinding; tersusun dari komposisi tubuh-visual dengan rangkaian bunyi generatif yang menyatukan suasana.</p>
@@ -58,7 +61,10 @@ const ARSIP_BODY_COPY = {
 
     <p><em>Dalam arsitektur pertunjukan,</em> performer tetap berada di belakang dinding proyeksi. Tidak dapat menyaksikan materialitas informasi yang diciptakan melalui pemutaran arsip, remix, dan rehistorisasi secara real-time.<br>Proyektor memancarkan visual generatif live ke dinding tengah yang sama dari sisi seberang.</p>
 
-    <p class="arsip-body-duration"><em>Durasi:</em> 30 menit</p>
+    <p class="arsip-body-duration"><em>Durasi:</em> 30 menit<br>
+    Dokumentasi oleh: Jack Wisialowski<br>
+    Dikuratori oleh: Jessica Hernandez, Unbound Visual Arts Boston<br>
+    27 Maret 2026</p>
   `
 };
 
