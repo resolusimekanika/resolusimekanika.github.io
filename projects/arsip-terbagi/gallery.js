@@ -23,7 +23,9 @@ const ARSIP_BODY_COPY = {
 
     <p>This visit, I came in with a vision for my #jajanrock, only acquiring cassette tapes after diving into mixing-mastering processes with the Otari MX-5050 in Chicago from 2024-2026. Few of the many archives added to my collection were Margie Segers' "Jazz Samba" album - 1974, Jopie Latul [or Yopie Latul as it says in the actual cassette]'s "Ambon Jazz Rock" album - 1982, and Hetty Koes Endang's "<em>Damai Dibumi</em>" album [translates to Peace on Earth] - 1978.</p>
 
-    <p>Lastly added to my setlist were an archive of episodes from the Indonesian cooking shows I grew up watching "Aroma", of Ibu Sisca Soewitomo, which aired for a decade on national television from 1997-2007 on the <em>Indosiar</em> network.</p>
+    <p>The second element added to my setlist were an archive of episodes from the Indonesian cooking shows I grew up watching "Aroma", of Ibu Sisca Soewitomo, which aired for a decade on national television from 1997-2007 on the <em>Indosiar</em> network.</p>
+
+    <p>Lastly, large repetitive text prompts were introduced as part of the projection. This text bank has been part of an ever-evolving archive, compiled from bites of thoughts that circulated my presence over the years both in original and conversational formats. This specific text archive is very personal, presented in its vulnerable exposure and anonymity.</p>
 
     <p>I invite the audience to move around the space to complete the information that neither the performer nor the monitor will be able to witness; whether the monitor has something to witness is something up for the audience to decide.</p>
 
@@ -44,7 +46,9 @@ const ARSIP_BODY_COPY = {
 
     <p>Dalam kunjungan ini, saya datang dengan visi untuk #jajanrock, hanya membeli kaset setelah mendalami proses mixing-mastering dengan Otari MX-5050 di Chicago dari 2024-2026. Beberapa dari banyak arsip yang saya tambahkan ke koleksi adalah album "Jazz Samba" Margie Segers - 1974, album "Ambon Jazz Rock" Jopie Latul [atau Yopie Latul sebagaimana tertulis pada kaset aslinya] - 1982, dan album "<em>Damai Dibumi</em>" Hetty Koes Endang [diterjemahkan ke bahasa Inggris sebagai Peace on Earth] - 1978.</p>
 
-    <p>Terakhir, saya menambahkan ke setlist saya arsip episode-episode acara memasak Indonesia yang saya tonton sejak kecil, "Aroma", bersama Ibu Sisca Soewitomo, yang tayang selama satu dekade di televisi nasional dari 1997-2007 di jaringan <em>Indosiar</em>.</p>
+    <p>Elemen kedua yang saya tambahkan ke setlist adalah arsip episode-episode acara memasak Indonesia yang saya tonton sejak kecil, "Aroma", bersama Ibu Sisca Soewitomo, yang tayang selama satu dekade di televisi nasional dari 1997-2007 di jaringan <em>Indosiar</em>.</p>
+
+    <p>Terakhir, prompt teks besar yang repetitif diperkenalkan sebagai bagian dari proyeksi. Bank teks ini telah menjadi bagian dari sebuah arsip yang terus berkembang, dihimpun dari potongan-potongan pikiran yang mengitari kehadiran saya selama bertahun-tahun, baik dalam bentuk asli maupun percakapan. Arsip teks khusus ini sangat personal, ditampilkan dalam keterbukaan yang rentan sekaligus anonim.</p>
 
     <p>Saya mengundang penonton untuk bergerak mengelilingi ruang guna melengkapi informasi yang tidak dapat disaksikan oleh performer maupun monitor; apakah monitor memang memiliki sesuatu untuk disaksikan adalah sesuatu yang saya serahkan kepada penonton untuk menentukan.</p>
 
