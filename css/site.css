@@ -1323,3 +1323,16 @@ body.proyeksi-gerilya-page {
     line-height: 1.55;
   }
 }
+
+/* Arsip Terbagi: lightweight silent inline video before final archive image. */
+.arsip-terbagi-page .arsip-inline-video-element {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #000;
+}
+.arsip-terbagi-page .arsip-inline-video[hidden] {
+  display: none;
+}

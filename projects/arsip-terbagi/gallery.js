@@ -260,6 +260,52 @@ function makeItem(block, index) {
   return figure;
 }
 
+function createArsipSilentVideo() {
+  const figure = document.createElement('figure');
+  figure.className = 'gallery-item arsip-inline-video';
+
+  const video = document.createElement('video');
+  video.className = 'arsip-inline-video-element';
+  video.muted = true;
+  video.defaultMuted = true;
+  video.autoplay = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.preload = 'none';
+  video.setAttribute('muted', '');
+  video.setAttribute('autoplay', '');
+  video.setAttribute('loop', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('aria-label', 'Arsip Terbagi performance video, silent');
+
+  video.addEventListener('error', () => {
+    figure.hidden = true;
+  });
+
+  figure.appendChild(video);
+
+  const loadVideo = () => {
+    if (video.dataset.loaded) return;
+    video.dataset.loaded = 'true';
+    video.src = '/assets/arsip-terbagi-loop.mp4';
+    video.load();
+    video.play().catch(() => {});
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      observer.disconnect();
+      loadVideo();
+    }, { rootMargin: '400px 0px' });
+    observer.observe(figure);
+  } else {
+    loadVideo();
+  }
+
+  return figure;
+}
+
 document.addEventListener('keydown', event => {
   if (!viewer || viewer.hidden) return;
 
@@ -302,6 +348,10 @@ async function render() {
 
       gallery.appendChild(item);
     });
+
+    if (imageBlocks.length > 1) {
+      gallery.insertBefore(createArsipSilentVideo(), gallery.lastElementChild);
+    }
 
     if (!imageBlocks.length) {
       setStatus('No Arsip Terbagi images could be loaded from Are.na.');
