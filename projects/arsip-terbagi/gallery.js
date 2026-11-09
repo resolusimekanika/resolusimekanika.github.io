@@ -13,6 +13,77 @@ let viewerImage = null;
 let viewerCounter = null;
 let viewerPreviousFocus = null;
 
+const ARSIP_BODY_COPY = {
+  en: `
+    <p>Arsip Terbagi — Divided Archive performs a wall-separated diptych experience; composed of a body-visual composition with a set of generative sounds that unite the ambiance.</p>
+
+    <p>Sounds unites space through physical and invisible walls, auditory information that the hearing receives even in the politics of consensual ties.</p>
+
+    <p>The archive of sounds mainly come from a variety of physical cassettes collected while I was digging through South Jakarta's 'Blok M Square' underground record stores. In January 26’ I span a visit to Mas Andri's Kedai Musik which is only one of the many vintage and modern physical record stores in the mall's basement. Mas Andri's store is often always my first stop since I was a child.</p>
+
+    <p>This visit, I came in with a vision for my #jajanrock, only acquiring cassette tapes after diving into mixing-mastering processes with the Otari MX-5050 in Chicago from 2024-2026. Few of the many archives added to my collection were Margie Segers' "Jazz Samba" album - 1974, Jopie Latul [or Yopie Latul as it says in the actual cassette]'s "Ambon Jazz Rock" album - 1982, and Hetty Koes Endang's "<em>Damai Dibumi</em>" album [translates to Peace on Earth] - 1978.</p>
+
+    <p>Lastly added to my setlist were an archive of episodes from the Indonesian cooking shows I grew up watching "Aroma", of Ibu Sisca Soewitomo, which aired for a decade on national television from 1997-2007 on the <em>Indosiar</em> network.</p>
+
+    <p>I invite the audience to move around the space to complete the information that neither the performer nor the monitor will be able to witness; whether the monitor has something to witness is something up for the audience to decide.</p>
+
+    <p>This performance poses the question of importance when we talk about the production of archives in history; Does the focus impend on the body emitting the information? Or is it the mixed signal of digital archive born out of the body's physical production and visualization of history? Is it this archival value of essay about the creation of this performance? Or is it the present experience made from the witnessing bodies (audience) in real time in the actual space it was performed?</p>
+
+    <p>Spatiality is especially unique at UVA’s landscape. We can say this to be a site-specific performance, circulating the space-dividing center wall, we are entering the private public space as intimacy becomes present.</p>
+
+    <p><em>In the performance architecture,</em> the performer stays behind the projection wall. Unable to witness the materiality of information created through real-time archive screening, remix, and rehistorization.<br>The projector shoots out live generative visuals towards that same center wall on the other side.</p>
+
+    <p class="arsip-body-duration"><em>Duration:</em> 30 minutes</p>
+  `,
+  id: `
+    <p>Arsip Terbagi — Divided Archive menghadirkan pengalaman diptych yang dipisahkan oleh dinding; tersusun dari komposisi tubuh-visual dengan rangkaian bunyi generatif yang menyatukan suasana.</p>
+
+    <p>Bunyi menyatukan ruang melalui dinding-dinding fisik maupun tak kasatmata, sebagai informasi auditori yang diterima pendengaran bahkan di dalam politik ikatan konsensual.</p>
+
+    <p>Arsip bunyi terutama berasal dari beragam kaset fisik yang saya kumpulkan ketika menyusuri toko-toko rekaman bawah tanah di 'Blok M Square', Jakarta Selatan. Pada Januari ’26 saya menyempatkan kunjungan ke Kedai Musik milik Mas Andri, salah satu dari banyak toko rekaman fisik vintage maupun modern di lantai bawah mal tersebut. Toko Mas Andri hampir selalu menjadi persinggahan pertama saya sejak kecil.</p>
+
+    <p>Dalam kunjungan ini, saya datang dengan visi untuk #jajanrock, hanya membeli kaset setelah mendalami proses mixing-mastering dengan Otari MX-5050 di Chicago dari 2024-2026. Beberapa dari banyak arsip yang saya tambahkan ke koleksi adalah album "Jazz Samba" Margie Segers - 1974, album "Ambon Jazz Rock" Jopie Latul [atau Yopie Latul sebagaimana tertulis pada kaset aslinya] - 1982, dan album "<em>Damai Dibumi</em>" Hetty Koes Endang [diterjemahkan ke bahasa Inggris sebagai Peace on Earth] - 1978.</p>
+
+    <p>Terakhir, saya menambahkan ke setlist saya arsip episode-episode acara memasak Indonesia yang saya tonton sejak kecil, "Aroma", bersama Ibu Sisca Soewitomo, yang tayang selama satu dekade di televisi nasional dari 1997-2007 di jaringan <em>Indosiar</em>.</p>
+
+    <p>Saya mengundang penonton untuk bergerak mengelilingi ruang guna melengkapi informasi yang tidak dapat disaksikan oleh performer maupun monitor; apakah monitor memang memiliki sesuatu untuk disaksikan adalah sesuatu yang saya serahkan kepada penonton untuk menentukan.</p>
+
+    <p>Pertunjukan ini mengajukan pertanyaan tentang apa yang dianggap penting ketika kita berbicara mengenai produksi arsip dalam sejarah; Apakah fokusnya terletak pada tubuh yang memancarkan informasi? Ataukah pada sinyal campuran arsip digital yang lahir dari produksi fisik tubuh dan visualisasi sejarah? Apakah nilai arsipnya terletak pada esai mengenai penciptaan pertunjukan ini? Ataukah pada pengalaman kini yang terbentuk dari tubuh-tubuh yang menyaksikan (penonton) secara real-time di ruang tempat pertunjukan tersebut benar-benar berlangsung?</p>
+
+    <p>Spatialitas menjadi sangat khas dalam lanskap UVA. Kita dapat menyebutnya sebuah pertunjukan site-specific; dengan mengitari dinding tengah yang membagi ruang, kita memasuki ruang publik privat ketika keintiman menjadi hadir.</p>
+
+    <p><em>Dalam arsitektur pertunjukan,</em> performer tetap berada di belakang dinding proyeksi. Tidak dapat menyaksikan materialitas informasi yang diciptakan melalui pemutaran arsip, remix, dan rehistorisasi secara real-time.<br>Proyektor memancarkan visual generatif live ke dinding tengah yang sama dari sisi seberang.</p>
+
+    <p class="arsip-body-duration"><em>Durasi:</em> 30 menit</p>
+  `
+};
+
+let arsipBodyCopy = null;
+
+function currentArsipLanguage() {
+  return document.documentElement.lang === 'en' ? 'en' : 'id';
+}
+
+function updateArsipBodyCopy() {
+  if (!arsipBodyCopy) return;
+
+  const language = currentArsipLanguage();
+  arsipBodyCopy.lang = language;
+  arsipBodyCopy.innerHTML = ARSIP_BODY_COPY[language];
+}
+
+function createArsipBodyCopy() {
+  const article = document.createElement('article');
+  article.className = 'arsip-body-copy';
+  article.setAttribute('aria-label', 'Arsip Terbagi project text');
+  arsipBodyCopy = article;
+  updateArsipBodyCopy();
+  return article;
+}
+
+window.addEventListener('site-language-change', updateArsipBodyCopy);
+
+
 function setStatus(message) {
   statusEl.textContent = message || '';
 }
@@ -213,7 +284,13 @@ async function render() {
 
     imageBlocks.forEach((block, index) => {
       const item = makeItem(block, index);
-      if (item) gallery.appendChild(item);
+      if (!item) return;
+
+      if (index === 0) {
+        item.appendChild(createArsipBodyCopy());
+      }
+
+      gallery.appendChild(item);
     });
 
     if (!imageBlocks.length) {

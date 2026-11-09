@@ -1287,3 +1287,39 @@ body.proyeksi-gerilya-page {
   z-index: 2;
   pointer-events: none;
 }
+
+
+/* Arsip Terbagi body copy placed directly after the hero image. */
+.arsip-terbagi-page .arsip-body-copy {
+  width: min(720px, 100%);
+  margin: clamp(34px, 4vw, 54px) 0 0;
+  color: rgba(255,255,255,.92);
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.58;
+  letter-spacing: .002em;
+}
+
+.arsip-terbagi-page .arsip-body-copy p {
+  margin: 0 0 1.35em;
+}
+
+.arsip-terbagi-page .arsip-body-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.arsip-terbagi-page .arsip-body-copy em {
+  font-style: italic;
+}
+
+.arsip-terbagi-page .arsip-body-duration {
+  padding-top: .2em;
+}
+
+@media (max-width: 820px) {
+  .arsip-terbagi-page .arsip-body-copy {
+    width: 100%;
+    margin-top: 30px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+}
