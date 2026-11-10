@@ -1336,3 +1336,18 @@ body.proyeksi-gerilya-page {
 .arsip-terbagi-page .arsip-inline-video[hidden] {
   display: none;
 }
+
+
+/* Arsip Terbagi lightweight silent documentation loop before final image. */
+.arsip-terbagi-page .gallery-item--arsip-video {
+  line-height: 0;
+}
+
+.arsip-terbagi-page .arsip-loop-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  background: var(--black);
+  object-fit: contain;
+}

@@ -220,6 +220,62 @@ function closeViewer() {
   }
 }
 
+function createArsipLoopVideo() {
+  const figure = document.createElement('figure');
+  figure.className = 'gallery-item gallery-item--arsip-video';
+
+  const video = document.createElement('video');
+  video.className = 'arsip-loop-video';
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.autoplay = true;
+  video.preload = 'none';
+  video.disablePictureInPicture = true;
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('aria-label', 'Arsip Terbagi silent documentation video');
+
+  const source = '/assets/arsip-terbagi/arsip-terbagi-loop.mp4';
+  let loaded = false;
+
+  function loadAndPlay() {
+    if (!loaded) {
+      loaded = true;
+      video.src = source;
+      video.load();
+    }
+
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => {});
+    }
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadAndPlay();
+        } else if (!video.paused) {
+          video.pause();
+        }
+      });
+    }, {
+      rootMargin: '600px 0px',
+      threshold: 0
+    });
+
+    observer.observe(video);
+  } else {
+    loadAndPlay();
+  }
+
+  figure.appendChild(video);
+  return figure;
+}
+
 function makeItem(block, index) {
   const info = imageInfo(block);
   if (!info) return null;
@@ -344,6 +400,10 @@ async function render() {
 
       if (index === 0) {
         item.appendChild(createArsipBodyCopy());
+      }
+
+      if (index === imageBlocks.length - 1) {
+        gallery.appendChild(createArsipLoopVideo());
       }
 
       gallery.appendChild(item);
