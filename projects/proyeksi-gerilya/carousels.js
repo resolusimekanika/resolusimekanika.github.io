@@ -4,6 +4,18 @@ const PROYEKSI_CDN = 'https://d2w9rnfcy7mm78.cloudfront.net';
 const PROYEKSI_ARENA_API = 'https://api.are.na/v2';
 const PROYEKSI_GIF_CHANNEL = 'saat-adil-binasa-setia-kekal-derita-when-justice-perishes-eternal-suffering-replace-the-faith-gif';
 
+const PROYEKSI_FEATURE_GIF = {
+  key: 'feature-gif',
+  labels: { id: 'GIF', en: 'GIF' },
+  items: [
+    {
+      id: 'gm12p5',
+      url: '/assets/proyeksi-gerilya/GM12p5-web.gif',
+      title: 'GM12p5 animated GIF'
+    }
+  ]
+};
+
 const PROYEKSI_CAROUSELS = [
   {
     key: 'projection',
@@ -536,11 +548,18 @@ async function renderProyeksiMedia() {
 
   const [projectionGroup, walkGroup, circuitGroup] = PROYEKSI_CAROUSELS;
 
-  [projectionGroup, walkGroup].forEach(group => {
-    const section = createProyeksiCarousel(group);
-    proyeksiCarouselSections.push(section);
-    proyeksiCarouselRoot.appendChild(section);
-  });
+  const projectionSection = createProyeksiCarousel(projectionGroup);
+  proyeksiCarouselSections.push(projectionSection);
+  proyeksiCarouselRoot.appendChild(projectionSection);
+
+  const featureGifSection = createProyeksiCarousel(PROYEKSI_FEATURE_GIF);
+  featureGifSection.classList.add('proyeksi-feature-gif');
+  proyeksiCarouselSections.push(featureGifSection);
+  proyeksiCarouselRoot.appendChild(featureGifSection);
+
+  const walkSection = createProyeksiCarousel(walkGroup);
+  proyeksiCarouselSections.push(walkSection);
+  proyeksiCarouselRoot.appendChild(walkSection);
 
   const gifSlot = document.createElement('div');
   gifSlot.className = 'proyeksi-gif-slot';

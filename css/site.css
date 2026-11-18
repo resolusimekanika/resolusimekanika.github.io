@@ -1403,3 +1403,13 @@ body.proyeksi-gerilya-page {
     gap: 4px;
   }
 }
+
+
+/* Featured animated GIF directly after the first Proyeksi carousel. */
+.proyeksi-gerilya-page .proyeksi-feature-gif .proyeksi-carousel-header {
+  display: none;
+}
+
+.proyeksi-gerilya-page .proyeksi-feature-gif .proyeksi-carousel-stage {
+  cursor: pointer;
+}
