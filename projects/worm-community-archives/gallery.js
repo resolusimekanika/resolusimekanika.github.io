@@ -1,6 +1,6 @@
 'use strict';
 
-const API = 'https://api.are.na/v3';
+const API = 'https://api.are.na/v2';
 const CHANNEL_SLUG = 'w-o-r-m-tbfulptl80g';
 const EXCLUDED_BLOCK_IDS = new Set([45672329, 45672328, 45672347]);
 
@@ -11,34 +11,39 @@ function setStatus(message) {
   statusEl.textContent = message || '';
 }
 
-async function api(path) {
-  const response = await fetch(`${API}${path}`, {
+async function fetchJson(url) {
+  const response = await fetch(url, {
     headers: { Accept: 'application/json' }
   });
-  if (!response.ok) throw new Error(`Are.na HTTP ${response.status}`);
+
+  if (!response.ok) {
+    throw new Error(`Are.na HTTP ${response.status}`);
+  }
+
   return response.json();
 }
 
-function variantSrc(variant) {
-  if (!variant) return null;
-  if (typeof variant === 'string') return variant;
-  return variant.src || variant.src_2x || variant.src_1x || variant.url || null;
-}
-
 function imageInfo(block) {
-  const image = block?.image || block?.attachment?.image || block?.embed?.image || null;
-  if (!image?.src) return null;
+  const image = block?.image;
+  const original = image?.original?.url || null;
+
+  if (!original) return null;
 
   return {
-    original: image.src,
+    original,
     display:
-      variantSrc(image.large) ||
-      variantSrc(image.medium) ||
-      variantSrc(image.small) ||
-      image.src,
-    width: Number(image.width) || null,
-    height: Number(image.height) || null,
-    alt: block?.alt_text || block?.title || image?.filename || ''
+      image?.display?.url ||
+      image?.large?.url ||
+      image?.thumb?.url ||
+      original,
+    width: Number(image?.original?.width || image?.width) || null,
+    height: Number(image?.original?.height || image?.height) || null,
+    alt:
+      block?.title ||
+      block?.generated_title ||
+      block?.content ||
+      image?.filename ||
+      ''
   };
 }
 
@@ -58,7 +63,9 @@ function makeItem(block, index) {
   const img = document.createElement('img');
   img.className = 'gallery-image';
   img.src = info.display;
-  img.alt = info.alt || `WORM Community Archives image ${String(index + 1).padStart(2, '0')}`;
+  img.alt =
+    info.alt ||
+    `WORM Community Archives image ${String(index + 1).padStart(2, '0')}`;
   img.decoding = 'async';
   img.loading = index < 2 ? 'eager' : 'lazy';
 
@@ -72,32 +79,20 @@ function makeItem(block, index) {
   return figure;
 }
 
-async function getAllContents() {
-  const items = [];
-  let page = 1;
+async function render() {
+  setStatus('');
 
-  while (true) {
-    const response = await api(
-      `/channels/${encodeURIComponent(CHANNEL_SLUG)}/contents?per=100&page=${page}&sort=position`
+  try {
+    const response = await fetchJson(
+      `${API}/channels/${encodeURIComponent(CHANNEL_SLUG)}?per=100`
     );
 
-    const batch = Array.isArray(response?.data) ? response.data : [];
-    items.push(...batch);
+    const contents = Array.isArray(response?.contents)
+      ? [...response.contents].sort(
+          (a, b) => Number(b?.position || 0) - Number(a?.position || 0)
+        )
+      : [];
 
-    const hasMore =
-      response?.meta?.has_more_pages === true ||
-      (response?.meta?.next_page != null);
-
-    if (!hasMore) break;
-    page = Number(response?.meta?.next_page) || page + 1;
-  }
-
-  return items;
-}
-
-async function render() {
-  try {
-    const contents = await getAllContents();
     const blocks = contents.filter(block => {
       const id = Number(block?.id);
       return !EXCLUDED_BLOCK_IDS.has(id) && imageInfo(block);

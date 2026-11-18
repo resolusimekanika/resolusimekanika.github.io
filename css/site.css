@@ -1406,21 +1406,3 @@ body.proyeksi-gerilya-page {
 
 
 /* Featured animated GIF directly after the first Proyeksi carousel. */
-.proyeksi-gerilya-page .proyeksi-feature-gif .proyeksi-carousel-header {
-  display: none;
-}
-
-.proyeksi-gerilya-page .proyeksi-feature-gif .proyeksi-carousel-stage {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  cursor: pointer;
-}
-
-.proyeksi-gerilya-page .proyeksi-feature-gif .proyeksi-carousel-image {
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  max-height: none;
-  object-fit: contain;
-}
