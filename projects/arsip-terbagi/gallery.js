@@ -17,7 +17,7 @@ const ARSIP_BODY_COPY = {
   en: `
     <p>Arsip Terbagi — Divided Archive performs a wall-separated diptych experience; composed of a body-visual composition with a set of generative sounds that unite the ambiance.</p>
 
-    <p>Sounds unites space through physical and invisible walls, auditory information that the hearing receives even in the politics of consensual ties. Divided Archive was presented with a quad configuration of audio.</p>
+    <p>Sounds unites space through physical and invisible walls, auditory information that the hearing receives even in the politics of consensual ties.</p>
 
     <p>The archive of sounds mainly come from a variety of physical cassettes collected while I was digging through South Jakarta's 'Blok M Square' underground record stores. In January 26’ I span a visit to Mas Andri's Kedai Musik which is only one of the many vintage and modern physical record stores in the mall's basement. Mas Andri's store is often always my first stop since I was a child.</p>
 
@@ -36,6 +36,7 @@ const ARSIP_BODY_COPY = {
     <p><em>In the performance architecture,</em> the performer stays behind the projection wall. Unable to witness the materiality of information created through real-time archive screening, remix, and rehistorization.<br>The projector shoots out live generative visuals towards that same center wall on the other side.</p>
 
     <p class="arsip-body-duration"><em>Duration:</em> 30 minutes<br>
+    Sound format: Quadraphonic configuration<br>
     Documentation by: Jack Wisialowski<br>
     Curated by: Jessica Hernandez, Unbound Visual Arts Boston<br>
     27 March, 2026</p>
@@ -43,7 +44,7 @@ const ARSIP_BODY_COPY = {
   id: `
     <p>Arsip Terbagi — Divided Archive menghadirkan pengalaman diptych yang dipisahkan oleh dinding; tersusun dari komposisi tubuh-visual dengan rangkaian bunyi generatif yang menyatukan suasana.</p>
 
-    <p>Bunyi menyatukan ruang melalui dinding-dinding fisik maupun tak kasatmata, sebagai informasi auditori yang diterima pendengaran bahkan di dalam politik ikatan konsensual. Divided Archive dipresentasikan dengan konfigurasi audio quad.</p>
+    <p>Bunyi menyatukan ruang melalui dinding-dinding fisik maupun tak kasatmata, sebagai informasi auditori yang diterima pendengaran bahkan di dalam politik ikatan konsensual.</p>
 
     <p>Arsip bunyi terutama berasal dari beragam kaset fisik yang saya kumpulkan ketika menyusuri toko-toko rekaman bawah tanah di 'Blok M Square', Jakarta Selatan. Pada Januari ’26 saya menyempatkan kunjungan ke Kedai Musik milik Mas Andri, salah satu dari banyak toko rekaman fisik vintage maupun modern di lantai bawah mal tersebut. Toko Mas Andri hampir selalu menjadi persinggahan pertama saya sejak kecil.</p>
 
@@ -62,6 +63,7 @@ const ARSIP_BODY_COPY = {
     <p><em>Dalam arsitektur pertunjukan,</em> performer tetap berada di belakang dinding proyeksi. Tidak dapat menyaksikan materialitas informasi yang diciptakan melalui pemutaran arsip, remix, dan rehistorisasi secara real-time.<br>Proyektor memancarkan visual generatif live ke dinding tengah yang sama dari sisi seberang.</p>
 
     <p class="arsip-body-duration"><em>Durasi:</em> 30 menit<br>
+    Format suara: Konfigurasi quadraphonic<br>
     Dokumentasi oleh: Jack Wisialowski<br>
     Dikuratori oleh: Jessica Hernandez, Unbound Visual Arts Boston<br>
     27 Maret 2026</p>
