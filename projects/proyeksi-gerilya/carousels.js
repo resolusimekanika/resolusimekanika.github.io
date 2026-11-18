@@ -1,8 +1,18 @@
 'use strict';
 
 const PROYEKSI_CDN = 'https://d2w9rnfcy7mm78.cloudfront.net';
-const PROYEKSI_ARENA_API = 'https://api.are.na/v2';
+const PROYEKSI_ARENA_API = 'https://api.are.na/v3';
 const PROYEKSI_GIF_CHANNEL = 'saat-adil-binasa-setia-kekal-derita-when-justice-perishes-eternal-suffering-replace-the-faith-gif';
+const PROYEKSI_FEATURE_GIF_PARTS = [
+  '/assets/proyeksi-gerilya/gm12p5/part-00.txt',
+  '/assets/proyeksi-gerilya/gm12p5/part-01.txt',
+  '/assets/proyeksi-gerilya/gm12p5/part-02.txt',
+  '/assets/proyeksi-gerilya/gm12p5/part-03.txt',
+  '/assets/proyeksi-gerilya/gm12p5/part-04.txt',
+  '/assets/proyeksi-gerilya/gm12p5/part-05.txt',
+  '/assets/proyeksi-gerilya/gm12p5/part-06.txt',
+  '/assets/proyeksi-gerilya/gm12p5/part-07.txt'
+];
 
 
 const PROYEKSI_CAROUSELS = [
@@ -298,7 +308,7 @@ function proyeksiImageUrl(item) {
 
 async function fetchProyeksiGifItems() {
   const response = await fetch(
-    `${PROYEKSI_ARENA_API}/channels/${PROYEKSI_GIF_CHANNEL}?per=100`,
+    `${PROYEKSI_ARENA_API}/channels/${encodeURIComponent(PROYEKSI_GIF_CHANNEL)}/contents?per=100&sort=position_desc`,
     { headers: { Accept: 'application/json' } }
   );
 
@@ -307,15 +317,16 @@ async function fetchProyeksiGifItems() {
   }
 
   const data = await response.json();
-  const contents = Array.isArray(data?.contents)
-    ? [...data.contents].sort(
-        (a, b) => Number(b?.position || 0) - Number(a?.position || 0)
-      )
-    : [];
+  const contents = Array.isArray(data?.data) ? data.data : [];
 
   return contents
     .map(block => {
-      const original = block?.image?.original?.url || null;
+      const image = block?.image;
+      const original =
+        image?.src ||
+        image?.original?.url ||
+        null;
+
       if (!original) return null;
 
       return {
@@ -323,12 +334,90 @@ async function fetchProyeksiGifItems() {
         url: original,
         title:
           block?.title ||
-          block?.generated_title ||
-          block?.image?.filename ||
+          block?.alt_text ||
+          image?.filename ||
           'Animated GIF'
       };
     })
     .filter(Boolean);
+}
+
+async function loadProyeksiFeatureGifUrl() {
+  const responses = await Promise.all(
+    PROYEKSI_FEATURE_GIF_PARTS.map(url => fetch(url))
+  );
+
+  responses.forEach(response => {
+    if (!response.ok) {
+      throw new Error(`Feature GIF chunk HTTP ${response.status}`);
+    }
+  });
+
+  const parts = await Promise.all(responses.map(response => response.text()));
+  const encoded = parts.join('');
+  const binary = atob(encoded);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let offset = 0; offset < binary.length; offset += 65536) {
+    const end = Math.min(offset + 65536, binary.length);
+    for (let i = offset; i < end; i += 1) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+  }
+
+  return URL.createObjectURL(new Blob([bytes], { type: 'image/gif' }));
+}
+
+function createProyeksiDescription() {
+  const article = document.createElement('article');
+  article.className = 'proyeksi-project-description';
+
+  const copy = {
+    en: `
+      <p>What seems to be the exclusive experience of cinema is broken down from its walls into vivid spatial reality. Accumulating mass media in a live, generative performance. Reading my environment and responding through a dialectical spatial conversation about free speech, placement, and media representation. Through illumination, I realize how the reflections of my surroundings affect me, the speed at which I travel, and the content I choose to linger on just a little longer than others. This experience is generative; the glimpses of narrative an audience encounters are generative. Situating itself within the format of experimental filmmaking.</p>
+
+      <p>Video imaging was made possible by animating sequences through the Sandin Image Processor, part of the Film, Video, New Media, and Animation department's collection at the School of the Art Institute of Chicago on Michigan Avenue. Under the mentorship of James Connolly, I learned to understand the history of this machine. Physically occupying wall space, the Sandin Image Processor works through patch-cable modulations. Emerging from Chicago's early video art scene in the 1970s, the Sandin Image Processor renounces intellectual property in the most comedic yet evolutionary way. Through Dan Sandin's Distribution Religion and Phil Morton's subsequent COPY-IT-RIGHT, the machine became more than an instrument. It became a proposition for how knowledge, technology, and creative production could circulate without the usual restrictions of ownership.</p>
+
+      <p>This video synthesizer works by modulating voltages across various processing stages of the video signal, even making audio-reactive capabilities possible. Media archaeology plays into my concept of modulating mass media, re-representing visual properties while drawing public attention beyond the conventional, fixed screens of pixels found in computer monitors, cinema screens, and televisions.</p>
+
+      <p>Leading on to <a href="/projects/proyeksi-jalanan/">Proyeksi Jalanan</a>, I purposely fabricate this projection system to be directional, with respect for the public's individual identities; avoiding the capture of faces while leaving sounds intact, as well as the presence of their bodies. To make something visible does not necessarily mean to expose everything. In these public encounters, I negotiate what can be illuminated, what remains obscured, and what is allowed to pass through. We all calibrate ourselves through life this way, gently, with a hustle attitude. Leaning towards progress by laying the screen on canvases that ground us all together: the pavements, the walls, the parks, the darkness, the streets.</p>
+
+      <p>I actively find places for these images and texts to sit on. I am conscious 24/7, as both my homes are about 12 hours apart, meaning that when I am supposed to be asleep, my family is starting their day. Every 12 hours is another morning for me. My movements acknowledge the danger and lack of security I encounter as a woman in dark urban spaces, yet I remain consciously aware and awake.</p>
+
+      <p>This traveling projection was intended to voice community grievances throughout the 2025 #ResetIndonesia movement. The legal protest hours in Indonesia (WIB, UTC+7) coincided with a suitable time for my projections in Chicago. It was important for this project to be executed as a team. Brought together from different parts of the world, we each looked out for one another, and I am extremely grateful for their time.</p>
+
+      <p>I aim to continue these practices across various spaces and places. I create tools to help me through my practice, and this tool is to evolve in the following project, <a href="/projects/proyeksi-jalanan/">Proyeksi Jalanan</a>, as a wearable and handheld apparatus. Every landscape tells a different story. This way, I build on improvisation and the generative nature of everyday life, seeking visibility through public spaces, whether on domestic walls, porous fences, bridges, roads, or construction sites.</p>
+
+      <p>These placements stay in line with my intention to cast light on spaces that evolve through time and human labor. Human intervention in development plays an active role in setting change in motion for future generations to come.</p>
+    `,
+    id: `
+      <p>Apa yang tampak sebagai pengalaman eksklusif sinema dipecah keluar dari dinding-dindingnya menuju realitas spasial yang hidup. Mengakumulasi media massa dalam sebuah performans generatif secara langsung. Membaca lingkungan saya dan meresponsnya melalui percakapan spasial dialektis tentang kebebasan berbicara, penempatan, dan representasi media. Melalui iluminasi, saya menyadari bagaimana pantulan lingkungan sekitar memengaruhi saya, kecepatan saya bergerak, dan konten yang saya pilih untuk saya tatap sedikit lebih lama daripada yang lain. Pengalaman ini bersifat generatif; kilasan narasi yang ditemui penonton juga bersifat generatif. Menempatkan dirinya di dalam format pembuatan film eksperimental.</p>
+
+      <p>Pencitraan video dimungkinkan melalui animasi sekuens menggunakan Sandin Image Processor, bagian dari koleksi departemen Film, Video, New Media, and Animation di School of the Art Institute of Chicago di Michigan Avenue. Di bawah bimbingan James Connolly, saya belajar memahami sejarah mesin ini. Secara fisik menempati ruang dinding, Sandin Image Processor bekerja melalui modulasi kabel patch. Muncul dari skena awal seni video Chicago pada 1970-an, Sandin Image Processor menolak kepemilikan intelektual dengan cara yang sekaligus jenaka dan evolusioner. Melalui Distribution Religion karya Dan Sandin dan COPY-IT-RIGHT yang kemudian dikembangkan Phil Morton, mesin ini menjadi lebih dari sekadar instrumen. Ia menjadi sebuah proposisi tentang bagaimana pengetahuan, teknologi, dan produksi kreatif dapat beredar tanpa batasan kepemilikan yang lazim.</p>
+
+      <p>Sintesis video ini bekerja dengan memodulasi tegangan pada berbagai tahapan pemrosesan sinyal video, bahkan memungkinkan kemampuan audio-reaktif. Arkeologi media berperan dalam konsep saya untuk memodulasi media massa, merepresentasikan ulang properti visual sambil mengarahkan perhatian publik melampaui layar piksel konvensional dan tetap yang ditemukan pada monitor komputer, layar bioskop, dan televisi.</p>
+
+      <p>Berlanjut menuju <a href="/projects/proyeksi-jalanan/">Proyeksi Jalanan</a>, saya dengan sengaja merancang sistem proyeksi ini agar bersifat terarah, dengan menghormati identitas individual publik; menghindari penangkapan wajah sambil membiarkan suara tetap utuh, beserta kehadiran tubuh mereka. Membuat sesuatu terlihat tidak selalu berarti mengekspos semuanya. Dalam perjumpaan publik ini, saya bernegosiasi tentang apa yang dapat diterangi, apa yang tetap tersamarkan, dan apa yang diperbolehkan untuk lewat. Kita semua mengkalibrasi diri melalui hidup dengan cara seperti ini, secara lembut, dengan sikap hustle. Condong menuju kemajuan dengan meletakkan layar pada kanvas-kanvas yang menambatkan kita bersama: trotoar, dinding, taman, kegelapan, jalanan.</p>
+
+      <p>Saya secara aktif mencari tempat bagi gambar dan teks ini untuk berada. Saya sadar 24/7, karena kedua rumah saya berjarak sekitar 12 jam, yang berarti ketika saya seharusnya tidur, keluarga saya sedang memulai hari mereka. Setiap 12 jam adalah pagi yang lain bagi saya. Gerak saya mengakui bahaya dan kurangnya rasa aman yang saya hadapi sebagai perempuan di ruang urban yang gelap, namun saya tetap sadar dan terjaga.</p>
+
+      <p>Proyeksi keliling ini dimaksudkan untuk menyuarakan keresahan komunitas selama gerakan #ResetIndonesia 2025. Jam legal demonstrasi di Indonesia (WIB, UTC+7) bertepatan dengan waktu yang sesuai untuk proyeksi saya di Chicago. Penting bagi proyek ini untuk dijalankan sebagai tim. Dipertemukan dari berbagai belahan dunia, kami saling menjaga satu sama lain, dan saya sangat berterima kasih atas waktu mereka.</p>
+
+      <p>Saya bertujuan melanjutkan praktik ini di berbagai ruang dan tempat. Saya menciptakan alat untuk membantu saya dalam praktik, dan alat ini akan berkembang dalam proyek berikutnya, <a href="/projects/proyeksi-jalanan/">Proyeksi Jalanan</a>, sebagai perangkat wearable dan handheld. Setiap lanskap menceritakan kisah yang berbeda. Dengan cara ini, saya membangun improvisasi dan sifat generatif kehidupan sehari-hari, mencari visibilitas melalui ruang publik, baik pada dinding rumah, pagar berpori, jembatan, jalan, maupun lokasi konstruksi.</p>
+
+      <p>Penempatan-penempatan ini tetap sejalan dengan niat saya untuk menyorot ruang-ruang yang berevolusi melalui waktu dan kerja manusia. Intervensi manusia dalam pembangunan memainkan peran aktif dalam menggerakkan perubahan bagi generasi-generasi mendatang.</p>
+    `
+  };
+
+  function updateLanguage() {
+    const language = proyeksiLanguage();
+    article.lang = language;
+    article.innerHTML = copy[language];
+  }
+
+  article.updateLanguage = updateLanguage;
+  updateLanguage();
+  return article;
 }
 
 function proyeksiLanguage() {
@@ -541,6 +630,15 @@ async function renderProyeksiMedia() {
   proyeksiCarouselSections.push(projectionSection);
   proyeksiCarouselRoot.appendChild(projectionSection);
 
+  const featureSlot = document.createElement('div');
+  featureSlot.className = 'proyeksi-feature-gif-slot';
+  featureSlot.setAttribute('aria-busy', 'true');
+  proyeksiCarouselRoot.appendChild(featureSlot);
+
+  const projectDescription = createProyeksiDescription();
+  proyeksiCarouselSections.push(projectDescription);
+  proyeksiCarouselRoot.appendChild(projectDescription);
+
   const walkSection = createProyeksiCarousel(walkGroup);
   proyeksiCarouselSections.push(walkSection);
   proyeksiCarouselRoot.appendChild(walkSection);
@@ -552,6 +650,22 @@ async function renderProyeksiMedia() {
   const gridSection = createProyeksiGrid(circuitGroup);
   proyeksiCarouselSections.push(gridSection);
   proyeksiCarouselRoot.appendChild(gridSection);
+
+  try {
+    const featureUrl = await loadProyeksiFeatureGifUrl();
+    const featureGroup = {
+      key: 'feature-gif',
+      labels: { id: 'GIF', en: 'GIF' },
+      items: [{ id: 'gm12p5', url: featureUrl, title: 'GM12p5 animated GIF' }]
+    };
+    const featureCarousel = createProyeksiCarousel(featureGroup);
+    featureCarousel.classList.add('proyeksi-feature-gif');
+    proyeksiCarouselSections.push(featureCarousel);
+    featureSlot.replaceWith(featureCarousel);
+  } catch (error) {
+    console.error('Could not load featured Proyeksi Gerilya GIF.', error);
+    featureSlot.remove();
+  }
 
   try {
     const gifItems = await fetchProyeksiGifItems();
@@ -575,12 +689,12 @@ async function renderProyeksiMedia() {
     gifSlot.remove();
   }
 }
-
 renderProyeksiMedia();
 
 window.addEventListener('site-language-change', () => {
   proyeksiCarouselSections.forEach(section => {
     if (typeof section.updateAlt === 'function') section.updateAlt();
+    if (typeof section.updateLanguage === 'function') section.updateLanguage();
   });
   updateProyeksiViewerLanguage();
 

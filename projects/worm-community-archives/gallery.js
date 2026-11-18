@@ -1,6 +1,6 @@
 'use strict';
 
-const API = 'https://api.are.na/v2';
+const API = 'https://api.are.na/v3';
 const CHANNEL_SLUG = 'w-o-r-m-tbfulptl80g';
 const EXCLUDED_BLOCK_IDS = new Set([45672329, 45672328, 45672347]);
 
@@ -25,23 +25,27 @@ async function fetchJson(url) {
 
 function imageInfo(block) {
   const image = block?.image;
-  const original = image?.original?.url || null;
+  const original =
+    image?.src ||
+    image?.original?.url ||
+    null;
 
   if (!original) return null;
 
   return {
     original,
     display:
+      image?.large?.src ||
+      image?.medium?.src ||
       image?.display?.url ||
       image?.large?.url ||
-      image?.thumb?.url ||
       original,
-    width: Number(image?.original?.width || image?.width) || null,
-    height: Number(image?.original?.height || image?.height) || null,
+    width: Number(image?.width || image?.original?.width) || null,
+    height: Number(image?.height || image?.original?.height) || null,
     alt:
+      block?.alt_text ||
       block?.title ||
-      block?.generated_title ||
-      block?.content ||
+      block?.description?.plain ||
       image?.filename ||
       ''
   };
@@ -84,13 +88,11 @@ async function render() {
 
   try {
     const response = await fetchJson(
-      `${API}/channels/${encodeURIComponent(CHANNEL_SLUG)}?per=100`
+      `${API}/channels/${encodeURIComponent(CHANNEL_SLUG)}/contents?per=100&sort=position_desc`
     );
 
-    const contents = Array.isArray(response?.contents)
-      ? [...response.contents].sort(
-          (a, b) => Number(b?.position || 0) - Number(a?.position || 0)
-        )
+    const contents = Array.isArray(response?.data)
+      ? response.data
       : [];
 
     const blocks = contents.filter(block => {
