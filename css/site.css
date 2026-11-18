@@ -1426,3 +1426,28 @@ body.worm-community-archives-page {
 .worm-community-archives-page .year-timeline {
   border-top-color: var(--black);
 }
+
+
+/* About page: text-only journal statement and quieter external links. */
+.about-page .about-text-page {
+  max-width: 920px;
+}
+
+.about-page .about-statement {
+  max-width: 720px;
+  margin: clamp(26px, 3vw, 42px) 0 0;
+  color: var(--black);
+  font-size: clamp(14px, 1.35vw, 18px);
+  line-height: 1.45;
+}
+
+.about-page .about-links {
+  margin-top: clamp(36px, 4vw, 58px);
+  gap: 7px 16px;
+}
+
+.about-page .about-links a {
+  font-size: clamp(10px, .82vw, 12px);
+  letter-spacing: 0;
+  text-transform: none;
+}

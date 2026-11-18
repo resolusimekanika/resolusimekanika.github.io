@@ -81,8 +81,9 @@ const SITE_COPY = {
     archiveTitle: 'ARSIP / KOLABORASI',
     archiveIntro: 'Kolaborasi, animasi, band, artikel, dan dokumentasi eksternal.',
 
-    aboutTitle: 'TENTANG RESOLUSI MEKANIKA',
-    aboutIntro: 'Biografi, CV, kontak, dan tautan.',
+    aboutTitle: 'RESOLUSI MEKANIKA',
+    aboutIntro: '',
+    aboutStatement: 'Resolusi Mekanika adalah jurnal independen dari Indonesia dengan penyaluran karya berbasis jejaring global. Laman ini berfungsi sebagai penyalur materi fisik, audiosonik, perangkat lunak, komisi, diagram proyek, dan film.',
 
     projectTags: 'suara / material / ruang / udara bergerak / pendengaran'
   },
@@ -164,8 +165,9 @@ const SITE_COPY = {
     archiveTitle: 'ARCHIVE / COLLABORATIONS',
     archiveIntro: 'Collaborations, animation, bands, articles, and external documentation.',
 
-    aboutTitle: 'ABOUT RESOLUSI MEKANIKA',
-    aboutIntro: 'Biography, CV, contact, and links.',
+    aboutTitle: 'RESOLUSI MEKANIKA',
+    aboutIntro: '',
+    aboutStatement: 'Mechanical Resolution is an independent journal from Indonesia with distribution of works based on a global network. This platform serves as a channel for physical materials, audio-sonic works, software, commission, project diagrams, and films.',
 
     projectTags: 'sound / material / space / moving air / listening'
   }
