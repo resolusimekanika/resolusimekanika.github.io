@@ -1406,3 +1406,23 @@ body.proyeksi-gerilya-page {
 
 
 /* Featured animated GIF directly after the first Proyeksi carousel. */
+
+
+/* WORM — Community Archives: broken-white archival paper background. */
+html:has(body.worm-community-archives-page),
+body.worm-community-archives-page {
+  background: #e8e8e4;
+}
+
+.worm-community-archives-page .project-heading,
+.worm-community-archives-page .project-tags,
+.worm-community-archives-page .project-sibling-links,
+.worm-community-archives-page .project-bottom-meta,
+.worm-community-archives-page .year-timeline,
+.worm-community-archives-page .site-footer {
+  color: var(--black);
+}
+
+.worm-community-archives-page .year-timeline {
+  border-top-color: var(--black);
+}
