@@ -1,6 +1,8 @@
 'use strict';
 
 const PROYEKSI_CDN = 'https://d2w9rnfcy7mm78.cloudfront.net';
+const PROYEKSI_ARENA_API = 'https://api.are.na/v2';
+const PROYEKSI_GIF_CHANNEL = 'saat-adil-binasa-setia-kekal-derita-when-justice-perishes-eternal-suffering-replace-the-faith-gif';
 
 const PROYEKSI_CAROUSELS = [
   {
@@ -287,7 +289,45 @@ window.addEventListener('resize', () => {
 }, { passive: true });
 
 function proyeksiImageUrl(item) {
+  if (item && typeof item === 'object' && !Array.isArray(item) && item.url) {
+    return item.url;
+  }
   return `${PROYEKSI_CDN}/${item[0]}/original_${item[1]}`;
+}
+
+async function fetchProyeksiGifItems() {
+  const response = await fetch(
+    `${PROYEKSI_ARENA_API}/channels/${PROYEKSI_GIF_CHANNEL}?per=100`,
+    { headers: { Accept: 'application/json' } }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Are.na GIF channel HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+  const contents = Array.isArray(data?.contents)
+    ? [...data.contents].sort(
+        (a, b) => Number(b?.position || 0) - Number(a?.position || 0)
+      )
+    : [];
+
+  return contents
+    .map(block => {
+      const original = block?.image?.original?.url || null;
+      if (!original) return null;
+
+      return {
+        id: block.id,
+        url: original,
+        title:
+          block?.title ||
+          block?.generated_title ||
+          block?.image?.filename ||
+          'Animated GIF'
+      };
+    })
+    .filter(Boolean);
 }
 
 function proyeksiLanguage() {
@@ -352,6 +392,7 @@ function createProyeksiCarousel(group) {
     const lang = proyeksiLanguage();
     const copy = PROYEKSI_ALT[lang];
     const category = group.labels[lang];
+    section.setAttribute('aria-label', category);
     image.alt = `${copy.project} — ${category} ${index + 1} ${copy.of} ${group.items.length}`;
   }
 
@@ -440,16 +481,99 @@ function createProyeksiCarousel(group) {
   return section;
 }
 
+function createProyeksiGrid(group) {
+  const section = document.createElement('section');
+  section.className = 'proyeksi-grid-section';
+  section.dataset.carousel = group.key;
+
+  const grid = document.createElement('div');
+  grid.className = 'proyeksi-still-grid';
+
+  const images = [];
+
+  group.items.forEach((item, index) => {
+    const button = document.createElement('button');
+    button.className = 'proyeksi-grid-item';
+    button.type = 'button';
+
+    const image = document.createElement('img');
+    image.className = 'proyeksi-grid-image';
+    image.src = proyeksiImageUrl(item);
+    image.decoding = 'async';
+    image.loading = index < 4 ? 'eager' : 'lazy';
+
+    button.appendChild(image);
+    button.addEventListener('click', () => openProyeksiViewer(group, index, button));
+    grid.appendChild(button);
+    images.push({ button, image, index });
+  });
+
+  function updateAlt() {
+    const lang = proyeksiLanguage();
+    const copy = PROYEKSI_ALT[lang];
+    const category = group.labels[lang];
+    section.setAttribute('aria-label', category);
+
+    images.forEach(entry => {
+      const label =
+        `${copy.project} — ${category} ${entry.index + 1} ${copy.of} ${group.items.length}`;
+      entry.image.alt = label;
+      entry.button.setAttribute('aria-label', label);
+    });
+  }
+
+  section.appendChild(grid);
+  section.updateAlt = updateAlt;
+  updateAlt();
+  return section;
+}
+
 const proyeksiCarouselRoot = document.getElementById('proyeksi-carousels');
 const proyeksiCarouselSections = [];
 
-if (proyeksiCarouselRoot) {
-  PROYEKSI_CAROUSELS.forEach(group => {
+async function renderProyeksiMedia() {
+  if (!proyeksiCarouselRoot) return;
+
+  const [projectionGroup, walkGroup, circuitGroup] = PROYEKSI_CAROUSELS;
+
+  [projectionGroup, walkGroup].forEach(group => {
     const section = createProyeksiCarousel(group);
     proyeksiCarouselSections.push(section);
     proyeksiCarouselRoot.appendChild(section);
   });
+
+  const gifSlot = document.createElement('div');
+  gifSlot.className = 'proyeksi-gif-slot';
+  proyeksiCarouselRoot.appendChild(gifSlot);
+
+  const gridSection = createProyeksiGrid(circuitGroup);
+  proyeksiCarouselSections.push(gridSection);
+  proyeksiCarouselRoot.appendChild(gridSection);
+
+  try {
+    const gifItems = await fetchProyeksiGifItems();
+
+    if (!gifItems.length) {
+      gifSlot.remove();
+      return;
+    }
+
+    const gifGroup = {
+      key: 'gif',
+      labels: { id: 'GIF', en: 'GIF' },
+      items: gifItems
+    };
+
+    const gifCarousel = createProyeksiCarousel(gifGroup);
+    proyeksiCarouselSections.push(gifCarousel);
+    gifSlot.replaceWith(gifCarousel);
+  } catch (error) {
+    console.error('Could not load Proyeksi Gerilya GIF channel.', error);
+    gifSlot.remove();
+  }
 }
+
+renderProyeksiMedia();
 
 window.addEventListener('site-language-change', () => {
   proyeksiCarouselSections.forEach(section => {
