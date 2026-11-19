@@ -1437,7 +1437,7 @@ body.worm-community-archives-page {
   max-width: 720px;
   margin: clamp(26px, 3vw, 42px) 0 0;
   color: var(--black);
-  font-size: clamp(14px, 1.35vw, 18px);
+  font-size: clamp(10px, 1.05vw, 14px);
   line-height: 1.45;
 }
 
@@ -1447,7 +1447,7 @@ body.worm-community-archives-page {
 }
 
 .about-page .about-links a {
-  font-size: clamp(10px, .82vw, 12px);
+  font-size: clamp(12px, 1vw, 14px);
   letter-spacing: 0;
   text-transform: none;
 }
